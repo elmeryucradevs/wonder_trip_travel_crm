@@ -1,0 +1,2723 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'database.dart';
+
+// ignore_for_file: type=lint
+class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ClientsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 50,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastNameMeta = const VerificationMeta(
+    'lastName',
+  );
+  @override
+  late final GeneratedColumn<String> lastName = GeneratedColumn<String>(
+    'last_name',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 50,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+    'email',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
+  @override
+  late final GeneratedColumn<String> phone = GeneratedColumn<String>(
+    'phone',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _documentNumberMeta = const VerificationMeta(
+    'documentNumber',
+  );
+  @override
+  late final GeneratedColumn<String> documentNumber = GeneratedColumn<String>(
+    'document_number',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _birthDateMeta = const VerificationMeta(
+    'birthDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> birthDate = GeneratedColumn<DateTime>(
+    'birth_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    lastName,
+    email,
+    phone,
+    documentNumber,
+    birthDate,
+    createdAt,
+    updatedAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'clients';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Client> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('last_name')) {
+      context.handle(
+        _lastNameMeta,
+        lastName.isAcceptableOrUnknown(data['last_name']!, _lastNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lastNameMeta);
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+        _emailMeta,
+        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_emailMeta);
+    }
+    if (data.containsKey('phone')) {
+      context.handle(
+        _phoneMeta,
+        phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta),
+      );
+    }
+    if (data.containsKey('document_number')) {
+      context.handle(
+        _documentNumberMeta,
+        documentNumber.isAcceptableOrUnknown(
+          data['document_number']!,
+          _documentNumberMeta,
+        ),
+      );
+    }
+    if (data.containsKey('birth_date')) {
+      context.handle(
+        _birthDateMeta,
+        birthDate.isAcceptableOrUnknown(data['birth_date']!, _birthDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Client map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Client(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      lastName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_name'],
+      )!,
+      email: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}email'],
+      )!,
+      phone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phone'],
+      ),
+      documentNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}document_number'],
+      ),
+      birthDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}birth_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $ClientsTable createAlias(String alias) {
+    return $ClientsTable(attachedDatabase, alias);
+  }
+}
+
+class Client extends DataClass implements Insertable<Client> {
+  final int id;
+  final String name;
+  final String lastName;
+  final String email;
+  final String? phone;
+  final String? documentNumber;
+  final DateTime? birthDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  const Client({
+    required this.id,
+    required this.name,
+    required this.lastName,
+    required this.email,
+    this.phone,
+    this.documentNumber,
+    this.birthDate,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['last_name'] = Variable<String>(lastName);
+    map['email'] = Variable<String>(email);
+    if (!nullToAbsent || phone != null) {
+      map['phone'] = Variable<String>(phone);
+    }
+    if (!nullToAbsent || documentNumber != null) {
+      map['document_number'] = Variable<String>(documentNumber);
+    }
+    if (!nullToAbsent || birthDate != null) {
+      map['birth_date'] = Variable<DateTime>(birthDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  ClientsCompanion toCompanion(bool nullToAbsent) {
+    return ClientsCompanion(
+      id: Value(id),
+      name: Value(name),
+      lastName: Value(lastName),
+      email: Value(email),
+      phone: phone == null && nullToAbsent
+          ? const Value.absent()
+          : Value(phone),
+      documentNumber: documentNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(documentNumber),
+      birthDate: birthDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(birthDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory Client.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Client(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      lastName: serializer.fromJson<String>(json['lastName']),
+      email: serializer.fromJson<String>(json['email']),
+      phone: serializer.fromJson<String?>(json['phone']),
+      documentNumber: serializer.fromJson<String?>(json['documentNumber']),
+      birthDate: serializer.fromJson<DateTime?>(json['birthDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'lastName': serializer.toJson<String>(lastName),
+      'email': serializer.toJson<String>(email),
+      'phone': serializer.toJson<String?>(phone),
+      'documentNumber': serializer.toJson<String?>(documentNumber),
+      'birthDate': serializer.toJson<DateTime?>(birthDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  Client copyWith({
+    int? id,
+    String? name,
+    String? lastName,
+    String? email,
+    Value<String?> phone = const Value.absent(),
+    Value<String?> documentNumber = const Value.absent(),
+    Value<DateTime?> birthDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => Client(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    lastName: lastName ?? this.lastName,
+    email: email ?? this.email,
+    phone: phone.present ? phone.value : this.phone,
+    documentNumber: documentNumber.present
+        ? documentNumber.value
+        : this.documentNumber,
+    birthDate: birthDate.present ? birthDate.value : this.birthDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  Client copyWithCompanion(ClientsCompanion data) {
+    return Client(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      lastName: data.lastName.present ? data.lastName.value : this.lastName,
+      email: data.email.present ? data.email.value : this.email,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      documentNumber: data.documentNumber.present
+          ? data.documentNumber.value
+          : this.documentNumber,
+      birthDate: data.birthDate.present ? data.birthDate.value : this.birthDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Client(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('lastName: $lastName, ')
+          ..write('email: $email, ')
+          ..write('phone: $phone, ')
+          ..write('documentNumber: $documentNumber, ')
+          ..write('birthDate: $birthDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    lastName,
+    email,
+    phone,
+    documentNumber,
+    birthDate,
+    createdAt,
+    updatedAt,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Client &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.lastName == this.lastName &&
+          other.email == this.email &&
+          other.phone == this.phone &&
+          other.documentNumber == this.documentNumber &&
+          other.birthDate == this.birthDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
+}
+
+class ClientsCompanion extends UpdateCompanion<Client> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String> lastName;
+  final Value<String> email;
+  final Value<String?> phone;
+  final Value<String?> documentNumber;
+  final Value<DateTime?> birthDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  const ClientsCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.lastName = const Value.absent(),
+    this.email = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.documentNumber = const Value.absent(),
+    this.birthDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  ClientsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    required String lastName,
+    required String email,
+    this.phone = const Value.absent(),
+    this.documentNumber = const Value.absent(),
+    this.birthDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  }) : name = Value(name),
+       lastName = Value(lastName),
+       email = Value(email);
+  static Insertable<Client> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? lastName,
+    Expression<String>? email,
+    Expression<String>? phone,
+    Expression<String>? documentNumber,
+    Expression<DateTime>? birthDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (lastName != null) 'last_name': lastName,
+      if (email != null) 'email': email,
+      if (phone != null) 'phone': phone,
+      if (documentNumber != null) 'document_number': documentNumber,
+      if (birthDate != null) 'birth_date': birthDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  ClientsCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String>? lastName,
+    Value<String>? email,
+    Value<String?>? phone,
+    Value<String?>? documentNumber,
+    Value<DateTime?>? birthDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+  }) {
+    return ClientsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      documentNumber: documentNumber ?? this.documentNumber,
+      birthDate: birthDate ?? this.birthDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (lastName.present) {
+      map['last_name'] = Variable<String>(lastName.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    if (documentNumber.present) {
+      map['document_number'] = Variable<String>(documentNumber.value);
+    }
+    if (birthDate.present) {
+      map['birth_date'] = Variable<DateTime>(birthDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ClientsCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('lastName: $lastName, ')
+          ..write('email: $email, ')
+          ..write('phone: $phone, ')
+          ..write('documentNumber: $documentNumber, ')
+          ..write('birthDate: $birthDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TicketsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _clientIdMeta = const VerificationMeta(
+    'clientId',
+  );
+  @override
+  late final GeneratedColumn<int> clientId = GeneratedColumn<int>(
+    'client_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES clients (id)',
+    ),
+  );
+  static const VerificationMeta _pnrMeta = const VerificationMeta('pnr');
+  @override
+  late final GeneratedColumn<String> pnr = GeneratedColumn<String>(
+    'pnr',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 6,
+      maxTextLength: 6,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _totalPriceMeta = const VerificationMeta(
+    'totalPrice',
+  );
+  @override
+  late final GeneratedColumn<double> totalPrice = GeneratedColumn<double>(
+    'total_price',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _emissionDateMeta = const VerificationMeta(
+    'emissionDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> emissionDate = GeneratedColumn<DateTime>(
+    'emission_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    clientId,
+    pnr,
+    totalPrice,
+    emissionDate,
+    createdAt,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'tickets';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Ticket> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('client_id')) {
+      context.handle(
+        _clientIdMeta,
+        clientId.isAcceptableOrUnknown(data['client_id']!, _clientIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_clientIdMeta);
+    }
+    if (data.containsKey('pnr')) {
+      context.handle(
+        _pnrMeta,
+        pnr.isAcceptableOrUnknown(data['pnr']!, _pnrMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_pnrMeta);
+    }
+    if (data.containsKey('total_price')) {
+      context.handle(
+        _totalPriceMeta,
+        totalPrice.isAcceptableOrUnknown(data['total_price']!, _totalPriceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_totalPriceMeta);
+    }
+    if (data.containsKey('emission_date')) {
+      context.handle(
+        _emissionDateMeta,
+        emissionDate.isAcceptableOrUnknown(
+          data['emission_date']!,
+          _emissionDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_emissionDateMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Ticket map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Ticket(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      clientId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}client_id'],
+      )!,
+      pnr: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pnr'],
+      )!,
+      totalPrice: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}total_price'],
+      )!,
+      emissionDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}emission_date'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+    );
+  }
+
+  @override
+  $TicketsTable createAlias(String alias) {
+    return $TicketsTable(attachedDatabase, alias);
+  }
+}
+
+class Ticket extends DataClass implements Insertable<Ticket> {
+  final int id;
+  final int clientId;
+  final String pnr;
+  final double totalPrice;
+  final DateTime emissionDate;
+  final DateTime createdAt;
+  const Ticket({
+    required this.id,
+    required this.clientId,
+    required this.pnr,
+    required this.totalPrice,
+    required this.emissionDate,
+    required this.createdAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['client_id'] = Variable<int>(clientId);
+    map['pnr'] = Variable<String>(pnr);
+    map['total_price'] = Variable<double>(totalPrice);
+    map['emission_date'] = Variable<DateTime>(emissionDate);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  TicketsCompanion toCompanion(bool nullToAbsent) {
+    return TicketsCompanion(
+      id: Value(id),
+      clientId: Value(clientId),
+      pnr: Value(pnr),
+      totalPrice: Value(totalPrice),
+      emissionDate: Value(emissionDate),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory Ticket.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Ticket(
+      id: serializer.fromJson<int>(json['id']),
+      clientId: serializer.fromJson<int>(json['clientId']),
+      pnr: serializer.fromJson<String>(json['pnr']),
+      totalPrice: serializer.fromJson<double>(json['totalPrice']),
+      emissionDate: serializer.fromJson<DateTime>(json['emissionDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'clientId': serializer.toJson<int>(clientId),
+      'pnr': serializer.toJson<String>(pnr),
+      'totalPrice': serializer.toJson<double>(totalPrice),
+      'emissionDate': serializer.toJson<DateTime>(emissionDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  Ticket copyWith({
+    int? id,
+    int? clientId,
+    String? pnr,
+    double? totalPrice,
+    DateTime? emissionDate,
+    DateTime? createdAt,
+  }) => Ticket(
+    id: id ?? this.id,
+    clientId: clientId ?? this.clientId,
+    pnr: pnr ?? this.pnr,
+    totalPrice: totalPrice ?? this.totalPrice,
+    emissionDate: emissionDate ?? this.emissionDate,
+    createdAt: createdAt ?? this.createdAt,
+  );
+  Ticket copyWithCompanion(TicketsCompanion data) {
+    return Ticket(
+      id: data.id.present ? data.id.value : this.id,
+      clientId: data.clientId.present ? data.clientId.value : this.clientId,
+      pnr: data.pnr.present ? data.pnr.value : this.pnr,
+      totalPrice: data.totalPrice.present
+          ? data.totalPrice.value
+          : this.totalPrice,
+      emissionDate: data.emissionDate.present
+          ? data.emissionDate.value
+          : this.emissionDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Ticket(')
+          ..write('id: $id, ')
+          ..write('clientId: $clientId, ')
+          ..write('pnr: $pnr, ')
+          ..write('totalPrice: $totalPrice, ')
+          ..write('emissionDate: $emissionDate, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, clientId, pnr, totalPrice, emissionDate, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Ticket &&
+          other.id == this.id &&
+          other.clientId == this.clientId &&
+          other.pnr == this.pnr &&
+          other.totalPrice == this.totalPrice &&
+          other.emissionDate == this.emissionDate &&
+          other.createdAt == this.createdAt);
+}
+
+class TicketsCompanion extends UpdateCompanion<Ticket> {
+  final Value<int> id;
+  final Value<int> clientId;
+  final Value<String> pnr;
+  final Value<double> totalPrice;
+  final Value<DateTime> emissionDate;
+  final Value<DateTime> createdAt;
+  const TicketsCompanion({
+    this.id = const Value.absent(),
+    this.clientId = const Value.absent(),
+    this.pnr = const Value.absent(),
+    this.totalPrice = const Value.absent(),
+    this.emissionDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  TicketsCompanion.insert({
+    this.id = const Value.absent(),
+    required int clientId,
+    required String pnr,
+    required double totalPrice,
+    required DateTime emissionDate,
+    this.createdAt = const Value.absent(),
+  }) : clientId = Value(clientId),
+       pnr = Value(pnr),
+       totalPrice = Value(totalPrice),
+       emissionDate = Value(emissionDate);
+  static Insertable<Ticket> custom({
+    Expression<int>? id,
+    Expression<int>? clientId,
+    Expression<String>? pnr,
+    Expression<double>? totalPrice,
+    Expression<DateTime>? emissionDate,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (clientId != null) 'client_id': clientId,
+      if (pnr != null) 'pnr': pnr,
+      if (totalPrice != null) 'total_price': totalPrice,
+      if (emissionDate != null) 'emission_date': emissionDate,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  TicketsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? clientId,
+    Value<String>? pnr,
+    Value<double>? totalPrice,
+    Value<DateTime>? emissionDate,
+    Value<DateTime>? createdAt,
+  }) {
+    return TicketsCompanion(
+      id: id ?? this.id,
+      clientId: clientId ?? this.clientId,
+      pnr: pnr ?? this.pnr,
+      totalPrice: totalPrice ?? this.totalPrice,
+      emissionDate: emissionDate ?? this.emissionDate,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (clientId.present) {
+      map['client_id'] = Variable<int>(clientId.value);
+    }
+    if (pnr.present) {
+      map['pnr'] = Variable<String>(pnr.value);
+    }
+    if (totalPrice.present) {
+      map['total_price'] = Variable<double>(totalPrice.value);
+    }
+    if (emissionDate.present) {
+      map['emission_date'] = Variable<DateTime>(emissionDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TicketsCompanion(')
+          ..write('id: $id, ')
+          ..write('clientId: $clientId, ')
+          ..write('pnr: $pnr, ')
+          ..write('totalPrice: $totalPrice, ')
+          ..write('emissionDate: $emissionDate, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FlightSegmentsTable extends FlightSegments
+    with TableInfo<$FlightSegmentsTable, FlightSegment> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FlightSegmentsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _ticketIdMeta = const VerificationMeta(
+    'ticketId',
+  );
+  @override
+  late final GeneratedColumn<int> ticketId = GeneratedColumn<int>(
+    'ticket_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES tickets (id)',
+    ),
+  );
+  static const VerificationMeta _airlineCodeMeta = const VerificationMeta(
+    'airlineCode',
+  );
+  @override
+  late final GeneratedColumn<String> airlineCode = GeneratedColumn<String>(
+    'airline_code',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 2,
+      maxTextLength: 3,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _flightNumberMeta = const VerificationMeta(
+    'flightNumber',
+  );
+  @override
+  late final GeneratedColumn<String> flightNumber = GeneratedColumn<String>(
+    'flight_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _originMeta = const VerificationMeta('origin');
+  @override
+  late final GeneratedColumn<String> origin = GeneratedColumn<String>(
+    'origin',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 3,
+      maxTextLength: 3,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _destinationMeta = const VerificationMeta(
+    'destination',
+  );
+  @override
+  late final GeneratedColumn<String> destination = GeneratedColumn<String>(
+    'destination',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 3,
+      maxTextLength: 3,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _departureDateMeta = const VerificationMeta(
+    'departureDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> departureDate =
+      GeneratedColumn<DateTime>(
+        'departure_date',
+        aliasedName,
+        false,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _arrivalDateMeta = const VerificationMeta(
+    'arrivalDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> arrivalDate = GeneratedColumn<DateTime>(
+    'arrival_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    ticketId,
+    airlineCode,
+    flightNumber,
+    origin,
+    destination,
+    departureDate,
+    arrivalDate,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'flight_segments';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<FlightSegment> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('ticket_id')) {
+      context.handle(
+        _ticketIdMeta,
+        ticketId.isAcceptableOrUnknown(data['ticket_id']!, _ticketIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_ticketIdMeta);
+    }
+    if (data.containsKey('airline_code')) {
+      context.handle(
+        _airlineCodeMeta,
+        airlineCode.isAcceptableOrUnknown(
+          data['airline_code']!,
+          _airlineCodeMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_airlineCodeMeta);
+    }
+    if (data.containsKey('flight_number')) {
+      context.handle(
+        _flightNumberMeta,
+        flightNumber.isAcceptableOrUnknown(
+          data['flight_number']!,
+          _flightNumberMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_flightNumberMeta);
+    }
+    if (data.containsKey('origin')) {
+      context.handle(
+        _originMeta,
+        origin.isAcceptableOrUnknown(data['origin']!, _originMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_originMeta);
+    }
+    if (data.containsKey('destination')) {
+      context.handle(
+        _destinationMeta,
+        destination.isAcceptableOrUnknown(
+          data['destination']!,
+          _destinationMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_destinationMeta);
+    }
+    if (data.containsKey('departure_date')) {
+      context.handle(
+        _departureDateMeta,
+        departureDate.isAcceptableOrUnknown(
+          data['departure_date']!,
+          _departureDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_departureDateMeta);
+    }
+    if (data.containsKey('arrival_date')) {
+      context.handle(
+        _arrivalDateMeta,
+        arrivalDate.isAcceptableOrUnknown(
+          data['arrival_date']!,
+          _arrivalDateMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_arrivalDateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FlightSegment map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FlightSegment(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      ticketId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}ticket_id'],
+      )!,
+      airlineCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}airline_code'],
+      )!,
+      flightNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}flight_number'],
+      )!,
+      origin: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}origin'],
+      )!,
+      destination: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}destination'],
+      )!,
+      departureDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}departure_date'],
+      )!,
+      arrivalDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}arrival_date'],
+      )!,
+    );
+  }
+
+  @override
+  $FlightSegmentsTable createAlias(String alias) {
+    return $FlightSegmentsTable(attachedDatabase, alias);
+  }
+}
+
+class FlightSegment extends DataClass implements Insertable<FlightSegment> {
+  final int id;
+  final int ticketId;
+  final String airlineCode;
+  final String flightNumber;
+  final String origin;
+  final String destination;
+  final DateTime departureDate;
+  final DateTime arrivalDate;
+  const FlightSegment({
+    required this.id,
+    required this.ticketId,
+    required this.airlineCode,
+    required this.flightNumber,
+    required this.origin,
+    required this.destination,
+    required this.departureDate,
+    required this.arrivalDate,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['ticket_id'] = Variable<int>(ticketId);
+    map['airline_code'] = Variable<String>(airlineCode);
+    map['flight_number'] = Variable<String>(flightNumber);
+    map['origin'] = Variable<String>(origin);
+    map['destination'] = Variable<String>(destination);
+    map['departure_date'] = Variable<DateTime>(departureDate);
+    map['arrival_date'] = Variable<DateTime>(arrivalDate);
+    return map;
+  }
+
+  FlightSegmentsCompanion toCompanion(bool nullToAbsent) {
+    return FlightSegmentsCompanion(
+      id: Value(id),
+      ticketId: Value(ticketId),
+      airlineCode: Value(airlineCode),
+      flightNumber: Value(flightNumber),
+      origin: Value(origin),
+      destination: Value(destination),
+      departureDate: Value(departureDate),
+      arrivalDate: Value(arrivalDate),
+    );
+  }
+
+  factory FlightSegment.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FlightSegment(
+      id: serializer.fromJson<int>(json['id']),
+      ticketId: serializer.fromJson<int>(json['ticketId']),
+      airlineCode: serializer.fromJson<String>(json['airlineCode']),
+      flightNumber: serializer.fromJson<String>(json['flightNumber']),
+      origin: serializer.fromJson<String>(json['origin']),
+      destination: serializer.fromJson<String>(json['destination']),
+      departureDate: serializer.fromJson<DateTime>(json['departureDate']),
+      arrivalDate: serializer.fromJson<DateTime>(json['arrivalDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'ticketId': serializer.toJson<int>(ticketId),
+      'airlineCode': serializer.toJson<String>(airlineCode),
+      'flightNumber': serializer.toJson<String>(flightNumber),
+      'origin': serializer.toJson<String>(origin),
+      'destination': serializer.toJson<String>(destination),
+      'departureDate': serializer.toJson<DateTime>(departureDate),
+      'arrivalDate': serializer.toJson<DateTime>(arrivalDate),
+    };
+  }
+
+  FlightSegment copyWith({
+    int? id,
+    int? ticketId,
+    String? airlineCode,
+    String? flightNumber,
+    String? origin,
+    String? destination,
+    DateTime? departureDate,
+    DateTime? arrivalDate,
+  }) => FlightSegment(
+    id: id ?? this.id,
+    ticketId: ticketId ?? this.ticketId,
+    airlineCode: airlineCode ?? this.airlineCode,
+    flightNumber: flightNumber ?? this.flightNumber,
+    origin: origin ?? this.origin,
+    destination: destination ?? this.destination,
+    departureDate: departureDate ?? this.departureDate,
+    arrivalDate: arrivalDate ?? this.arrivalDate,
+  );
+  FlightSegment copyWithCompanion(FlightSegmentsCompanion data) {
+    return FlightSegment(
+      id: data.id.present ? data.id.value : this.id,
+      ticketId: data.ticketId.present ? data.ticketId.value : this.ticketId,
+      airlineCode: data.airlineCode.present
+          ? data.airlineCode.value
+          : this.airlineCode,
+      flightNumber: data.flightNumber.present
+          ? data.flightNumber.value
+          : this.flightNumber,
+      origin: data.origin.present ? data.origin.value : this.origin,
+      destination: data.destination.present
+          ? data.destination.value
+          : this.destination,
+      departureDate: data.departureDate.present
+          ? data.departureDate.value
+          : this.departureDate,
+      arrivalDate: data.arrivalDate.present
+          ? data.arrivalDate.value
+          : this.arrivalDate,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FlightSegment(')
+          ..write('id: $id, ')
+          ..write('ticketId: $ticketId, ')
+          ..write('airlineCode: $airlineCode, ')
+          ..write('flightNumber: $flightNumber, ')
+          ..write('origin: $origin, ')
+          ..write('destination: $destination, ')
+          ..write('departureDate: $departureDate, ')
+          ..write('arrivalDate: $arrivalDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    ticketId,
+    airlineCode,
+    flightNumber,
+    origin,
+    destination,
+    departureDate,
+    arrivalDate,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FlightSegment &&
+          other.id == this.id &&
+          other.ticketId == this.ticketId &&
+          other.airlineCode == this.airlineCode &&
+          other.flightNumber == this.flightNumber &&
+          other.origin == this.origin &&
+          other.destination == this.destination &&
+          other.departureDate == this.departureDate &&
+          other.arrivalDate == this.arrivalDate);
+}
+
+class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
+  final Value<int> id;
+  final Value<int> ticketId;
+  final Value<String> airlineCode;
+  final Value<String> flightNumber;
+  final Value<String> origin;
+  final Value<String> destination;
+  final Value<DateTime> departureDate;
+  final Value<DateTime> arrivalDate;
+  const FlightSegmentsCompanion({
+    this.id = const Value.absent(),
+    this.ticketId = const Value.absent(),
+    this.airlineCode = const Value.absent(),
+    this.flightNumber = const Value.absent(),
+    this.origin = const Value.absent(),
+    this.destination = const Value.absent(),
+    this.departureDate = const Value.absent(),
+    this.arrivalDate = const Value.absent(),
+  });
+  FlightSegmentsCompanion.insert({
+    this.id = const Value.absent(),
+    required int ticketId,
+    required String airlineCode,
+    required String flightNumber,
+    required String origin,
+    required String destination,
+    required DateTime departureDate,
+    required DateTime arrivalDate,
+  }) : ticketId = Value(ticketId),
+       airlineCode = Value(airlineCode),
+       flightNumber = Value(flightNumber),
+       origin = Value(origin),
+       destination = Value(destination),
+       departureDate = Value(departureDate),
+       arrivalDate = Value(arrivalDate);
+  static Insertable<FlightSegment> custom({
+    Expression<int>? id,
+    Expression<int>? ticketId,
+    Expression<String>? airlineCode,
+    Expression<String>? flightNumber,
+    Expression<String>? origin,
+    Expression<String>? destination,
+    Expression<DateTime>? departureDate,
+    Expression<DateTime>? arrivalDate,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (ticketId != null) 'ticket_id': ticketId,
+      if (airlineCode != null) 'airline_code': airlineCode,
+      if (flightNumber != null) 'flight_number': flightNumber,
+      if (origin != null) 'origin': origin,
+      if (destination != null) 'destination': destination,
+      if (departureDate != null) 'departure_date': departureDate,
+      if (arrivalDate != null) 'arrival_date': arrivalDate,
+    });
+  }
+
+  FlightSegmentsCompanion copyWith({
+    Value<int>? id,
+    Value<int>? ticketId,
+    Value<String>? airlineCode,
+    Value<String>? flightNumber,
+    Value<String>? origin,
+    Value<String>? destination,
+    Value<DateTime>? departureDate,
+    Value<DateTime>? arrivalDate,
+  }) {
+    return FlightSegmentsCompanion(
+      id: id ?? this.id,
+      ticketId: ticketId ?? this.ticketId,
+      airlineCode: airlineCode ?? this.airlineCode,
+      flightNumber: flightNumber ?? this.flightNumber,
+      origin: origin ?? this.origin,
+      destination: destination ?? this.destination,
+      departureDate: departureDate ?? this.departureDate,
+      arrivalDate: arrivalDate ?? this.arrivalDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (ticketId.present) {
+      map['ticket_id'] = Variable<int>(ticketId.value);
+    }
+    if (airlineCode.present) {
+      map['airline_code'] = Variable<String>(airlineCode.value);
+    }
+    if (flightNumber.present) {
+      map['flight_number'] = Variable<String>(flightNumber.value);
+    }
+    if (origin.present) {
+      map['origin'] = Variable<String>(origin.value);
+    }
+    if (destination.present) {
+      map['destination'] = Variable<String>(destination.value);
+    }
+    if (departureDate.present) {
+      map['departure_date'] = Variable<DateTime>(departureDate.value);
+    }
+    if (arrivalDate.present) {
+      map['arrival_date'] = Variable<DateTime>(arrivalDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FlightSegmentsCompanion(')
+          ..write('id: $id, ')
+          ..write('ticketId: $ticketId, ')
+          ..write('airlineCode: $airlineCode, ')
+          ..write('flightNumber: $flightNumber, ')
+          ..write('origin: $origin, ')
+          ..write('destination: $destination, ')
+          ..write('departureDate: $departureDate, ')
+          ..write('arrivalDate: $arrivalDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
+abstract class _$AppDatabase extends GeneratedDatabase {
+  _$AppDatabase(QueryExecutor e) : super(e);
+  $AppDatabaseManager get managers => $AppDatabaseManager(this);
+  late final $ClientsTable clients = $ClientsTable(this);
+  late final $TicketsTable tickets = $TicketsTable(this);
+  late final $FlightSegmentsTable flightSegments = $FlightSegmentsTable(this);
+  late final ClientDao clientDao = ClientDao(this as AppDatabase);
+  @override
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  @override
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    clients,
+    tickets,
+    flightSegments,
+  ];
+}
+
+typedef $$ClientsTableCreateCompanionBuilder =
+    ClientsCompanion Function({
+      Value<int> id,
+      required String name,
+      required String lastName,
+      required String email,
+      Value<String?> phone,
+      Value<String?> documentNumber,
+      Value<DateTime?> birthDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+    });
+typedef $$ClientsTableUpdateCompanionBuilder =
+    ClientsCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String> lastName,
+      Value<String> email,
+      Value<String?> phone,
+      Value<String?> documentNumber,
+      Value<DateTime?> birthDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+    });
+
+final class $$ClientsTableReferences
+    extends BaseReferences<_$AppDatabase, $ClientsTable, Client> {
+  $$ClientsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$TicketsTable, List<Ticket>> _ticketsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.tickets,
+    aliasName: $_aliasNameGenerator(db.clients.id, db.tickets.clientId),
+  );
+
+  $$TicketsTableProcessedTableManager get ticketsRefs {
+    final manager = $$TicketsTableTableManager(
+      $_db,
+      $_db.tickets,
+    ).filter((f) => f.clientId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_ticketsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$ClientsTableFilterComposer
+    extends Composer<_$AppDatabase, $ClientsTable> {
+  $$ClientsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastName => $composableBuilder(
+    column: $table.lastName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get documentNumber => $composableBuilder(
+    column: $table.documentNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get birthDate => $composableBuilder(
+    column: $table.birthDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> ticketsRefs(
+    Expression<bool> Function($$TicketsTableFilterComposer f) f,
+  ) {
+    final $$TicketsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.tickets,
+      getReferencedColumn: (t) => t.clientId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TicketsTableFilterComposer(
+            $db: $db,
+            $table: $db.tickets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$ClientsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ClientsTable> {
+  $$ClientsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastName => $composableBuilder(
+    column: $table.lastName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get documentNumber => $composableBuilder(
+    column: $table.documentNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get birthDate => $composableBuilder(
+    column: $table.birthDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$ClientsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ClientsTable> {
+  $$ClientsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get lastName =>
+      $composableBuilder(column: $table.lastName, builder: (column) => column);
+
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
+
+  GeneratedColumn<String> get phone =>
+      $composableBuilder(column: $table.phone, builder: (column) => column);
+
+  GeneratedColumn<String> get documentNumber => $composableBuilder(
+    column: $table.documentNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get birthDate =>
+      $composableBuilder(column: $table.birthDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  Expression<T> ticketsRefs<T extends Object>(
+    Expression<T> Function($$TicketsTableAnnotationComposer a) f,
+  ) {
+    final $$TicketsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.tickets,
+      getReferencedColumn: (t) => t.clientId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TicketsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.tickets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$ClientsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ClientsTable,
+          Client,
+          $$ClientsTableFilterComposer,
+          $$ClientsTableOrderingComposer,
+          $$ClientsTableAnnotationComposer,
+          $$ClientsTableCreateCompanionBuilder,
+          $$ClientsTableUpdateCompanionBuilder,
+          (Client, $$ClientsTableReferences),
+          Client,
+          PrefetchHooks Function({bool ticketsRefs})
+        > {
+  $$ClientsTableTableManager(_$AppDatabase db, $ClientsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ClientsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ClientsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ClientsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> lastName = const Value.absent(),
+                Value<String> email = const Value.absent(),
+                Value<String?> phone = const Value.absent(),
+                Value<String?> documentNumber = const Value.absent(),
+                Value<DateTime?> birthDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => ClientsCompanion(
+                id: id,
+                name: name,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                documentNumber: documentNumber,
+                birthDate: birthDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                required String lastName,
+                required String email,
+                Value<String?> phone = const Value.absent(),
+                Value<String?> documentNumber = const Value.absent(),
+                Value<DateTime?> birthDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => ClientsCompanion.insert(
+                id: id,
+                name: name,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                documentNumber: documentNumber,
+                birthDate: birthDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ClientsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({ticketsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (ticketsRefs) db.tickets],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (ticketsRefs)
+                    await $_getPrefetchedData<Client, $ClientsTable, Ticket>(
+                      currentTable: table,
+                      referencedTable: $$ClientsTableReferences
+                          ._ticketsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$ClientsTableReferences(db, table, p0).ticketsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.clientId == item.id),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$ClientsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ClientsTable,
+      Client,
+      $$ClientsTableFilterComposer,
+      $$ClientsTableOrderingComposer,
+      $$ClientsTableAnnotationComposer,
+      $$ClientsTableCreateCompanionBuilder,
+      $$ClientsTableUpdateCompanionBuilder,
+      (Client, $$ClientsTableReferences),
+      Client,
+      PrefetchHooks Function({bool ticketsRefs})
+    >;
+typedef $$TicketsTableCreateCompanionBuilder =
+    TicketsCompanion Function({
+      Value<int> id,
+      required int clientId,
+      required String pnr,
+      required double totalPrice,
+      required DateTime emissionDate,
+      Value<DateTime> createdAt,
+    });
+typedef $$TicketsTableUpdateCompanionBuilder =
+    TicketsCompanion Function({
+      Value<int> id,
+      Value<int> clientId,
+      Value<String> pnr,
+      Value<double> totalPrice,
+      Value<DateTime> emissionDate,
+      Value<DateTime> createdAt,
+    });
+
+final class $$TicketsTableReferences
+    extends BaseReferences<_$AppDatabase, $TicketsTable, Ticket> {
+  $$TicketsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ClientsTable _clientIdTable(_$AppDatabase db) => db.clients
+      .createAlias($_aliasNameGenerator(db.tickets.clientId, db.clients.id));
+
+  $$ClientsTableProcessedTableManager get clientId {
+    final $_column = $_itemColumn<int>('client_id')!;
+
+    final manager = $$ClientsTableTableManager(
+      $_db,
+      $_db.clients,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_clientIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$FlightSegmentsTable, List<FlightSegment>>
+  _flightSegmentsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.flightSegments,
+    aliasName: $_aliasNameGenerator(db.tickets.id, db.flightSegments.ticketId),
+  );
+
+  $$FlightSegmentsTableProcessedTableManager get flightSegmentsRefs {
+    final manager = $$FlightSegmentsTableTableManager(
+      $_db,
+      $_db.flightSegments,
+    ).filter((f) => f.ticketId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_flightSegmentsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$TicketsTableFilterComposer
+    extends Composer<_$AppDatabase, $TicketsTable> {
+  $$TicketsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pnr => $composableBuilder(
+    column: $table.pnr,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get totalPrice => $composableBuilder(
+    column: $table.totalPrice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get emissionDate => $composableBuilder(
+    column: $table.emissionDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$ClientsTableFilterComposer get clientId {
+    final $$ClientsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.clientId,
+      referencedTable: $db.clients,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ClientsTableFilterComposer(
+            $db: $db,
+            $table: $db.clients,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> flightSegmentsRefs(
+    Expression<bool> Function($$FlightSegmentsTableFilterComposer f) f,
+  ) {
+    final $$FlightSegmentsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.flightSegments,
+      getReferencedColumn: (t) => t.ticketId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightSegmentsTableFilterComposer(
+            $db: $db,
+            $table: $db.flightSegments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$TicketsTableOrderingComposer
+    extends Composer<_$AppDatabase, $TicketsTable> {
+  $$TicketsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pnr => $composableBuilder(
+    column: $table.pnr,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get totalPrice => $composableBuilder(
+    column: $table.totalPrice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get emissionDate => $composableBuilder(
+    column: $table.emissionDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ClientsTableOrderingComposer get clientId {
+    final $$ClientsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.clientId,
+      referencedTable: $db.clients,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ClientsTableOrderingComposer(
+            $db: $db,
+            $table: $db.clients,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$TicketsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $TicketsTable> {
+  $$TicketsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get pnr =>
+      $composableBuilder(column: $table.pnr, builder: (column) => column);
+
+  GeneratedColumn<double> get totalPrice => $composableBuilder(
+    column: $table.totalPrice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get emissionDate => $composableBuilder(
+    column: $table.emissionDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$ClientsTableAnnotationComposer get clientId {
+    final $$ClientsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.clientId,
+      referencedTable: $db.clients,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ClientsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.clients,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> flightSegmentsRefs<T extends Object>(
+    Expression<T> Function($$FlightSegmentsTableAnnotationComposer a) f,
+  ) {
+    final $$FlightSegmentsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.flightSegments,
+      getReferencedColumn: (t) => t.ticketId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FlightSegmentsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.flightSegments,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$TicketsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $TicketsTable,
+          Ticket,
+          $$TicketsTableFilterComposer,
+          $$TicketsTableOrderingComposer,
+          $$TicketsTableAnnotationComposer,
+          $$TicketsTableCreateCompanionBuilder,
+          $$TicketsTableUpdateCompanionBuilder,
+          (Ticket, $$TicketsTableReferences),
+          Ticket,
+          PrefetchHooks Function({bool clientId, bool flightSegmentsRefs})
+        > {
+  $$TicketsTableTableManager(_$AppDatabase db, $TicketsTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TicketsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TicketsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TicketsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> clientId = const Value.absent(),
+                Value<String> pnr = const Value.absent(),
+                Value<double> totalPrice = const Value.absent(),
+                Value<DateTime> emissionDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => TicketsCompanion(
+                id: id,
+                clientId: clientId,
+                pnr: pnr,
+                totalPrice: totalPrice,
+                emissionDate: emissionDate,
+                createdAt: createdAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int clientId,
+                required String pnr,
+                required double totalPrice,
+                required DateTime emissionDate,
+                Value<DateTime> createdAt = const Value.absent(),
+              }) => TicketsCompanion.insert(
+                id: id,
+                clientId: clientId,
+                pnr: pnr,
+                totalPrice: totalPrice,
+                emissionDate: emissionDate,
+                createdAt: createdAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$TicketsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({clientId = false, flightSegmentsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (flightSegmentsRefs) db.flightSegments,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (clientId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.clientId,
+                                    referencedTable: $$TicketsTableReferences
+                                        ._clientIdTable(db),
+                                    referencedColumn: $$TicketsTableReferences
+                                        ._clientIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (flightSegmentsRefs)
+                        await $_getPrefetchedData<
+                          Ticket,
+                          $TicketsTable,
+                          FlightSegment
+                        >(
+                          currentTable: table,
+                          referencedTable: $$TicketsTableReferences
+                              ._flightSegmentsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$TicketsTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).flightSegmentsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.ticketId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$TicketsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $TicketsTable,
+      Ticket,
+      $$TicketsTableFilterComposer,
+      $$TicketsTableOrderingComposer,
+      $$TicketsTableAnnotationComposer,
+      $$TicketsTableCreateCompanionBuilder,
+      $$TicketsTableUpdateCompanionBuilder,
+      (Ticket, $$TicketsTableReferences),
+      Ticket,
+      PrefetchHooks Function({bool clientId, bool flightSegmentsRefs})
+    >;
+typedef $$FlightSegmentsTableCreateCompanionBuilder =
+    FlightSegmentsCompanion Function({
+      Value<int> id,
+      required int ticketId,
+      required String airlineCode,
+      required String flightNumber,
+      required String origin,
+      required String destination,
+      required DateTime departureDate,
+      required DateTime arrivalDate,
+    });
+typedef $$FlightSegmentsTableUpdateCompanionBuilder =
+    FlightSegmentsCompanion Function({
+      Value<int> id,
+      Value<int> ticketId,
+      Value<String> airlineCode,
+      Value<String> flightNumber,
+      Value<String> origin,
+      Value<String> destination,
+      Value<DateTime> departureDate,
+      Value<DateTime> arrivalDate,
+    });
+
+final class $$FlightSegmentsTableReferences
+    extends BaseReferences<_$AppDatabase, $FlightSegmentsTable, FlightSegment> {
+  $$FlightSegmentsTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $TicketsTable _ticketIdTable(_$AppDatabase db) =>
+      db.tickets.createAlias(
+        $_aliasNameGenerator(db.flightSegments.ticketId, db.tickets.id),
+      );
+
+  $$TicketsTableProcessedTableManager get ticketId {
+    final $_column = $_itemColumn<int>('ticket_id')!;
+
+    final manager = $$TicketsTableTableManager(
+      $_db,
+      $_db.tickets,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ticketIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$FlightSegmentsTableFilterComposer
+    extends Composer<_$AppDatabase, $FlightSegmentsTable> {
+  $$FlightSegmentsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get airlineCode => $composableBuilder(
+    column: $table.airlineCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get flightNumber => $composableBuilder(
+    column: $table.flightNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get origin => $composableBuilder(
+    column: $table.origin,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get destination => $composableBuilder(
+    column: $table.destination,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get departureDate => $composableBuilder(
+    column: $table.departureDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get arrivalDate => $composableBuilder(
+    column: $table.arrivalDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$TicketsTableFilterComposer get ticketId {
+    final $$TicketsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ticketId,
+      referencedTable: $db.tickets,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TicketsTableFilterComposer(
+            $db: $db,
+            $table: $db.tickets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$FlightSegmentsTableOrderingComposer
+    extends Composer<_$AppDatabase, $FlightSegmentsTable> {
+  $$FlightSegmentsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get airlineCode => $composableBuilder(
+    column: $table.airlineCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get flightNumber => $composableBuilder(
+    column: $table.flightNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get origin => $composableBuilder(
+    column: $table.origin,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get destination => $composableBuilder(
+    column: $table.destination,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get departureDate => $composableBuilder(
+    column: $table.departureDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get arrivalDate => $composableBuilder(
+    column: $table.arrivalDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$TicketsTableOrderingComposer get ticketId {
+    final $$TicketsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ticketId,
+      referencedTable: $db.tickets,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TicketsTableOrderingComposer(
+            $db: $db,
+            $table: $db.tickets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$FlightSegmentsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FlightSegmentsTable> {
+  $$FlightSegmentsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get airlineCode => $composableBuilder(
+    column: $table.airlineCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get flightNumber => $composableBuilder(
+    column: $table.flightNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get origin =>
+      $composableBuilder(column: $table.origin, builder: (column) => column);
+
+  GeneratedColumn<String> get destination => $composableBuilder(
+    column: $table.destination,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get departureDate => $composableBuilder(
+    column: $table.departureDate,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get arrivalDate => $composableBuilder(
+    column: $table.arrivalDate,
+    builder: (column) => column,
+  );
+
+  $$TicketsTableAnnotationComposer get ticketId {
+    final $$TicketsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.ticketId,
+      referencedTable: $db.tickets,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TicketsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.tickets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$FlightSegmentsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $FlightSegmentsTable,
+          FlightSegment,
+          $$FlightSegmentsTableFilterComposer,
+          $$FlightSegmentsTableOrderingComposer,
+          $$FlightSegmentsTableAnnotationComposer,
+          $$FlightSegmentsTableCreateCompanionBuilder,
+          $$FlightSegmentsTableUpdateCompanionBuilder,
+          (FlightSegment, $$FlightSegmentsTableReferences),
+          FlightSegment,
+          PrefetchHooks Function({bool ticketId})
+        > {
+  $$FlightSegmentsTableTableManager(
+    _$AppDatabase db,
+    $FlightSegmentsTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FlightSegmentsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FlightSegmentsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FlightSegmentsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<int> ticketId = const Value.absent(),
+                Value<String> airlineCode = const Value.absent(),
+                Value<String> flightNumber = const Value.absent(),
+                Value<String> origin = const Value.absent(),
+                Value<String> destination = const Value.absent(),
+                Value<DateTime> departureDate = const Value.absent(),
+                Value<DateTime> arrivalDate = const Value.absent(),
+              }) => FlightSegmentsCompanion(
+                id: id,
+                ticketId: ticketId,
+                airlineCode: airlineCode,
+                flightNumber: flightNumber,
+                origin: origin,
+                destination: destination,
+                departureDate: departureDate,
+                arrivalDate: arrivalDate,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required int ticketId,
+                required String airlineCode,
+                required String flightNumber,
+                required String origin,
+                required String destination,
+                required DateTime departureDate,
+                required DateTime arrivalDate,
+              }) => FlightSegmentsCompanion.insert(
+                id: id,
+                ticketId: ticketId,
+                airlineCode: airlineCode,
+                flightNumber: flightNumber,
+                origin: origin,
+                destination: destination,
+                departureDate: departureDate,
+                arrivalDate: arrivalDate,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$FlightSegmentsTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({ticketId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (ticketId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.ticketId,
+                                referencedTable: $$FlightSegmentsTableReferences
+                                    ._ticketIdTable(db),
+                                referencedColumn:
+                                    $$FlightSegmentsTableReferences
+                                        ._ticketIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$FlightSegmentsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $FlightSegmentsTable,
+      FlightSegment,
+      $$FlightSegmentsTableFilterComposer,
+      $$FlightSegmentsTableOrderingComposer,
+      $$FlightSegmentsTableAnnotationComposer,
+      $$FlightSegmentsTableCreateCompanionBuilder,
+      $$FlightSegmentsTableUpdateCompanionBuilder,
+      (FlightSegment, $$FlightSegmentsTableReferences),
+      FlightSegment,
+      PrefetchHooks Function({bool ticketId})
+    >;
+
+class $AppDatabaseManager {
+  final _$AppDatabase _db;
+  $AppDatabaseManager(this._db);
+  $$ClientsTableTableManager get clients =>
+      $$ClientsTableTableManager(_db, _db.clients);
+  $$TicketsTableTableManager get tickets =>
+      $$TicketsTableTableManager(_db, _db.tickets);
+  $$FlightSegmentsTableTableManager get flightSegments =>
+      $$FlightSegmentsTableTableManager(_db, _db.flightSegments);
+}
