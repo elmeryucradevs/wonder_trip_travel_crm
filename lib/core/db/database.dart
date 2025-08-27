@@ -36,7 +36,7 @@ class Clients extends Table {
   TextColumn get documentType => text().withLength(min: 2, max: 10).nullable()();
   TextColumn get documentNumber => text().nullable().unique()();
   DateTimeColumn get birthDate => dateTime().nullable()();
-  TextColumn get travelerNumber => text().nullable().unique()(); 
+  TextColumn get travelerNumber => text().nullable()(); 
   TextColumn get billingName => text().nullable()();
   TextColumn get billingDocument => text().nullable()();
   TextColumn get billingAddress => text().nullable()();

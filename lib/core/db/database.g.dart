@@ -115,7 +115,6 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
     true,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   static const VerificationMeta _billingNameMeta = const VerificationMeta(
     'billingName',

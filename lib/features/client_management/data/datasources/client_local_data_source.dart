@@ -1,5 +1,4 @@
 import 'package:drift/drift.dart';
-import 'package:sqlite3/sqlite3.dart';
 
 import 'local/client_dao.dart';
 import '../models/client_model.dart';
@@ -82,18 +81,26 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
     // Envolvemos la llamada a la base de datos en un bloque try-catch.
     try {
       await clientDao.insertClient(clientCompanion);
-    } on SqliteException catch (e) {
-      // Si la excepción es por una restricción de unicidad...
-      if (e.extendedResultCode == 2067) {
-        if (e.message.contains('clients.documentNumber')) {
+    } catch (e) { // Atrapamos cualquier excepción 'e'.
+      // Convertimos el error a texto para poder analizarlo.
+      final errorString = e.toString();
+
+      // Buscamos el texto del error en lugar del tipo.
+      if (errorString.contains('UNIQUE constraint failed')) {
+        if (errorString.contains('documentNumber')) {
           throw CacheException('El número de documento ya está registrado.');
-        } else if (e.message.contains('clients.travelerNumber')) {
+        } else if (errorString.contains('travelerNumber')) {
           throw CacheException('El código de viajero frecuente ya está registrado.');
+        } else {
+          // Mensaje genérico si no podemos identificar el campo exacto
+          throw CacheException('Uno de los campos únicos ya está en uso.');
         }
       }
-      // Para cualquier otro error de base de datos, lanzamos un error genérico.
-      throw CacheException('Error de base de datos: ${e.message}');
+      
+      // Si no es un error de unicidad, lanzamos un error genérico.
+      throw CacheException('Error de base de datos: $errorString');
     }
+  
   }
 
   /// ---
