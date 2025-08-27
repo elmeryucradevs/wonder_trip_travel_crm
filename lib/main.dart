@@ -53,11 +53,11 @@ class App extends StatelessWidget {
 }
 
 /// ---
-/// /// [PlaceholderScreen] es una pantalla temporal que sirve como punto de partida
-/// /// visual mientras se desarrollan las funcionalidades principales.
-/// ///
-/// /// Será reemplazada por el Splash Screen, Onboarding o la pantalla de inicio
-/// /// de sesión según el estado del usuario.
+/// [PlaceholderScreen] es una pantalla temporal que sirve como punto de partida
+/// visual mientras se desarrollan las funcionalidades principales.
+///
+/// Será reemplazada por el Splash Screen, Onboarding o la pantalla de inicio
+/// de sesión según el estado del usuario.
 /// ---
 class PlaceholderScreen extends StatelessWidget {
   const PlaceholderScreen({super.key});

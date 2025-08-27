@@ -34,11 +34,9 @@ class AppTheme {
     colorScheme: const ColorScheme.light(
       primary: primaryColor,
       secondary: accentColor,
-      background: backgroundColorLight,
       surface: cardColorLight,
       onPrimary: Colors.white,
       onSecondary: Colors.black,
-      onBackground: Colors.black,
       onSurface: Colors.black,
       error: Colors.redAccent,
       onError: Colors.white,
@@ -77,11 +75,9 @@ class AppTheme {
     colorScheme: const ColorScheme.dark(
       primary: primaryColorDark,
       secondary: accentColor,
-      background: backgroundColorDark,
       surface: cardColorDark,
       onPrimary: Colors.black,
       onSecondary: Colors.black,
-      onBackground: Colors.white,
       onSurface: Colors.white,
       error: Colors.redAccent,
       onError: Colors.black,

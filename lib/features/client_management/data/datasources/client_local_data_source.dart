@@ -5,6 +5,7 @@ import 'package:drift/drift.dart' as drift;
 
 abstract class IClientDataSource {
   Future<List<ClientModel>> getAllClients();
+  Future<void> saveClient(ClientModel client);
 }
 
 /// ---
@@ -22,12 +23,12 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   }
 
   /// ---
-  /// /// Obtiene los clientes desde la base de datos real usando el DAO.
-  /// ///
-  /// /// 1. Llama a `clientDao.getAllClients()` que devuelve `Future<List<Client>>`.
-  /// /// 2. Mapea la lista de `Client` (objeto de Drift) a una lista de `ClientModel`
-  /// ///    (nuestro DTO de la capa de datos). Esto mantiene la separación de
-  /// ///    responsabilidades.
+  /// Obtiene los clientes desde la base de datos real usando el DAO.
+  ///
+  /// 1. Llama a `clientDao.getAllClients()` que devuelve `Future<List<Client>>`.
+  /// 2. Mapea la lista de `Client` (objeto de Drift) a una lista de `ClientModel`
+  ///    (nuestro DTO de la capa de datos). Esto mantiene la separación de
+  ///    responsabilidades.
   /// ---
   @override
   Future<List<ClientModel>> getAllClients() async {
@@ -45,11 +46,30 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   }
 
   /// ---
-  /// /// [seedDatabaseIfEmpty] es un método auxiliar para poblar la base de datos
-  /// /// con datos de prueba la primera vez que se ejecuta la aplicación.
-  /// ///
-  /// /// Comprueba si ya existen clientes. Si no, inserta una lista predefinida.
-  /// /// Esto evita tener una pantalla vacía al principio del desarrollo.
+  /// Implementación para guardar un nuevo cliente en la base de datos.
+  ///
+  /// Convierte el [ClientModel] a un [ClientsCompanion] de Drift para la inserción.
+  /// El ID se deja como ausente (`drift.Value.absent()`) para que la base de datos
+  /// lo autogenere.
+  /// ---
+  @override
+  Future<void> saveClient(ClientModel client) async {
+    final clientCompanion = ClientsCompanion(
+      name: drift.Value(client.name),
+      lastName: drift.Value(client.lastName),
+      email: drift.Value(client.email),
+      phone: drift.Value(client.phone),
+      birthDate: drift.Value(client.birthDate),
+    );
+    await clientDao.insertClient(clientCompanion);
+  }
+
+  /// ---
+  /// [seedDatabaseIfEmpty] es un método auxiliar para poblar la base de datos
+  /// con datos de prueba la primera vez que se ejecuta la aplicación.
+  ///
+  /// Comprueba si ya existen clientes. Si no, inserta una lista predefinida.
+  /// Esto evita tener una pantalla vacía al principio del desarrollo.
   /// ---
   void _seedDatabaseIfEmpty() async {
     final clients = await getAllClients();

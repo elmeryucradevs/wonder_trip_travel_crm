@@ -56,6 +56,9 @@ dependencies:
   dartz: ^0.10.1
   path_provider: ^2.1.5
   path: ^1.9.1
+  web: ^1.1.1
+  sqlite3: ^2.9.0
+  drift_flutter: ^0.2.5
 
 dev_dependencies:
   flutter_test:
@@ -112,16 +115,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
-  # Gestor de Estado y Comparación de Objetos
-
-  # Inyección de Dependencias
-
-  # Red y Manejo de APIs
-
-  # Base de Datos Local (ORM)
-
-  # Variables de Entorno
-
-  # Logging
-
-  # Routing

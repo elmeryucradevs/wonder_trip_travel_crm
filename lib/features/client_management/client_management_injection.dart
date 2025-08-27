@@ -6,6 +6,9 @@ import 'data/repositories/client_repository_impl.dart';
 import 'domain/repositories/i_client_repository.dart';
 import 'domain/usecases/get_all_clients_usecase.dart';
 import 'presentation/bloc/client_list_bloc.dart';
+import 'domain/usecases/save_client_usecase.dart';
+import 'presentation/bloc/client_creation/client_creation_bloc.dart';
+
 
 /// ---
 /// /// [initClientManagementFeature] registra todas las dependencias necesarias
@@ -22,9 +25,11 @@ import 'presentation/bloc/client_list_bloc.dart';
 Future<void> initClientManagementFeature() async {
   // BLoC
   sl.registerFactory(() => ClientListBloc(getAllClients: sl()));
+  sl.registerFactory(() => ClientCreationBloc(saveClientUseCase: sl()));
 
   // Use cases
   sl.registerLazySingleton(() => GetAllClientsUseCase(sl()));
+  sl.registerLazySingleton(() => SaveClientUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<IClientRepository>(

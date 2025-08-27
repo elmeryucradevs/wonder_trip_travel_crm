@@ -1,12 +1,10 @@
-import 'dart:io';
 
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 
 import '../../features/client_management/data/datasources/local/client_dao.dart';
 
+import 'connection/native.dart'
+    if (dart.library.html) 'connection/web.dart';
 
 // Esto importa el fichero que será generado por drift.
 // El nombre del fichero es el nombre de este fichero con la extensión ".g.dart"
@@ -103,7 +101,9 @@ class FlightSegments extends Table {
 /// ---
 @DriftDatabase(tables: [Clients, Tickets, FlightSegments], daos: [ClientDao])
 class AppDatabase extends _$AppDatabase {
-  AppDatabase() : super(_openConnection());
+  /// El constructor ahora llama a la función `connect()` que importamos
+  /// condicionalmente. Dart se encargará de llamar a la versión nativa o web.
+  AppDatabase() : super(connect());
 
   @override
   int get schemaVersion => 1;
@@ -116,10 +116,3 @@ class AppDatabase extends _$AppDatabase {
 /// /// Determina la ubicación del fichero de la base de datos en el directorio de
 /// /// documentos de la aplicación y crea una conexión [NativeDatabase].
 /// ---
-LazyDatabase _openConnection() {
-  return LazyDatabase(() async {
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return NativeDatabase(file);
-  });
-}

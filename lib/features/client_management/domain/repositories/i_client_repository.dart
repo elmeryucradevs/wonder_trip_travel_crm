@@ -22,4 +22,6 @@ abstract class IClientRepository {
   /// /// - [Left<Failure>] si ocurre un error (ej. [ServerFailure], [CacheFailure]).
   /// ---
   Future<Either<Failure, List<ClientEntity>>> getAllClients();
+
+  Future<Either<Failure, void>> saveClient(ClientEntity client);
 }

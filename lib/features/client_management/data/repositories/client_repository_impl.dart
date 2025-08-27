@@ -1,11 +1,12 @@
 import 'package:dartz/dartz.dart';
+import 'package:logger/logger.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/config/injection_container.dart';
 import '../../domain/entities/client_entity.dart';
 import '../../domain/repositories/i_client_repository.dart';
 import '../datasources/client_local_data_source.dart';
-import 'package:logger/logger.dart';
-import '../../../../core/config/injection_container.dart';
+import '../models/client_model.dart';
 
 /// ---
 /// /// [ClientRepositoryImpl] es la implementación concreta de [IClientRepository].
@@ -32,6 +33,28 @@ class ClientRepositoryImpl implements IClientRepository {
       const errorCode = '[ERROR-CRM001-ClientListFetch]';
       logger.e('$errorCode Error al obtener clientes de caché: ${e.message}');
       return Left(CacheFailure('Error al obtener datos locales: ${e.message}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> saveClient(ClientEntity client) async {
+    try {
+      // Convertimos la entidad de dominio a un modelo de datos antes de pasarla
+      // a la fuente de datos.
+      final clientModel = ClientModel(
+        id: client.id, // Para actualizaciones futuras, el id será importante
+        name: client.name,
+        lastName: client.lastName,
+        email: client.email,
+        phone: client.phone,
+        birthDate: client.birthDate,
+      );
+      await localDataSource.saveClient(clientModel);
+      return const Right(null); // Right(null) representa el 'void' de éxito
+    } on CacheException catch (e) {
+      const errorCode = '[ERROR-CRM003-ClientSave]';
+      logger.e('$errorCode Error al guardar cliente: ${e.message}');
+      return Left(CacheFailure('Error al guardar en la base de datos: ${e.message}'));
     }
   }
 }
