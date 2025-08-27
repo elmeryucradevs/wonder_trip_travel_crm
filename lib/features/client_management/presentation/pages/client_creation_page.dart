@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/config/injection_container.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../bloc/client_creation/client_creation_bloc.dart';
 import '../bloc/client_list_bloc.dart';
 
@@ -96,59 +97,47 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            _buildSectionTitle(context, 'Información Personal'),
+            const SizedBox(height: 16),
             TextFormField(
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nombres',
-                border: OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, ingrese el nombre';
-                }
-                return null;
-              },
+              decoration: const InputDecoration(labelText: 'Nombres*'),
+              validator: (v) => v!.isEmpty ? 'Campo requerido' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _lastNameController,
-              decoration: const InputDecoration(
-                labelText: 'Apellidos',
-                border: OutlineInputBorder(),
-              ),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, ingrese los apellidos';
-                }
-                return null;
-              },
+              decoration: const InputDecoration(labelText: 'Apellidos*'),
+              validator: (v) => v!.isEmpty ? 'Campo requerido' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _docNumberController,
-              decoration: const InputDecoration(labelText: 'Nº Documento*', border: OutlineInputBorder()),
+              decoration: const InputDecoration(labelText: 'Nº Documento*'),
               validator: (v) => v!.isEmpty ? 'Campo requerido' : null,
             ),
             const SizedBox(height: 16),
              TextFormField(
               controller: _docTypeController,
-              decoration: const InputDecoration(labelText: 'Tipo Documento (CI, PAS)', border: OutlineInputBorder()),
+              decoration: const InputDecoration(labelText: 'Tipo Documento (CI, PAS)'),
             ),
+            const SizedBox(height: 24),
+            _buildSectionTitle(context, 'Datos de Contacto y Viaje'),
             const SizedBox(height: 16),
-            TextFormField(
+             TextFormField(
               controller: _travelerNumController,
-              decoration: const InputDecoration(labelText: 'Nº Viajero Frecuente', border: OutlineInputBorder()),
+              decoration: const InputDecoration(labelText: 'Nº Viajero Frecuente'),
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Correo Electrónico', border: OutlineInputBorder()),
+              decoration: const InputDecoration(labelText: 'Correo Electrónico'),
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'Teléfono', border: OutlineInputBorder()),
+              decoration: const InputDecoration(labelText: 'Teléfono'),
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 32),
@@ -160,11 +149,6 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
                 }
 
                 return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       context.read<ClientCreationBloc>().add(
@@ -172,10 +156,10 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
                               name: _nameController.text,
                               lastName: _lastNameController.text,
                               documentNumber: _docNumberController.text,
-                              documentType: _docTypeController.text,
-                              travelerNumber: _travelerNumController.text,
-                              email: _emailController.text,
-                              phone: _phoneController.text,
+                              documentType: _docTypeController.text.isNotEmpty ? _docTypeController.text : null,
+                              travelerNumber: _travelerNumController.text.isNotEmpty ? _travelerNumController.text : null,
+                              email: _emailController.text.isNotEmpty ? _emailController.text : null,
+                              phone: _phoneController.text.isNotEmpty ? _phoneController.text : null,
                             ),
                           );
                     }
@@ -187,6 +171,17 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
           ],
         ),
       ),
+    );
+  }
+
+  // Widget auxiliar para los títulos de sección
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.fontTitleLight,
+            fontWeight: FontWeight.w600,
+          ),
     );
   }
 }

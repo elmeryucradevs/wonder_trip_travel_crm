@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:wonder_trip_travel_crm/core/theme/app_colors.dart';
 import '../../domain/entities/client_entity.dart';
 
 /// ---
-/// /// [ClientListItem] es un widget reutilizable que muestra la información
-/// /// resumida de un único cliente en una lista.
-/// ///
-/// /// Es un [StatelessWidget] que recibe un [ClientEntity] y lo presenta
-/// /// de una manera visualmente atractiva y consistente con el tema de la app.
-/// ///
-/// /// Incluye:
-/// /// - Un avatar con las iniciales del cliente.
-/// /// - El nombre completo del cliente.
-/// /// - El correo electrónico.
-/// /// - Un botón para acciones futuras (ver detalles, editar, etc.).
+/// [ClientListItem] es un widget rediseñado que muestra la información de un
+/// cliente en una tarjeta moderna y espaciosa.
+///
+/// Abandona el ListTile por defecto para tener un control total sobre el diseño,
+/// utilizando un layout de Columnas y Filas para organizar la información de
+/// manera jerárquica y legible, siguiendo la nueva identidad visual.
 /// ---
 class ClientListItem extends StatelessWidget {
   final ClientEntity client;
@@ -21,29 +17,71 @@ class ClientListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final initials = client.name.isNotEmpty ? client.name[0] : '';
+    final textTheme = Theme.of(context).textTheme;
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: theme.colorScheme.primary,
-          foregroundColor: theme.colorScheme.onPrimary,
-          child: Text(initials),
-        ),
-        title: Text(client.fullName, style: theme.textTheme.titleMedium),
-        subtitle: Text(
-          client.email ?? 'Sin correo electrónico',
-          style: theme.textTheme.bodySmall,
-        ),
-        trailing: Icon(Icons.chevron_right, color: theme.colorScheme.secondary),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
         onTap: () {
-          // TODO: Implementar navegación a la página de detalles del cliente (CRM-005)
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text('Viendo detalles de ${client.fullName}')));
+          // TODO: Navegar a la página de detalles del cliente
         },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              // Avatar con iniciales
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Text(
+                    client.name.isNotEmpty ? client.name[0].toUpperCase() : '?',
+                    style: textTheme.titleLarge?.copyWith(
+                      color: AppColors.primaryLight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              // Información del cliente
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      client.fullName,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.fontTitleLight,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Doc: ${client.documentNumber ?? "N/A"}',
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.fontSubtitleLight,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              // Icono de acción
+              const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.fontSubtitleLight,
+                size: 16,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
