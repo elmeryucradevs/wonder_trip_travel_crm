@@ -6,15 +6,6 @@ abstract class ClientCreationEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class UpdateClientEvent extends ClientCreationEvent {
-  final ClientEntity updatedClient;
-
-  const UpdateClientEvent(this.updatedClient);
-
-  @override
-  List<Object?> get props => [updatedClient];
-}
-
 /// Evento que se dispara cuando el usuario presiona "Guardar Cliente".
 /// Contiene todos los datos necesarios del formulario.
 class SaveClientEvent extends ClientCreationEvent {
@@ -25,6 +16,9 @@ class SaveClientEvent extends ClientCreationEvent {
   final String documentNumber;
   final String? documentType;
   final String? travelerNumber;
+  final String? billingName;
+  final String? billingDocument;
+  final String? billingAddress;
 
   const SaveClientEvent({
     required this.name,
@@ -34,9 +28,11 @@ class SaveClientEvent extends ClientCreationEvent {
     this.phone,
     this.documentType,
     this.travelerNumber,
+    this.billingName,
+    this.billingDocument,
+    this.billingAddress,
   });
 
-  @override
   @override
   List<Object?> get props => [
         name,
@@ -46,5 +42,17 @@ class SaveClientEvent extends ClientCreationEvent {
         documentNumber,
         documentType,
         travelerNumber,
+        billingName,
+        billingDocument,
+        billingAddress,
       ];
+}
+
+class UpdateClientEvent extends ClientCreationEvent {
+  final ClientEntity updatedClient;
+
+  const UpdateClientEvent(this.updatedClient);
+
+  @override
+  List<Object?> get props => [updatedClient];
 }

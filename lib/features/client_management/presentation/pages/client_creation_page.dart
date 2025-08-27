@@ -75,6 +75,9 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
   final _docNumberController = TextEditingController();
   final _docTypeController = TextEditingController();
   final _travelerNumController = TextEditingController();
+  final _billingNameController = TextEditingController();
+  final _billingDocController = TextEditingController();
+  final _billingAddrController = TextEditingController();
 
   @override
   void dispose() {
@@ -85,6 +88,9 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
     _docNumberController.dispose();
     _docTypeController.dispose();
     _travelerNumController.dispose();
+    _billingNameController.dispose();
+    _billingDocController.dispose();
+    _billingAddrController.dispose();
     super.dispose();
   }
 
@@ -140,6 +146,23 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
               decoration: const InputDecoration(labelText: 'Teléfono'),
               keyboardType: TextInputType.phone,
             ),
+            // --- ECCIÓN DE FACTURACIÓN ---
+            _buildSectionTitle(context, 'Datos de Facturación'),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _billingNameController,
+              decoration: const InputDecoration(labelText: 'Nombre o Razón Social'),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _billingDocController,
+              decoration: const InputDecoration(labelText: 'NIT o Documento'),
+            ),
+             const SizedBox(height: 16),
+            TextFormField(
+              controller: _billingAddrController,
+              decoration: const InputDecoration(labelText: 'Dirección'),
+            ),
             const SizedBox(height: 32),
             
             BlocBuilder<ClientCreationBloc, ClientCreationState>(
@@ -160,6 +183,9 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
                               travelerNumber: _travelerNumController.text.isNotEmpty ? _travelerNumController.text : null,
                               email: _emailController.text.isNotEmpty ? _emailController.text : null,
                               phone: _phoneController.text.isNotEmpty ? _phoneController.text : null,
+                              billingName: _billingNameController.text.isNotEmpty ? _billingNameController.text : null,
+                              billingDocument: _billingDocController.text.isNotEmpty ? _billingDocController.text : null,
+                              billingAddress: _billingAddrController.text.isNotEmpty ? _billingAddrController.text : null,
                             ),
                           );
                     }

@@ -26,6 +26,9 @@ class ClientCreationBloc extends Bloc<ClientCreationEvent, ClientCreationState> 
       documentNumber: event.documentNumber,
       documentType: event.documentType,
       travelerNumber: event.travelerNumber,
+      billingName: event.billingName,
+      billingDocument: event.billingDocument,
+      billingAddress: event.billingAddress,
     );
 
     final result = await saveClientUseCase(newClient);

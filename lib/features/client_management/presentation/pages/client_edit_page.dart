@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/config/injection_container.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/client_entity.dart';
 import '../bloc/client_creation/client_creation_bloc.dart'; // Reutilizaremos este BLoC
 import '../bloc/client_list_bloc.dart';
@@ -55,7 +56,7 @@ class ClientEditPage extends StatelessWidget {
 }
 
 /// ---
-/// /// [ClientEditForm] es el formulario pre-rellenado para la edición.
+/// [ClientEditForm] es el formulario pre-rellenado para la edición.
 /// ---
 class ClientEditForm extends StatefulWidget {
   final ClientEntity client;
@@ -75,6 +76,9 @@ class _ClientEditFormState extends State<ClientEditForm> {
   late final TextEditingController _docNumberController;
   late final TextEditingController _docTypeController;
   late final TextEditingController _travelerNumController;
+  late final TextEditingController _billingNameController;
+  late final TextEditingController _billingDocController;
+  late final TextEditingController _billingAddrController;
 
   @override
   void initState() {
@@ -86,6 +90,9 @@ class _ClientEditFormState extends State<ClientEditForm> {
     _docNumberController = TextEditingController(text: widget.client.documentNumber);
     _docTypeController = TextEditingController(text: widget.client.documentType);
     _travelerNumController = TextEditingController(text: widget.client.travelerNumber);
+    _billingNameController = TextEditingController(text: widget.client.billingName);
+    _billingDocController = TextEditingController(text: widget.client.billingDocument);
+    _billingAddrController = TextEditingController(text: widget.client.billingAddress);
   }
 
   @override
@@ -97,6 +104,9 @@ class _ClientEditFormState extends State<ClientEditForm> {
     _docNumberController.dispose();
     _docTypeController.dispose();
     _travelerNumController.dispose();
+    _billingNameController.dispose();
+    _billingDocController.dispose();
+    _billingAddrController.dispose();
     super.dispose();
   }
 
@@ -126,6 +136,22 @@ class _ClientEditFormState extends State<ClientEditForm> {
             TextFormField(controller: _emailController, decoration: const InputDecoration(labelText: 'Correo Electrónico')),
             const SizedBox(height: 16),
             TextFormField(controller: _phoneController, decoration: const InputDecoration(labelText: 'Teléfono')),
+            _buildSectionTitle(context, 'Datos de Facturación'),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _billingNameController,
+              decoration: const InputDecoration(labelText: 'Nombre o Razón Social'),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _billingDocController,
+              decoration: const InputDecoration(labelText: 'NIT o Documento'),
+            ),
+             const SizedBox(height: 16),
+            TextFormField(
+              controller: _billingAddrController,
+              decoration: const InputDecoration(labelText: 'Dirección'),
+            ),
             const SizedBox(height: 32),
             BlocBuilder<ClientCreationBloc, ClientCreationState>(
               builder: (context, state) {
@@ -160,4 +186,15 @@ class _ClientEditFormState extends State<ClientEditForm> {
       ),
     );
   }
+
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Text(
+      title,
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppColors.fontTitleLight,
+            fontWeight: FontWeight.w600,
+          ),
+    );
+  }
+  
 }
