@@ -19,28 +19,32 @@ class ClientListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<ClientListBloc>()..add(FetchClientsEvent()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Clientes - Wonder Trip'),
-        ),
-        body: const ClientListView(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) {
-                  // 'context.read<ClientListBloc>()' obtiene el BLoC de la Casa A.
-                  // 'BlocProvider.value' lo provee a su hijo, que es la Casa B.
-                  return BlocProvider.value(
-                    value: context.read<ClientListBloc>(),
-                    child: const ClientCreationPage(),
-                  );
-                },
-              ),
-            );
-          },
-          child: const Icon(Icons.add),
-        ),
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Clientes - Wonder Trip'),
+            ),
+            body: const ClientListView(),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) {
+                      // 'context.read<ClientListBloc>()' obtiene el BLoC de la Casa A.
+                      // 'BlocProvider.value' lo provee a su hijo, que es la Casa B.
+                      return BlocProvider.value(
+                        value: context.read<ClientListBloc>(),
+                        child: const ClientCreationPage(),
+                      );
+                    },
+                  ),
+                );
+              },
+              child: const Icon(Icons.add),
+            ),
+          );
+        }
       ),
     );
   }

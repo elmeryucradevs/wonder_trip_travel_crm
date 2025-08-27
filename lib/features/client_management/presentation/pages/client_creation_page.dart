@@ -71,6 +71,9 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _docNumberController = TextEditingController();
+  final _docTypeController = TextEditingController();
+  final _travelerNumController = TextEditingController();
 
   @override
   void dispose() {
@@ -78,6 +81,9 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
     _lastNameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _docNumberController.dispose();
+    _docTypeController.dispose();
+    _travelerNumController.dispose();
     super.dispose();
   }
 
@@ -119,29 +125,34 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
             ),
             const SizedBox(height: 16),
             TextFormField(
+              controller: _docNumberController,
+              decoration: const InputDecoration(labelText: 'Nº Documento*', border: OutlineInputBorder()),
+              validator: (v) => v!.isEmpty ? 'Campo requerido' : null,
+            ),
+            const SizedBox(height: 16),
+             TextFormField(
+              controller: _docTypeController,
+              decoration: const InputDecoration(labelText: 'Tipo Documento (CI, PAS)', border: OutlineInputBorder()),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _travelerNumController,
+              decoration: const InputDecoration(labelText: 'Nº Viajero Frecuente', border: OutlineInputBorder()),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
               controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Correo Electrónico',
-                border: OutlineInputBorder(),
-              ),
+              decoration: const InputDecoration(labelText: 'Correo Electrónico', border: OutlineInputBorder()),
               keyboardType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value == null || value.isEmpty || !value.contains('@')) {
-                  return 'Por favor, ingrese un correo válido';
-                }
-                return null;
-              },
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _phoneController,
-              decoration: const InputDecoration(
-                labelText: 'Teléfono (Opcional)',
-                border: OutlineInputBorder(),
-              ),
+              decoration: const InputDecoration(labelText: 'Teléfono', border: OutlineInputBorder()),
               keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 32),
+            
             BlocBuilder<ClientCreationBloc, ClientCreationState>(
               builder: (context, state) {
                 if (state is ClientCreationLoading) {
@@ -156,15 +167,15 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Despacha el evento al BLoC con los datos del formulario.
                       context.read<ClientCreationBloc>().add(
                             SaveClientEvent(
                               name: _nameController.text,
                               lastName: _lastNameController.text,
+                              documentNumber: _docNumberController.text,
+                              documentType: _docTypeController.text,
+                              travelerNumber: _travelerNumController.text,
                               email: _emailController.text,
-                              phone: _phoneController.text.isNotEmpty
-                                  ? _phoneController.text
-                                  : null,
+                              phone: _phoneController.text,
                             ),
                           );
                     }

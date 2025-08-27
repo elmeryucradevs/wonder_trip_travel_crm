@@ -54,10 +54,9 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
     'email',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
   @override
@@ -65,6 +64,21 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
     'phone',
     aliasedName,
     true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _documentTypeMeta = const VerificationMeta(
+    'documentType',
+  );
+  @override
+  late final GeneratedColumn<String> documentType = GeneratedColumn<String>(
+    'document_type',
+    aliasedName,
+    true,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 2,
+      maxTextLength: 10,
+    ),
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
@@ -89,6 +103,51 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
     aliasedName,
     true,
     type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _travelerNumberMeta = const VerificationMeta(
+    'travelerNumber',
+  );
+  @override
+  late final GeneratedColumn<String> travelerNumber = GeneratedColumn<String>(
+    'traveler_number',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _billingNameMeta = const VerificationMeta(
+    'billingName',
+  );
+  @override
+  late final GeneratedColumn<String> billingName = GeneratedColumn<String>(
+    'billing_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _billingDocumentMeta = const VerificationMeta(
+    'billingDocument',
+  );
+  @override
+  late final GeneratedColumn<String> billingDocument = GeneratedColumn<String>(
+    'billing_document',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _billingAddressMeta = const VerificationMeta(
+    'billingAddress',
+  );
+  @override
+  late final GeneratedColumn<String> billingAddress = GeneratedColumn<String>(
+    'billing_address',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
@@ -122,8 +181,13 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
     lastName,
     email,
     phone,
+    documentType,
     documentNumber,
     birthDate,
+    travelerNumber,
+    billingName,
+    billingDocument,
+    billingAddress,
     createdAt,
     updatedAt,
   ];
@@ -163,13 +227,20 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
         _emailMeta,
         email.isAcceptableOrUnknown(data['email']!, _emailMeta),
       );
-    } else if (isInserting) {
-      context.missing(_emailMeta);
     }
     if (data.containsKey('phone')) {
       context.handle(
         _phoneMeta,
         phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta),
+      );
+    }
+    if (data.containsKey('document_type')) {
+      context.handle(
+        _documentTypeMeta,
+        documentType.isAcceptableOrUnknown(
+          data['document_type']!,
+          _documentTypeMeta,
+        ),
       );
     }
     if (data.containsKey('document_number')) {
@@ -185,6 +256,42 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
       context.handle(
         _birthDateMeta,
         birthDate.isAcceptableOrUnknown(data['birth_date']!, _birthDateMeta),
+      );
+    }
+    if (data.containsKey('traveler_number')) {
+      context.handle(
+        _travelerNumberMeta,
+        travelerNumber.isAcceptableOrUnknown(
+          data['traveler_number']!,
+          _travelerNumberMeta,
+        ),
+      );
+    }
+    if (data.containsKey('billing_name')) {
+      context.handle(
+        _billingNameMeta,
+        billingName.isAcceptableOrUnknown(
+          data['billing_name']!,
+          _billingNameMeta,
+        ),
+      );
+    }
+    if (data.containsKey('billing_document')) {
+      context.handle(
+        _billingDocumentMeta,
+        billingDocument.isAcceptableOrUnknown(
+          data['billing_document']!,
+          _billingDocumentMeta,
+        ),
+      );
+    }
+    if (data.containsKey('billing_address')) {
+      context.handle(
+        _billingAddressMeta,
+        billingAddress.isAcceptableOrUnknown(
+          data['billing_address']!,
+          _billingAddressMeta,
+        ),
       );
     }
     if (data.containsKey('created_at')) {
@@ -223,10 +330,14 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
       email: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}email'],
-      )!,
+      ),
       phone: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}phone'],
+      ),
+      documentType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}document_type'],
       ),
       documentNumber: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -235,6 +346,22 @@ class $ClientsTable extends Clients with TableInfo<$ClientsTable, Client> {
       birthDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}birth_date'],
+      ),
+      travelerNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}traveler_number'],
+      ),
+      billingName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}billing_name'],
+      ),
+      billingDocument: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}billing_document'],
+      ),
+      billingAddress: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}billing_address'],
       ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
@@ -257,20 +384,30 @@ class Client extends DataClass implements Insertable<Client> {
   final int id;
   final String name;
   final String lastName;
-  final String email;
+  final String? email;
   final String? phone;
+  final String? documentType;
   final String? documentNumber;
   final DateTime? birthDate;
+  final String? travelerNumber;
+  final String? billingName;
+  final String? billingDocument;
+  final String? billingAddress;
   final DateTime createdAt;
   final DateTime updatedAt;
   const Client({
     required this.id,
     required this.name,
     required this.lastName,
-    required this.email,
+    this.email,
     this.phone,
+    this.documentType,
     this.documentNumber,
     this.birthDate,
+    this.travelerNumber,
+    this.billingName,
+    this.billingDocument,
+    this.billingAddress,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -280,15 +417,32 @@ class Client extends DataClass implements Insertable<Client> {
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['last_name'] = Variable<String>(lastName);
-    map['email'] = Variable<String>(email);
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
     if (!nullToAbsent || phone != null) {
       map['phone'] = Variable<String>(phone);
+    }
+    if (!nullToAbsent || documentType != null) {
+      map['document_type'] = Variable<String>(documentType);
     }
     if (!nullToAbsent || documentNumber != null) {
       map['document_number'] = Variable<String>(documentNumber);
     }
     if (!nullToAbsent || birthDate != null) {
       map['birth_date'] = Variable<DateTime>(birthDate);
+    }
+    if (!nullToAbsent || travelerNumber != null) {
+      map['traveler_number'] = Variable<String>(travelerNumber);
+    }
+    if (!nullToAbsent || billingName != null) {
+      map['billing_name'] = Variable<String>(billingName);
+    }
+    if (!nullToAbsent || billingDocument != null) {
+      map['billing_document'] = Variable<String>(billingDocument);
+    }
+    if (!nullToAbsent || billingAddress != null) {
+      map['billing_address'] = Variable<String>(billingAddress);
     }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -300,16 +454,33 @@ class Client extends DataClass implements Insertable<Client> {
       id: Value(id),
       name: Value(name),
       lastName: Value(lastName),
-      email: Value(email),
+      email: email == null && nullToAbsent
+          ? const Value.absent()
+          : Value(email),
       phone: phone == null && nullToAbsent
           ? const Value.absent()
           : Value(phone),
+      documentType: documentType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(documentType),
       documentNumber: documentNumber == null && nullToAbsent
           ? const Value.absent()
           : Value(documentNumber),
       birthDate: birthDate == null && nullToAbsent
           ? const Value.absent()
           : Value(birthDate),
+      travelerNumber: travelerNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(travelerNumber),
+      billingName: billingName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(billingName),
+      billingDocument: billingDocument == null && nullToAbsent
+          ? const Value.absent()
+          : Value(billingDocument),
+      billingAddress: billingAddress == null && nullToAbsent
+          ? const Value.absent()
+          : Value(billingAddress),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -324,10 +495,15 @@ class Client extends DataClass implements Insertable<Client> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       lastName: serializer.fromJson<String>(json['lastName']),
-      email: serializer.fromJson<String>(json['email']),
+      email: serializer.fromJson<String?>(json['email']),
       phone: serializer.fromJson<String?>(json['phone']),
+      documentType: serializer.fromJson<String?>(json['documentType']),
       documentNumber: serializer.fromJson<String?>(json['documentNumber']),
       birthDate: serializer.fromJson<DateTime?>(json['birthDate']),
+      travelerNumber: serializer.fromJson<String?>(json['travelerNumber']),
+      billingName: serializer.fromJson<String?>(json['billingName']),
+      billingDocument: serializer.fromJson<String?>(json['billingDocument']),
+      billingAddress: serializer.fromJson<String?>(json['billingAddress']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -339,10 +515,15 @@ class Client extends DataClass implements Insertable<Client> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'lastName': serializer.toJson<String>(lastName),
-      'email': serializer.toJson<String>(email),
+      'email': serializer.toJson<String?>(email),
       'phone': serializer.toJson<String?>(phone),
+      'documentType': serializer.toJson<String?>(documentType),
       'documentNumber': serializer.toJson<String?>(documentNumber),
       'birthDate': serializer.toJson<DateTime?>(birthDate),
+      'travelerNumber': serializer.toJson<String?>(travelerNumber),
+      'billingName': serializer.toJson<String?>(billingName),
+      'billingDocument': serializer.toJson<String?>(billingDocument),
+      'billingAddress': serializer.toJson<String?>(billingAddress),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -352,22 +533,38 @@ class Client extends DataClass implements Insertable<Client> {
     int? id,
     String? name,
     String? lastName,
-    String? email,
+    Value<String?> email = const Value.absent(),
     Value<String?> phone = const Value.absent(),
+    Value<String?> documentType = const Value.absent(),
     Value<String?> documentNumber = const Value.absent(),
     Value<DateTime?> birthDate = const Value.absent(),
+    Value<String?> travelerNumber = const Value.absent(),
+    Value<String?> billingName = const Value.absent(),
+    Value<String?> billingDocument = const Value.absent(),
+    Value<String?> billingAddress = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => Client(
     id: id ?? this.id,
     name: name ?? this.name,
     lastName: lastName ?? this.lastName,
-    email: email ?? this.email,
+    email: email.present ? email.value : this.email,
     phone: phone.present ? phone.value : this.phone,
+    documentType: documentType.present ? documentType.value : this.documentType,
     documentNumber: documentNumber.present
         ? documentNumber.value
         : this.documentNumber,
     birthDate: birthDate.present ? birthDate.value : this.birthDate,
+    travelerNumber: travelerNumber.present
+        ? travelerNumber.value
+        : this.travelerNumber,
+    billingName: billingName.present ? billingName.value : this.billingName,
+    billingDocument: billingDocument.present
+        ? billingDocument.value
+        : this.billingDocument,
+    billingAddress: billingAddress.present
+        ? billingAddress.value
+        : this.billingAddress,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -378,10 +575,25 @@ class Client extends DataClass implements Insertable<Client> {
       lastName: data.lastName.present ? data.lastName.value : this.lastName,
       email: data.email.present ? data.email.value : this.email,
       phone: data.phone.present ? data.phone.value : this.phone,
+      documentType: data.documentType.present
+          ? data.documentType.value
+          : this.documentType,
       documentNumber: data.documentNumber.present
           ? data.documentNumber.value
           : this.documentNumber,
       birthDate: data.birthDate.present ? data.birthDate.value : this.birthDate,
+      travelerNumber: data.travelerNumber.present
+          ? data.travelerNumber.value
+          : this.travelerNumber,
+      billingName: data.billingName.present
+          ? data.billingName.value
+          : this.billingName,
+      billingDocument: data.billingDocument.present
+          ? data.billingDocument.value
+          : this.billingDocument,
+      billingAddress: data.billingAddress.present
+          ? data.billingAddress.value
+          : this.billingAddress,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -395,8 +607,13 @@ class Client extends DataClass implements Insertable<Client> {
           ..write('lastName: $lastName, ')
           ..write('email: $email, ')
           ..write('phone: $phone, ')
+          ..write('documentType: $documentType, ')
           ..write('documentNumber: $documentNumber, ')
           ..write('birthDate: $birthDate, ')
+          ..write('travelerNumber: $travelerNumber, ')
+          ..write('billingName: $billingName, ')
+          ..write('billingDocument: $billingDocument, ')
+          ..write('billingAddress: $billingAddress, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -410,8 +627,13 @@ class Client extends DataClass implements Insertable<Client> {
     lastName,
     email,
     phone,
+    documentType,
     documentNumber,
     birthDate,
+    travelerNumber,
+    billingName,
+    billingDocument,
+    billingAddress,
     createdAt,
     updatedAt,
   );
@@ -424,8 +646,13 @@ class Client extends DataClass implements Insertable<Client> {
           other.lastName == this.lastName &&
           other.email == this.email &&
           other.phone == this.phone &&
+          other.documentType == this.documentType &&
           other.documentNumber == this.documentNumber &&
           other.birthDate == this.birthDate &&
+          other.travelerNumber == this.travelerNumber &&
+          other.billingName == this.billingName &&
+          other.billingDocument == this.billingDocument &&
+          other.billingAddress == this.billingAddress &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -434,10 +661,15 @@ class ClientsCompanion extends UpdateCompanion<Client> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> lastName;
-  final Value<String> email;
+  final Value<String?> email;
   final Value<String?> phone;
+  final Value<String?> documentType;
   final Value<String?> documentNumber;
   final Value<DateTime?> birthDate;
+  final Value<String?> travelerNumber;
+  final Value<String?> billingName;
+  final Value<String?> billingDocument;
+  final Value<String?> billingAddress;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const ClientsCompanion({
@@ -446,8 +678,13 @@ class ClientsCompanion extends UpdateCompanion<Client> {
     this.lastName = const Value.absent(),
     this.email = const Value.absent(),
     this.phone = const Value.absent(),
+    this.documentType = const Value.absent(),
     this.documentNumber = const Value.absent(),
     this.birthDate = const Value.absent(),
+    this.travelerNumber = const Value.absent(),
+    this.billingName = const Value.absent(),
+    this.billingDocument = const Value.absent(),
+    this.billingAddress = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -455,23 +692,32 @@ class ClientsCompanion extends UpdateCompanion<Client> {
     this.id = const Value.absent(),
     required String name,
     required String lastName,
-    required String email,
+    this.email = const Value.absent(),
     this.phone = const Value.absent(),
+    this.documentType = const Value.absent(),
     this.documentNumber = const Value.absent(),
     this.birthDate = const Value.absent(),
+    this.travelerNumber = const Value.absent(),
+    this.billingName = const Value.absent(),
+    this.billingDocument = const Value.absent(),
+    this.billingAddress = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   }) : name = Value(name),
-       lastName = Value(lastName),
-       email = Value(email);
+       lastName = Value(lastName);
   static Insertable<Client> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? lastName,
     Expression<String>? email,
     Expression<String>? phone,
+    Expression<String>? documentType,
     Expression<String>? documentNumber,
     Expression<DateTime>? birthDate,
+    Expression<String>? travelerNumber,
+    Expression<String>? billingName,
+    Expression<String>? billingDocument,
+    Expression<String>? billingAddress,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -481,8 +727,13 @@ class ClientsCompanion extends UpdateCompanion<Client> {
       if (lastName != null) 'last_name': lastName,
       if (email != null) 'email': email,
       if (phone != null) 'phone': phone,
+      if (documentType != null) 'document_type': documentType,
       if (documentNumber != null) 'document_number': documentNumber,
       if (birthDate != null) 'birth_date': birthDate,
+      if (travelerNumber != null) 'traveler_number': travelerNumber,
+      if (billingName != null) 'billing_name': billingName,
+      if (billingDocument != null) 'billing_document': billingDocument,
+      if (billingAddress != null) 'billing_address': billingAddress,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -492,10 +743,15 @@ class ClientsCompanion extends UpdateCompanion<Client> {
     Value<int>? id,
     Value<String>? name,
     Value<String>? lastName,
-    Value<String>? email,
+    Value<String?>? email,
     Value<String?>? phone,
+    Value<String?>? documentType,
     Value<String?>? documentNumber,
     Value<DateTime?>? birthDate,
+    Value<String?>? travelerNumber,
+    Value<String?>? billingName,
+    Value<String?>? billingDocument,
+    Value<String?>? billingAddress,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
   }) {
@@ -505,8 +761,13 @@ class ClientsCompanion extends UpdateCompanion<Client> {
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
       phone: phone ?? this.phone,
+      documentType: documentType ?? this.documentType,
       documentNumber: documentNumber ?? this.documentNumber,
       birthDate: birthDate ?? this.birthDate,
+      travelerNumber: travelerNumber ?? this.travelerNumber,
+      billingName: billingName ?? this.billingName,
+      billingDocument: billingDocument ?? this.billingDocument,
+      billingAddress: billingAddress ?? this.billingAddress,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -530,11 +791,26 @@ class ClientsCompanion extends UpdateCompanion<Client> {
     if (phone.present) {
       map['phone'] = Variable<String>(phone.value);
     }
+    if (documentType.present) {
+      map['document_type'] = Variable<String>(documentType.value);
+    }
     if (documentNumber.present) {
       map['document_number'] = Variable<String>(documentNumber.value);
     }
     if (birthDate.present) {
       map['birth_date'] = Variable<DateTime>(birthDate.value);
+    }
+    if (travelerNumber.present) {
+      map['traveler_number'] = Variable<String>(travelerNumber.value);
+    }
+    if (billingName.present) {
+      map['billing_name'] = Variable<String>(billingName.value);
+    }
+    if (billingDocument.present) {
+      map['billing_document'] = Variable<String>(billingDocument.value);
+    }
+    if (billingAddress.present) {
+      map['billing_address'] = Variable<String>(billingAddress.value);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -553,8 +829,13 @@ class ClientsCompanion extends UpdateCompanion<Client> {
           ..write('lastName: $lastName, ')
           ..write('email: $email, ')
           ..write('phone: $phone, ')
+          ..write('documentType: $documentType, ')
           ..write('documentNumber: $documentNumber, ')
           ..write('birthDate: $birthDate, ')
+          ..write('travelerNumber: $travelerNumber, ')
+          ..write('billingName: $billingName, ')
+          ..write('billingDocument: $billingDocument, ')
+          ..write('billingAddress: $billingAddress, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -1535,10 +1816,15 @@ typedef $$ClientsTableCreateCompanionBuilder =
       Value<int> id,
       required String name,
       required String lastName,
-      required String email,
+      Value<String?> email,
       Value<String?> phone,
+      Value<String?> documentType,
       Value<String?> documentNumber,
       Value<DateTime?> birthDate,
+      Value<String?> travelerNumber,
+      Value<String?> billingName,
+      Value<String?> billingDocument,
+      Value<String?> billingAddress,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -1547,10 +1833,15 @@ typedef $$ClientsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> name,
       Value<String> lastName,
-      Value<String> email,
+      Value<String?> email,
       Value<String?> phone,
+      Value<String?> documentType,
       Value<String?> documentNumber,
       Value<DateTime?> birthDate,
+      Value<String?> travelerNumber,
+      Value<String?> billingName,
+      Value<String?> billingDocument,
+      Value<String?> billingAddress,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -1613,6 +1904,11 @@ class $$ClientsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get documentType => $composableBuilder(
+    column: $table.documentType,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get documentNumber => $composableBuilder(
     column: $table.documentNumber,
     builder: (column) => ColumnFilters(column),
@@ -1620,6 +1916,26 @@ class $$ClientsTableFilterComposer
 
   ColumnFilters<DateTime> get birthDate => $composableBuilder(
     column: $table.birthDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get travelerNumber => $composableBuilder(
+    column: $table.travelerNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get billingName => $composableBuilder(
+    column: $table.billingName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get billingDocument => $composableBuilder(
+    column: $table.billingDocument,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get billingAddress => $composableBuilder(
+    column: $table.billingAddress,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1693,6 +2009,11 @@ class $$ClientsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get documentType => $composableBuilder(
+    column: $table.documentType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get documentNumber => $composableBuilder(
     column: $table.documentNumber,
     builder: (column) => ColumnOrderings(column),
@@ -1700,6 +2021,26 @@ class $$ClientsTableOrderingComposer
 
   ColumnOrderings<DateTime> get birthDate => $composableBuilder(
     column: $table.birthDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get travelerNumber => $composableBuilder(
+    column: $table.travelerNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get billingName => $composableBuilder(
+    column: $table.billingName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get billingDocument => $composableBuilder(
+    column: $table.billingDocument,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get billingAddress => $composableBuilder(
+    column: $table.billingAddress,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1738,6 +2079,11 @@ class $$ClientsTableAnnotationComposer
   GeneratedColumn<String> get phone =>
       $composableBuilder(column: $table.phone, builder: (column) => column);
 
+  GeneratedColumn<String> get documentType => $composableBuilder(
+    column: $table.documentType,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get documentNumber => $composableBuilder(
     column: $table.documentNumber,
     builder: (column) => column,
@@ -1745,6 +2091,26 @@ class $$ClientsTableAnnotationComposer
 
   GeneratedColumn<DateTime> get birthDate =>
       $composableBuilder(column: $table.birthDate, builder: (column) => column);
+
+  GeneratedColumn<String> get travelerNumber => $composableBuilder(
+    column: $table.travelerNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get billingName => $composableBuilder(
+    column: $table.billingName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get billingDocument => $composableBuilder(
+    column: $table.billingDocument,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get billingAddress => $composableBuilder(
+    column: $table.billingAddress,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -1809,10 +2175,15 @@ class $$ClientsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> lastName = const Value.absent(),
-                Value<String> email = const Value.absent(),
+                Value<String?> email = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
+                Value<String?> documentType = const Value.absent(),
                 Value<String?> documentNumber = const Value.absent(),
                 Value<DateTime?> birthDate = const Value.absent(),
+                Value<String?> travelerNumber = const Value.absent(),
+                Value<String?> billingName = const Value.absent(),
+                Value<String?> billingDocument = const Value.absent(),
+                Value<String?> billingAddress = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => ClientsCompanion(
@@ -1821,8 +2192,13 @@ class $$ClientsTableTableManager
                 lastName: lastName,
                 email: email,
                 phone: phone,
+                documentType: documentType,
                 documentNumber: documentNumber,
                 birthDate: birthDate,
+                travelerNumber: travelerNumber,
+                billingName: billingName,
+                billingDocument: billingDocument,
+                billingAddress: billingAddress,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -1831,10 +2207,15 @@ class $$ClientsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String name,
                 required String lastName,
-                required String email,
+                Value<String?> email = const Value.absent(),
                 Value<String?> phone = const Value.absent(),
+                Value<String?> documentType = const Value.absent(),
                 Value<String?> documentNumber = const Value.absent(),
                 Value<DateTime?> birthDate = const Value.absent(),
+                Value<String?> travelerNumber = const Value.absent(),
+                Value<String?> billingName = const Value.absent(),
+                Value<String?> billingDocument = const Value.absent(),
+                Value<String?> billingAddress = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => ClientsCompanion.insert(
@@ -1843,8 +2224,13 @@ class $$ClientsTableTableManager
                 lastName: lastName,
                 email: email,
                 phone: phone,
+                documentType: documentType,
                 documentNumber: documentNumber,
                 birthDate: birthDate,
+                travelerNumber: travelerNumber,
+                billingName: billingName,
+                billingDocument: billingDocument,
+                billingAddress: billingAddress,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),

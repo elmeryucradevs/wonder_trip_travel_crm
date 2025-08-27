@@ -33,7 +33,10 @@ class ClientListItem extends StatelessWidget {
           child: Text(initials),
         ),
         title: Text(client.fullName, style: theme.textTheme.titleMedium),
-        subtitle: Text(client.email, style: theme.textTheme.bodySmall),
+        subtitle: Text(
+          client.email ?? 'Sin correo electrónico',
+          style: theme.textTheme.bodySmall,
+        ),
         trailing: Icon(Icons.chevron_right, color: theme.colorScheme.secondary),
         onTap: () {
           // TODO: Implementar navegación a la página de detalles del cliente (CRM-005)

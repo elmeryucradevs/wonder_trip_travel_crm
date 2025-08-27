@@ -1,7 +1,11 @@
-import '../../../../core/db/database.dart';
-import '../models/client_model.dart';
+import 'package:drift/drift.dart';
+import 'package:sqlite3/sqlite3.dart';
+
 import 'local/client_dao.dart';
-import 'package:drift/drift.dart' as drift;
+import '../models/client_model.dart';
+import '../../../../core/db/database.dart';
+import '../../../../core/error/exceptions.dart';
+
 
 abstract class IClientDataSource {
   Future<List<ClientModel>> getAllClients();
@@ -19,7 +23,7 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   final ClientDao clientDao;
 
   ClientLocalDataSourceImpl({required this.clientDao}) {
-    _seedDatabaseIfEmpty();
+    //_seedDatabaseIfEmpty();
   }
 
   /// ---
@@ -33,6 +37,7 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   @override
   Future<List<ClientModel>> getAllClients() async {
     final clientListFromDb = await clientDao.getAllClients();
+    // Mapeamos los nuevos campos
     return clientListFromDb
         .map((client) => ClientModel(
               id: client.id,
@@ -41,6 +46,12 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
               email: client.email,
               phone: client.phone,
               birthDate: client.birthDate,
+              documentNumber: client.documentNumber,
+              documentType: client.documentType,
+              travelerNumber: client.travelerNumber,
+              billingName: client.billingName,
+              billingDocument: client.billingDocument,
+              billingAddress: client.billingAddress,
             ))
         .toList();
   }
@@ -55,13 +66,34 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   @override
   Future<void> saveClient(ClientModel client) async {
     final clientCompanion = ClientsCompanion(
-      name: drift.Value(client.name),
-      lastName: drift.Value(client.lastName),
-      email: drift.Value(client.email),
-      phone: drift.Value(client.phone),
-      birthDate: drift.Value(client.birthDate),
+      name: Value(client.name),
+      lastName: Value(client.lastName),
+      email: Value(client.email),
+      phone: Value(client.phone),
+      birthDate: Value(client.birthDate),
+      documentNumber: Value(client.documentNumber),
+      documentType: Value(client.documentType),
+      travelerNumber: Value(client.travelerNumber),
+      billingName: Value(client.billingName),
+      billingDocument: Value(client.billingDocument),
+      billingAddress: Value(client.billingAddress),
     );
-    await clientDao.insertClient(clientCompanion);
+
+    // Envolvemos la llamada a la base de datos en un bloque try-catch.
+    try {
+      await clientDao.insertClient(clientCompanion);
+    } on SqliteException catch (e) {
+      // Si la excepción es por una restricción de unicidad...
+      if (e.extendedResultCode == 2067) {
+        if (e.message.contains('clients.documentNumber')) {
+          throw CacheException('El número de documento ya está registrado.');
+        } else if (e.message.contains('clients.travelerNumber')) {
+          throw CacheException('El código de viajero frecuente ya está registrado.');
+        }
+      }
+      // Para cualquier otro error de base de datos, lanzamos un error genérico.
+      throw CacheException('Error de base de datos: ${e.message}');
+    }
   }
 
   /// ---
@@ -71,20 +103,47 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   /// Comprueba si ya existen clientes. Si no, inserta una lista predefinida.
   /// Esto evita tener una pantalla vacía al principio del desarrollo.
   /// ---
-  void _seedDatabaseIfEmpty() async {
-    final clients = await getAllClients();
-    if (clients.isEmpty) {
-      final mockClientsToSeed = [
-        ClientsCompanion(name: const drift.Value('Ana'), lastName: const drift.Value('García'), email: const drift.Value('ana.garcia@email.com'), phone: const drift.Value('123456789'), birthDate: drift.Value(DateTime(1990, 5, 15))),
-        ClientsCompanion(name: const drift.Value('Carlos'), lastName: const drift.Value('Rodriguez'), email: const drift.Value('carlos.r@email.com'), phone: const drift.Value('987654321'), birthDate: drift.Value(DateTime(1985, 8, 22))),
-        ClientsCompanion(name: const drift.Value('Lucía'), lastName: const drift.Value('Martinez'), email: const drift.Value('lucia.m@email.com')),
-        ClientsCompanion(name: const drift.Value('Javier'), lastName: const drift.Value('Sánchez'), email: const drift.Value('javier.s@email.com'), phone: const drift.Value('555123456'), birthDate: drift.Value(DateTime(1992, 2, 10))),
-        ClientsCompanion(name: const drift.Value('Elena'), lastName: const drift.Value('Pérez'), email: const drift.Value('elena.p@email.com'), birthDate: drift.Value(DateTime(2000, 11, 30))),
-      ];
+  // void _seedDatabaseIfEmpty() async {
+  //   final clients = await getAllClients();
+  //   if (clients.isEmpty) {
+  //     final mockClientsToSeed = [
+  //       ClientsCompanion(
+  //         name: const Value('Ana'),
+  //         lastName: const Value('García'),
+  //         email: const Value('ana.garcia@email.com'),
+  //         phone: const Value('123456789'),
+  //         birthDate: Value(DateTime(1990, 5, 15)),
+  //       ),
+  //       ClientsCompanion(
+  //         name: const Value('Carlos'),
+  //         lastName: const Value('Rodriguez'),
+  //         email: const Value('carlos.r@email.com'),
+  //         phone: const Value('987654321'),
+  //         birthDate: Value(DateTime(1985, 8, 22)),
+  //       ),
+  //       ClientsCompanion(
+  //         name: const Value('Lucía'),
+  //         lastName: const Value('Martinez'),
+  //         email: const Value('lucia.m@email.com'),
+  //       ),
+  //       ClientsCompanion(
+  //         name: const Value('Javier'),
+  //         lastName: const Value('Sánchez'),
+  //         email: const Value('javier.s@email.com'),
+  //         phone: const Value('555123456'),
+  //         birthDate: Value(DateTime(1992, 2, 10)),
+  //       ),
+  //       ClientsCompanion(
+  //         name: const Value('Elena'),
+  //         lastName: const Value('Pérez'),
+  //         email: const Value('elena.p@email.com'),
+  //         birthDate: Value(DateTime(2000, 11, 30)),
+  //       ),
+  //     ];
 
-      for (var client in mockClientsToSeed) {
-        await clientDao.insertClient(client);
-      }
-    }
-  }
+  //     for (var client in mockClientsToSeed) {
+  //       await clientDao.insertClient(client);
+  //     }
+  //   }
+  // }
 }

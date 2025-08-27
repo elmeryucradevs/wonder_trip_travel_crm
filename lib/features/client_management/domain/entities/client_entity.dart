@@ -14,22 +14,47 @@ class ClientEntity extends Equatable {
   final int id;
   final String name;
   final String lastName;
-  final String email;
+  final String? email;
   final String? phone;
   final DateTime? birthDate;
+  final String? documentNumber;
+  final String? documentType;
+  final String? travelerNumber;
+  final String? billingName;
+  final String? billingDocument;
+  final String? billingAddress;
 
   const ClientEntity({
     required this.id,
     required this.name,
     required this.lastName,
-    required this.email,
+    this.email,
     this.phone,
     this.birthDate,
+    this.documentNumber,
+    this.documentType,
+    this.travelerNumber,
+    this.billingName,
+    this.billingDocument,
+    this.billingAddress,
   });
 
   /// Devuelve el nombre completo del cliente.
   String get fullName => '$name $lastName';
 
   @override
-  List<Object?> get props => [id, name, lastName, email, phone, birthDate];
+  List<Object?> get props => [
+        id,
+        name,
+        lastName,
+        email,
+        phone,
+        birthDate,
+        documentNumber,
+        documentType,
+        travelerNumber,
+        billingName,
+        billingDocument,
+        billingAddress,
+      ];
 }

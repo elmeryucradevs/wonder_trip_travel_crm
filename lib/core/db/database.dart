@@ -31,10 +31,16 @@ class Clients extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 50)();
   TextColumn get lastName => text().withLength(min: 1, max: 50)();
-  TextColumn get email => text().unique()();
+  TextColumn get email => text().nullable()();
   TextColumn get phone => text().nullable()();
+  TextColumn get documentType => text().withLength(min: 2, max: 10).nullable()();
   TextColumn get documentNumber => text().nullable().unique()();
   DateTimeColumn get birthDate => dateTime().nullable()();
+  TextColumn get travelerNumber => text().nullable().unique()(); 
+  TextColumn get billingName => text().nullable()();
+  TextColumn get billingDocument => text().nullable()();
+  TextColumn get billingAddress => text().nullable()();
+
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }

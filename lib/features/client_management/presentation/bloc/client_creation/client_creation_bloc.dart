@@ -17,11 +17,14 @@ class ClientCreationBloc extends Bloc<ClientCreationEvent, ClientCreationState> 
     emit(ClientCreationLoading());
 
     final newClient = ClientEntity(
-      id: 0, // El ID es autogenerado por la BD, ponemos 0 como placeholder.
+      id: 0, //autogenerado por db 0 como placeholder
       name: event.name,
       lastName: event.lastName,
       email: event.email,
       phone: event.phone,
+      documentNumber: event.documentNumber,
+      documentType: event.documentType,
+      travelerNumber: event.travelerNumber,
     );
 
     final result = await saveClientUseCase(newClient);

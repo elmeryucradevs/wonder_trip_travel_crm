@@ -42,12 +42,18 @@ class ClientRepositoryImpl implements IClientRepository {
       // Convertimos la entidad de dominio a un modelo de datos antes de pasarla
       // a la fuente de datos.
       final clientModel = ClientModel(
-        id: client.id, // Para actualizaciones futuras, el id será importante
+        id: client.id,
         name: client.name,
         lastName: client.lastName,
         email: client.email,
         phone: client.phone,
         birthDate: client.birthDate,
+        documentNumber: client.documentNumber,
+        documentType: client.documentType,
+        travelerNumber: client.travelerNumber,
+        billingName: client.billingName,
+        billingDocument: client.billingDocument,
+        billingAddress: client.billingAddress,
       );
       await localDataSource.saveClient(clientModel);
       return const Right(null); // Right(null) representa el 'void' de éxito

@@ -14,9 +14,15 @@ class ClientModel extends ClientEntity {
     required super.id,
     required super.name,
     required super.lastName,
-    required super.email,
+    super.email,
     super.phone,
     super.birthDate,
+    super.documentNumber,
+    super.documentType,
+    super.travelerNumber,
+    super.billingName,
+    super.billingDocument,
+    super.billingAddress,
   });
 
   /// ---
@@ -33,6 +39,12 @@ class ClientModel extends ClientEntity {
       email: json['email'],
       phone: json['phone'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
+      documentNumber: json['documentNumber'],
+      documentType: json['documentType'],
+      travelerNumber: json['travelerNumber'],
+      billingName: json['billingName'],
+      billingDocument: json['billingDocument'],
+      billingAddress: json['billingAddress'],
     );
   }
 
@@ -49,6 +61,12 @@ class ClientModel extends ClientEntity {
       'email': email,
       'phone': phone,
       'birthDate': birthDate?.toIso8601String(),
+      'documentNumber': documentNumber,
+      'documentType': documentType,
+      'travelerNumber': travelerNumber,
+      'billingName': billingName,
+      'billingDocument': billingDocument,
+      'billingAddress': billingAddress,
     };
   }
 }
