@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wonder_trip_travel_crm/core/theme/app_colors.dart';
 import '../../domain/entities/client_entity.dart';
 import '../bloc/client_list_bloc.dart';
-import '../pages/client_edit_page.dart';
+import '../pages/client_detail_page.dart';
 
 /// ---
 /// [ClientListItem] es un widget rediseñado que muestra la información de un
@@ -29,10 +29,9 @@ class ClientListItem extends StatelessWidget {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (_) => BlocProvider.value(
-                // Pasamos el ClientListBloc para poder refrescar la lista al volver.
                 value: context.read<ClientListBloc>(),
-                // Pasamos el cliente seleccionado a la página de edición.
-                child: ClientEditPage(client: client),
+                // Apuntamos a la nueva página de detalles
+                child: ClientDetailPage(client: client),
               ),
             ),
           );

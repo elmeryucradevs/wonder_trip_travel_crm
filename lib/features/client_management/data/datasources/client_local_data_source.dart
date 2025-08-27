@@ -9,7 +9,8 @@ import '../../../../core/error/exceptions.dart';
 abstract class IClientDataSource {
   Future<List<ClientModel>> getAllClients();
   Future<void> saveClient(ClientModel client);
-   Future<void> updateClient(ClientModel client);
+  Future<void> updateClient(ClientModel client);
+  Future<void> deleteClient(int id);
 }
 
 /// ---
@@ -34,6 +35,7 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   ///    (nuestro DTO de la capa de datos). Esto mantiene la separación de
   ///    responsabilidades.
   /// ---
+  /// 
   @override
   Future<List<ClientModel>> getAllClients() async {
     final clientListFromDb = await clientDao.getAllClients();
@@ -124,6 +126,16 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
     await clientDao.updateClient(clientCompanion); 
   }
 
+  @override
+  Future<void> deleteClient(int id) async {
+    try {
+      await clientDao.deleteClient(id);
+    } catch (e) { // <-- Atrapamos cualquier excepción 'e'
+      // Convertimos el error a texto y lo lanzamos como nuestra excepción de caché
+      throw CacheException('Error al eliminar el cliente: ${e.toString()}');
+    }
+  }
+
   /// ---
   /// [seedDatabaseIfEmpty] es un método auxiliar para poblar la base de datos
   /// con datos de prueba la primera vez que se ejecuta la aplicación.
@@ -131,6 +143,7 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   /// Comprueba si ya existen clientes. Si no, inserta una lista predefinida.
   /// Esto evita tener una pantalla vacía al principio del desarrollo.
   /// ---
+  /// 
   // void _seedDatabaseIfEmpty() async {
   //   final clients = await getAllClients();
   //   if (clients.isEmpty) {

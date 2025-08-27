@@ -69,4 +69,14 @@ class ClientRepositoryImpl implements IClientRepository {
       return Left(CacheFailure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteClient(int id) async {
+    try {
+      await localDataSource.deleteClient(id);
+      return const Right(null);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
+    }
+  }
 }

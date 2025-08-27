@@ -24,4 +24,9 @@ abstract class IClientRepository {
   Future<Either<Failure, List<ClientEntity>>> getAllClients();
 
   Future<Either<Failure, void>> saveClient(ClientEntity client);
+
+  //Future<Either<Failure, void>> updateClient(ClientEntity client);
+  
+  Future<Either<Failure, void>> deleteClient(int id);
+
 }
