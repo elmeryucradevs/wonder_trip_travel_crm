@@ -9,6 +9,7 @@ import '../../../../core/error/exceptions.dart';
 abstract class IClientDataSource {
   Future<List<ClientModel>> getAllClients();
   Future<void> saveClient(ClientModel client);
+   Future<void> updateClient(ClientModel client);
 }
 
 /// ---
@@ -101,6 +102,26 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
       throw CacheException('Error de base de datos: $errorString');
     }
   
+  }
+
+  @override
+  Future<void> updateClient(ClientModel client) async {
+    final clientCompanion = ClientsCompanion(
+      id: Value(client.id), // ¡Importante! Pasamos el ID para la actualización.
+      name: Value(client.name),
+      lastName: Value(client.lastName),
+      email: Value(client.email),
+      phone: Value(client.phone),
+      birthDate: Value(client.birthDate),
+      documentNumber: Value(client.documentNumber),
+      documentType: Value(client.documentType),
+      travelerNumber: Value(client.travelerNumber),
+      billingName: Value(client.billingName),
+      billingDocument: Value(client.billingDocument),
+      billingAddress: Value(client.billingAddress),
+    );
+    // Usamos el método de actualización del DAO
+    await clientDao.updateClient(clientCompanion); 
   }
 
   /// ---

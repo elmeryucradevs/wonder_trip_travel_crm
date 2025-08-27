@@ -6,6 +6,15 @@ abstract class ClientCreationEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class UpdateClientEvent extends ClientCreationEvent {
+  final ClientEntity updatedClient;
+
+  const UpdateClientEvent(this.updatedClient);
+
+  @override
+  List<Object?> get props => [updatedClient];
+}
+
 /// Evento que se dispara cuando el usuario presiona "Guardar Cliente".
 /// Contiene todos los datos necesarios del formulario.
 class SaveClientEvent extends ClientCreationEvent {

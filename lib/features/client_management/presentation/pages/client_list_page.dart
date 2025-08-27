@@ -6,11 +6,11 @@ import '../widgets/client_list_item.dart';
 import 'client_creation_page.dart'; 
 
 /// ---
-/// /// [ClientListPage] es la pantalla principal para mostrar la lista de clientes.
-/// ///
-/// /// Es un [StatelessWidget] que utiliza [BlocProvider] para crear e inyectar
-/// /// una instancia de [ClientListBloc] en el árbol de widgets.
-/// /// El [ClientListView] es el encargado de construir la UI basada en el estado del BLoC.
+/// [ClientListPage] es la pantalla principal para mostrar la lista de clientes.
+///
+/// Es un [StatelessWidget] que utiliza [BlocProvider] para crear e inyectar
+/// una instancia de [ClientListBloc] en el árbol de widgets.
+/// El [ClientListView] es el encargado de construir la UI basada en el estado del BLoC.
 /// ---
 class ClientListPage extends StatelessWidget {
   const ClientListPage({super.key});

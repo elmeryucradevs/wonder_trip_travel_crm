@@ -55,12 +55,18 @@ class ClientRepositoryImpl implements IClientRepository {
         billingDocument: client.billingDocument,
         billingAddress: client.billingAddress,
       );
-      await localDataSource.saveClient(clientModel);
-      return const Right(null); // Right(null) representa el 'void' de éxito
+      // --- LÓGICA DE DECISIÓN ---
+      // Si el ID es 0, es un cliente nuevo. Si no, es una actualización.
+      if (client.id == 0) {
+        await localDataSource.saveClient(clientModel);
+      } else {
+        await localDataSource.updateClient(clientModel);
+      }
+      
+      return const Right(null);
     } on CacheException catch (e) {
-      const errorCode = '[ERROR-CRM003-ClientSave]';
-      logger.e('$errorCode Error al guardar cliente: ${e.message}');
-      return Left(CacheFailure('Error al guardar en la base de datos: ${e.message}'));
+      // ... (manejo de errores sin cambios)
+      return Left(CacheFailure(e.message));
     }
   }
 }

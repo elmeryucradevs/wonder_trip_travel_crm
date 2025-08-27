@@ -11,6 +11,7 @@ class ClientCreationBloc extends Bloc<ClientCreationEvent, ClientCreationState> 
 
   ClientCreationBloc({required this.saveClientUseCase}) : super(ClientCreationInitial()) {
     on<SaveClientEvent>(_onSaveClient);
+    on<UpdateClientEvent>(_onUpdateClient);
   }
 
   Future<void> _onSaveClient(SaveClientEvent event, Emitter<ClientCreationState> emit) async {
@@ -28,6 +29,17 @@ class ClientCreationBloc extends Bloc<ClientCreationEvent, ClientCreationState> 
     );
 
     final result = await saveClientUseCase(newClient);
+
+    result.fold(
+      (failure) => emit(ClientCreationFailure(failure.message)),
+      (_) => emit(ClientCreationSuccess()),
+    );
+  }
+
+  Future<void> _onUpdateClient(
+      UpdateClientEvent event, Emitter<ClientCreationState> emit) async {
+    emit(ClientCreationLoading());
+    final result = await saveClientUseCase(event.updatedClient);
 
     result.fold(
       (failure) => emit(ClientCreationFailure(failure.message)),
