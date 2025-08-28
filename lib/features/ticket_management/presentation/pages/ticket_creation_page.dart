@@ -163,6 +163,7 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                 (date) => _selectedIssueDate = date,
               ),
               validator: (v) => v!.isEmpty ? 'Requerido' : null,
+              
             ),
 
             const SizedBox(height: 24),
