@@ -27,8 +27,7 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
 
   final TicketDao ticketDao = sl<TicketDao>();
 
-  ClientLocalDataSourceImpl({required this.clientDao}) {
-  }
+  ClientLocalDataSourceImpl({required this.clientDao});
 
   /// ---
   /// Obtiene los clientes desde la base de datos real usando el DAO.

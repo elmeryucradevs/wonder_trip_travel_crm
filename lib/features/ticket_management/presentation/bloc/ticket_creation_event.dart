@@ -15,17 +15,21 @@ class CreateTicketSubmitted extends TicketCreationEvent {
   final DateTime emissionDate;
   final String status;
   final String currency;
+  final String flightType;
   final double baseFare;
   final double totalPrice;
   final double? commission;
 
-  // Datos del Primer Segmento
+  // Datos del Segmento de Ida
   final String segmentAirline;
   final String segmentFlightNumber;
   final String segmentOrigin;
   final String segmentDestination;
   final DateTime segmentDepartureTime;
   final DateTime segmentArrivalTime;
+
+  // --- NUEVO CAMPO OPCIONAL PARA EL SEGMENTO DE VUELTA ---
+  final FlightSegmentEntity? returnSegment;
 
   const CreateTicketSubmitted({
     required this.clientId,
@@ -35,6 +39,7 @@ class CreateTicketSubmitted extends TicketCreationEvent {
     required this.emissionDate,
     required this.status,
     required this.currency,
+    required this.flightType,
     required this.baseFare,
     required this.totalPrice,
     this.commission,
@@ -44,6 +49,7 @@ class CreateTicketSubmitted extends TicketCreationEvent {
     required this.segmentDestination,
     required this.segmentDepartureTime,
     required this.segmentArrivalTime,
+    this.returnSegment, 
   });
 
   @override

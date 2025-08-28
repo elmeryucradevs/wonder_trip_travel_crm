@@ -1,5 +1,4 @@
 import 'package:drift/drift.dart';
-import 'package:wonder_trip_travel_crm/core/db/dao/ticket_dao.dart';
 import 'database.dart';
 
 /// ---

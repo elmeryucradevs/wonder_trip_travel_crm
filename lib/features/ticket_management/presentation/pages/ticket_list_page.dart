@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wonder_trip_travel_crm/features/ticket_management/presentation/pages/ticket_creation_page.dart';
 import '../../../../core/config/injection_container.dart';
 import '../../../client_management/domain/entities/client_entity.dart';
-import '../../domain/entities/ticket_entity.dart';
 import '../bloc/ticket_list_bloc.dart';
 import '../widgets/ticket_list_item.dart';
 

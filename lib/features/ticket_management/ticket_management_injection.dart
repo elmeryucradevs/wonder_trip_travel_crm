@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import '../../core/config/injection_container.dart';
 import 'data/datasources/ticket_local_data_source.dart';
 import 'data/repositories/ticket_repository_impl.dart';
