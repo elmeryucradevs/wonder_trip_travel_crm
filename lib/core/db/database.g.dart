@@ -887,6 +887,170 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _emissionDateMeta = const VerificationMeta(
+    'emissionDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> emissionDate = GeneratedColumn<DateTime>(
+    'emission_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _transportTypeMeta = const VerificationMeta(
+    'transportType',
+  );
+  @override
+  late final GeneratedColumn<String> transportType = GeneratedColumn<String>(
+    'transport_type',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 5,
+      maxTextLength: 10,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('AEREO'),
+  );
+  static const VerificationMeta _ticketNumberMeta = const VerificationMeta(
+    'ticketNumber',
+  );
+  @override
+  late final GeneratedColumn<String> ticketNumber = GeneratedColumn<String>(
+    'ticket_number',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _flightTypeMeta = const VerificationMeta(
+    'flightType',
+  );
+  @override
+  late final GeneratedColumn<String> flightType = GeneratedColumn<String>(
+    'flight_type',
+    aliasedName,
+    true,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 2,
+      maxTextLength: 2,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _passengerCategoryMeta = const VerificationMeta(
+    'passengerCategory',
+  );
+  @override
+  late final GeneratedColumn<String> passengerCategory =
+      GeneratedColumn<String>(
+        'passenger_category',
+        aliasedName,
+        true,
+        additionalChecks: GeneratedColumn.checkTextLength(
+          minTextLength: 3,
+          maxTextLength: 3,
+        ),
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _issuingAgentMeta = const VerificationMeta(
+    'issuingAgent',
+  );
+  @override
+  late final GeneratedColumn<String> issuingAgent = GeneratedColumn<String>(
+    'issuing_agent',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _baseFareMeta = const VerificationMeta(
+    'baseFare',
+  );
+  @override
+  late final GeneratedColumn<double> baseFare = GeneratedColumn<double>(
+    'base_fare',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0.0),
+  );
+  static const VerificationMeta _currencyMeta = const VerificationMeta(
+    'currency',
+  );
+  @override
+  late final GeneratedColumn<String> currency = GeneratedColumn<String>(
+    'currency',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 3,
+      maxTextLength: 3,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('USD'),
+  );
+  static const VerificationMeta _taxBOMeta = const VerificationMeta('taxBO');
+  @override
+  late final GeneratedColumn<double> taxBO = GeneratedColumn<double>(
+    'tax_b_o',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _taxA7Meta = const VerificationMeta('taxA7');
+  @override
+  late final GeneratedColumn<double> taxA7 = GeneratedColumn<double>(
+    'tax_a7',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _taxQMMeta = const VerificationMeta('taxQM');
+  @override
+  late final GeneratedColumn<double> taxQM = GeneratedColumn<double>(
+    'tax_q_m',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _taxOMMeta = const VerificationMeta('taxOM');
+  @override
+  late final GeneratedColumn<double> taxOM = GeneratedColumn<double>(
+    'tax_o_m',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _otherTaxesMeta = const VerificationMeta(
+    'otherTaxes',
+  );
+  @override
+  late final GeneratedColumn<double> otherTaxes = GeneratedColumn<double>(
+    'other_taxes',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _totalPriceMeta = const VerificationMeta(
     'totalPrice',
   );
@@ -898,16 +1062,30 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     type: DriftSqlType.double,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _emissionDateMeta = const VerificationMeta(
-    'emissionDate',
+  static const VerificationMeta _commissionMeta = const VerificationMeta(
+    'commission',
   );
   @override
-  late final GeneratedColumn<DateTime> emissionDate = GeneratedColumn<DateTime>(
-    'emission_date',
+  late final GeneratedColumn<double> commission = GeneratedColumn<double>(
+    'commission',
     aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _originalTicketIdMeta = const VerificationMeta(
+    'originalTicketId',
+  );
+  @override
+  late final GeneratedColumn<int> originalTicketId = GeneratedColumn<int>(
+    'original_ticket_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES tickets (id)',
+    ),
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -921,14 +1099,42 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     requiredDuringInsert: false,
     defaultValue: currentDateAndTime,
   );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
     clientId,
     pnr,
-    totalPrice,
     emissionDate,
+    transportType,
+    ticketNumber,
+    flightType,
+    passengerCategory,
+    issuingAgent,
+    status,
+    baseFare,
+    currency,
+    taxBO,
+    taxA7,
+    taxQM,
+    taxOM,
+    otherTaxes,
+    totalPrice,
+    commission,
+    originalTicketId,
     createdAt,
+    updatedAt,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -961,14 +1167,6 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     } else if (isInserting) {
       context.missing(_pnrMeta);
     }
-    if (data.containsKey('total_price')) {
-      context.handle(
-        _totalPriceMeta,
-        totalPrice.isAcceptableOrUnknown(data['total_price']!, _totalPriceMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_totalPriceMeta);
-    }
     if (data.containsKey('emission_date')) {
       context.handle(
         _emissionDateMeta,
@@ -980,10 +1178,129 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     } else if (isInserting) {
       context.missing(_emissionDateMeta);
     }
+    if (data.containsKey('transport_type')) {
+      context.handle(
+        _transportTypeMeta,
+        transportType.isAcceptableOrUnknown(
+          data['transport_type']!,
+          _transportTypeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('ticket_number')) {
+      context.handle(
+        _ticketNumberMeta,
+        ticketNumber.isAcceptableOrUnknown(
+          data['ticket_number']!,
+          _ticketNumberMeta,
+        ),
+      );
+    }
+    if (data.containsKey('flight_type')) {
+      context.handle(
+        _flightTypeMeta,
+        flightType.isAcceptableOrUnknown(data['flight_type']!, _flightTypeMeta),
+      );
+    }
+    if (data.containsKey('passenger_category')) {
+      context.handle(
+        _passengerCategoryMeta,
+        passengerCategory.isAcceptableOrUnknown(
+          data['passenger_category']!,
+          _passengerCategoryMeta,
+        ),
+      );
+    }
+    if (data.containsKey('issuing_agent')) {
+      context.handle(
+        _issuingAgentMeta,
+        issuingAgent.isAcceptableOrUnknown(
+          data['issuing_agent']!,
+          _issuingAgentMeta,
+        ),
+      );
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('base_fare')) {
+      context.handle(
+        _baseFareMeta,
+        baseFare.isAcceptableOrUnknown(data['base_fare']!, _baseFareMeta),
+      );
+    }
+    if (data.containsKey('currency')) {
+      context.handle(
+        _currencyMeta,
+        currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta),
+      );
+    }
+    if (data.containsKey('tax_b_o')) {
+      context.handle(
+        _taxBOMeta,
+        taxBO.isAcceptableOrUnknown(data['tax_b_o']!, _taxBOMeta),
+      );
+    }
+    if (data.containsKey('tax_a7')) {
+      context.handle(
+        _taxA7Meta,
+        taxA7.isAcceptableOrUnknown(data['tax_a7']!, _taxA7Meta),
+      );
+    }
+    if (data.containsKey('tax_q_m')) {
+      context.handle(
+        _taxQMMeta,
+        taxQM.isAcceptableOrUnknown(data['tax_q_m']!, _taxQMMeta),
+      );
+    }
+    if (data.containsKey('tax_o_m')) {
+      context.handle(
+        _taxOMMeta,
+        taxOM.isAcceptableOrUnknown(data['tax_o_m']!, _taxOMMeta),
+      );
+    }
+    if (data.containsKey('other_taxes')) {
+      context.handle(
+        _otherTaxesMeta,
+        otherTaxes.isAcceptableOrUnknown(data['other_taxes']!, _otherTaxesMeta),
+      );
+    }
+    if (data.containsKey('total_price')) {
+      context.handle(
+        _totalPriceMeta,
+        totalPrice.isAcceptableOrUnknown(data['total_price']!, _totalPriceMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_totalPriceMeta);
+    }
+    if (data.containsKey('commission')) {
+      context.handle(
+        _commissionMeta,
+        commission.isAcceptableOrUnknown(data['commission']!, _commissionMeta),
+      );
+    }
+    if (data.containsKey('original_ticket_id')) {
+      context.handle(
+        _originalTicketIdMeta,
+        originalTicketId.isAcceptableOrUnknown(
+          data['original_ticket_id']!,
+          _originalTicketIdMeta,
+        ),
+      );
+    }
     if (data.containsKey('created_at')) {
       context.handle(
         _createdAtMeta,
         createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
       );
     }
     return context;
@@ -1007,17 +1324,81 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
         DriftSqlType.string,
         data['${effectivePrefix}pnr'],
       )!,
-      totalPrice: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}total_price'],
-      )!,
       emissionDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}emission_date'],
       )!,
+      transportType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}transport_type'],
+      )!,
+      ticketNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ticket_number'],
+      ),
+      flightType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}flight_type'],
+      ),
+      passengerCategory: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}passenger_category'],
+      ),
+      issuingAgent: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}issuing_agent'],
+      ),
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      ),
+      baseFare: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}base_fare'],
+      )!,
+      currency: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}currency'],
+      )!,
+      taxBO: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}tax_b_o'],
+      ),
+      taxA7: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}tax_a7'],
+      ),
+      taxQM: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}tax_q_m'],
+      ),
+      taxOM: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}tax_o_m'],
+      ),
+      otherTaxes: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}other_taxes'],
+      ),
+      totalPrice: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}total_price'],
+      )!,
+      commission: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}commission'],
+      ),
+      originalTicketId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}original_ticket_id'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
       )!,
     );
   }
@@ -1032,16 +1413,64 @@ class Ticket extends DataClass implements Insertable<Ticket> {
   final int id;
   final int clientId;
   final String pnr;
-  final double totalPrice;
   final DateTime emissionDate;
+
+  /// Tipo de transporte: 'AEREO' o 'TERRESTRE'.
+  final String transportType;
+
+  /// Número de boleto completo.
+  final String? ticketNumber;
+
+  /// Tipo de Vuelo: OW (One-Way) o RT (Round-Trip).
+  final String? flightType;
+
+  /// Categoría del Pasajero: ADT (Adulto), CHD (Niño), INF (Infante).
+  final String? passengerCategory;
+
+  /// Proveedor o agente que emitió el boleto.
+  final String? issuingAgent;
+
+  /// Estado del boleto: CONFIRMADO, CANCELADO, REEMBOLSADO.
+  final String? status;
+  final double baseFare;
+  final String currency;
+  final double? taxBO;
+  final double? taxA7;
+  final double? taxQM;
+  final double? taxOM;
+  final double? otherTaxes;
+  final double totalPrice;
+
+  /// La comisión que recibe la agencia por la venta de este boleto.
+  final double? commission;
+
+  /// Si este boleto fue emitido por un cambio, aquí se guarda el ID del boleto original.
+  final int? originalTicketId;
   final DateTime createdAt;
+  final DateTime updatedAt;
   const Ticket({
     required this.id,
     required this.clientId,
     required this.pnr,
-    required this.totalPrice,
     required this.emissionDate,
+    required this.transportType,
+    this.ticketNumber,
+    this.flightType,
+    this.passengerCategory,
+    this.issuingAgent,
+    this.status,
+    required this.baseFare,
+    required this.currency,
+    this.taxBO,
+    this.taxA7,
+    this.taxQM,
+    this.taxOM,
+    this.otherTaxes,
+    required this.totalPrice,
+    this.commission,
+    this.originalTicketId,
     required this.createdAt,
+    required this.updatedAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1049,9 +1478,49 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     map['id'] = Variable<int>(id);
     map['client_id'] = Variable<int>(clientId);
     map['pnr'] = Variable<String>(pnr);
-    map['total_price'] = Variable<double>(totalPrice);
     map['emission_date'] = Variable<DateTime>(emissionDate);
+    map['transport_type'] = Variable<String>(transportType);
+    if (!nullToAbsent || ticketNumber != null) {
+      map['ticket_number'] = Variable<String>(ticketNumber);
+    }
+    if (!nullToAbsent || flightType != null) {
+      map['flight_type'] = Variable<String>(flightType);
+    }
+    if (!nullToAbsent || passengerCategory != null) {
+      map['passenger_category'] = Variable<String>(passengerCategory);
+    }
+    if (!nullToAbsent || issuingAgent != null) {
+      map['issuing_agent'] = Variable<String>(issuingAgent);
+    }
+    if (!nullToAbsent || status != null) {
+      map['status'] = Variable<String>(status);
+    }
+    map['base_fare'] = Variable<double>(baseFare);
+    map['currency'] = Variable<String>(currency);
+    if (!nullToAbsent || taxBO != null) {
+      map['tax_b_o'] = Variable<double>(taxBO);
+    }
+    if (!nullToAbsent || taxA7 != null) {
+      map['tax_a7'] = Variable<double>(taxA7);
+    }
+    if (!nullToAbsent || taxQM != null) {
+      map['tax_q_m'] = Variable<double>(taxQM);
+    }
+    if (!nullToAbsent || taxOM != null) {
+      map['tax_o_m'] = Variable<double>(taxOM);
+    }
+    if (!nullToAbsent || otherTaxes != null) {
+      map['other_taxes'] = Variable<double>(otherTaxes);
+    }
+    map['total_price'] = Variable<double>(totalPrice);
+    if (!nullToAbsent || commission != null) {
+      map['commission'] = Variable<double>(commission);
+    }
+    if (!nullToAbsent || originalTicketId != null) {
+      map['original_ticket_id'] = Variable<int>(originalTicketId);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
   }
 
@@ -1060,9 +1529,49 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       id: Value(id),
       clientId: Value(clientId),
       pnr: Value(pnr),
-      totalPrice: Value(totalPrice),
       emissionDate: Value(emissionDate),
+      transportType: Value(transportType),
+      ticketNumber: ticketNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ticketNumber),
+      flightType: flightType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(flightType),
+      passengerCategory: passengerCategory == null && nullToAbsent
+          ? const Value.absent()
+          : Value(passengerCategory),
+      issuingAgent: issuingAgent == null && nullToAbsent
+          ? const Value.absent()
+          : Value(issuingAgent),
+      status: status == null && nullToAbsent
+          ? const Value.absent()
+          : Value(status),
+      baseFare: Value(baseFare),
+      currency: Value(currency),
+      taxBO: taxBO == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxBO),
+      taxA7: taxA7 == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxA7),
+      taxQM: taxQM == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxQM),
+      taxOM: taxOM == null && nullToAbsent
+          ? const Value.absent()
+          : Value(taxOM),
+      otherTaxes: otherTaxes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(otherTaxes),
+      totalPrice: Value(totalPrice),
+      commission: commission == null && nullToAbsent
+          ? const Value.absent()
+          : Value(commission),
+      originalTicketId: originalTicketId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(originalTicketId),
       createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
     );
   }
 
@@ -1075,9 +1584,27 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       id: serializer.fromJson<int>(json['id']),
       clientId: serializer.fromJson<int>(json['clientId']),
       pnr: serializer.fromJson<String>(json['pnr']),
-      totalPrice: serializer.fromJson<double>(json['totalPrice']),
       emissionDate: serializer.fromJson<DateTime>(json['emissionDate']),
+      transportType: serializer.fromJson<String>(json['transportType']),
+      ticketNumber: serializer.fromJson<String?>(json['ticketNumber']),
+      flightType: serializer.fromJson<String?>(json['flightType']),
+      passengerCategory: serializer.fromJson<String?>(
+        json['passengerCategory'],
+      ),
+      issuingAgent: serializer.fromJson<String?>(json['issuingAgent']),
+      status: serializer.fromJson<String?>(json['status']),
+      baseFare: serializer.fromJson<double>(json['baseFare']),
+      currency: serializer.fromJson<String>(json['currency']),
+      taxBO: serializer.fromJson<double?>(json['taxBO']),
+      taxA7: serializer.fromJson<double?>(json['taxA7']),
+      taxQM: serializer.fromJson<double?>(json['taxQM']),
+      taxOM: serializer.fromJson<double?>(json['taxOM']),
+      otherTaxes: serializer.fromJson<double?>(json['otherTaxes']),
+      totalPrice: serializer.fromJson<double>(json['totalPrice']),
+      commission: serializer.fromJson<double?>(json['commission']),
+      originalTicketId: serializer.fromJson<int?>(json['originalTicketId']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
   @override
@@ -1087,9 +1614,25 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       'id': serializer.toJson<int>(id),
       'clientId': serializer.toJson<int>(clientId),
       'pnr': serializer.toJson<String>(pnr),
-      'totalPrice': serializer.toJson<double>(totalPrice),
       'emissionDate': serializer.toJson<DateTime>(emissionDate),
+      'transportType': serializer.toJson<String>(transportType),
+      'ticketNumber': serializer.toJson<String?>(ticketNumber),
+      'flightType': serializer.toJson<String?>(flightType),
+      'passengerCategory': serializer.toJson<String?>(passengerCategory),
+      'issuingAgent': serializer.toJson<String?>(issuingAgent),
+      'status': serializer.toJson<String?>(status),
+      'baseFare': serializer.toJson<double>(baseFare),
+      'currency': serializer.toJson<String>(currency),
+      'taxBO': serializer.toJson<double?>(taxBO),
+      'taxA7': serializer.toJson<double?>(taxA7),
+      'taxQM': serializer.toJson<double?>(taxQM),
+      'taxOM': serializer.toJson<double?>(taxOM),
+      'otherTaxes': serializer.toJson<double?>(otherTaxes),
+      'totalPrice': serializer.toJson<double>(totalPrice),
+      'commission': serializer.toJson<double?>(commission),
+      'originalTicketId': serializer.toJson<int?>(originalTicketId),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
 
@@ -1097,29 +1640,97 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     int? id,
     int? clientId,
     String? pnr,
-    double? totalPrice,
     DateTime? emissionDate,
+    String? transportType,
+    Value<String?> ticketNumber = const Value.absent(),
+    Value<String?> flightType = const Value.absent(),
+    Value<String?> passengerCategory = const Value.absent(),
+    Value<String?> issuingAgent = const Value.absent(),
+    Value<String?> status = const Value.absent(),
+    double? baseFare,
+    String? currency,
+    Value<double?> taxBO = const Value.absent(),
+    Value<double?> taxA7 = const Value.absent(),
+    Value<double?> taxQM = const Value.absent(),
+    Value<double?> taxOM = const Value.absent(),
+    Value<double?> otherTaxes = const Value.absent(),
+    double? totalPrice,
+    Value<double?> commission = const Value.absent(),
+    Value<int?> originalTicketId = const Value.absent(),
     DateTime? createdAt,
+    DateTime? updatedAt,
   }) => Ticket(
     id: id ?? this.id,
     clientId: clientId ?? this.clientId,
     pnr: pnr ?? this.pnr,
-    totalPrice: totalPrice ?? this.totalPrice,
     emissionDate: emissionDate ?? this.emissionDate,
+    transportType: transportType ?? this.transportType,
+    ticketNumber: ticketNumber.present ? ticketNumber.value : this.ticketNumber,
+    flightType: flightType.present ? flightType.value : this.flightType,
+    passengerCategory: passengerCategory.present
+        ? passengerCategory.value
+        : this.passengerCategory,
+    issuingAgent: issuingAgent.present ? issuingAgent.value : this.issuingAgent,
+    status: status.present ? status.value : this.status,
+    baseFare: baseFare ?? this.baseFare,
+    currency: currency ?? this.currency,
+    taxBO: taxBO.present ? taxBO.value : this.taxBO,
+    taxA7: taxA7.present ? taxA7.value : this.taxA7,
+    taxQM: taxQM.present ? taxQM.value : this.taxQM,
+    taxOM: taxOM.present ? taxOM.value : this.taxOM,
+    otherTaxes: otherTaxes.present ? otherTaxes.value : this.otherTaxes,
+    totalPrice: totalPrice ?? this.totalPrice,
+    commission: commission.present ? commission.value : this.commission,
+    originalTicketId: originalTicketId.present
+        ? originalTicketId.value
+        : this.originalTicketId,
     createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
   );
   Ticket copyWithCompanion(TicketsCompanion data) {
     return Ticket(
       id: data.id.present ? data.id.value : this.id,
       clientId: data.clientId.present ? data.clientId.value : this.clientId,
       pnr: data.pnr.present ? data.pnr.value : this.pnr,
-      totalPrice: data.totalPrice.present
-          ? data.totalPrice.value
-          : this.totalPrice,
       emissionDate: data.emissionDate.present
           ? data.emissionDate.value
           : this.emissionDate,
+      transportType: data.transportType.present
+          ? data.transportType.value
+          : this.transportType,
+      ticketNumber: data.ticketNumber.present
+          ? data.ticketNumber.value
+          : this.ticketNumber,
+      flightType: data.flightType.present
+          ? data.flightType.value
+          : this.flightType,
+      passengerCategory: data.passengerCategory.present
+          ? data.passengerCategory.value
+          : this.passengerCategory,
+      issuingAgent: data.issuingAgent.present
+          ? data.issuingAgent.value
+          : this.issuingAgent,
+      status: data.status.present ? data.status.value : this.status,
+      baseFare: data.baseFare.present ? data.baseFare.value : this.baseFare,
+      currency: data.currency.present ? data.currency.value : this.currency,
+      taxBO: data.taxBO.present ? data.taxBO.value : this.taxBO,
+      taxA7: data.taxA7.present ? data.taxA7.value : this.taxA7,
+      taxQM: data.taxQM.present ? data.taxQM.value : this.taxQM,
+      taxOM: data.taxOM.present ? data.taxOM.value : this.taxOM,
+      otherTaxes: data.otherTaxes.present
+          ? data.otherTaxes.value
+          : this.otherTaxes,
+      totalPrice: data.totalPrice.present
+          ? data.totalPrice.value
+          : this.totalPrice,
+      commission: data.commission.present
+          ? data.commission.value
+          : this.commission,
+      originalTicketId: data.originalTicketId.present
+          ? data.originalTicketId.value
+          : this.originalTicketId,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
 
@@ -1129,16 +1740,54 @@ class Ticket extends DataClass implements Insertable<Ticket> {
           ..write('id: $id, ')
           ..write('clientId: $clientId, ')
           ..write('pnr: $pnr, ')
-          ..write('totalPrice: $totalPrice, ')
           ..write('emissionDate: $emissionDate, ')
-          ..write('createdAt: $createdAt')
+          ..write('transportType: $transportType, ')
+          ..write('ticketNumber: $ticketNumber, ')
+          ..write('flightType: $flightType, ')
+          ..write('passengerCategory: $passengerCategory, ')
+          ..write('issuingAgent: $issuingAgent, ')
+          ..write('status: $status, ')
+          ..write('baseFare: $baseFare, ')
+          ..write('currency: $currency, ')
+          ..write('taxBO: $taxBO, ')
+          ..write('taxA7: $taxA7, ')
+          ..write('taxQM: $taxQM, ')
+          ..write('taxOM: $taxOM, ')
+          ..write('otherTaxes: $otherTaxes, ')
+          ..write('totalPrice: $totalPrice, ')
+          ..write('commission: $commission, ')
+          ..write('originalTicketId: $originalTicketId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, clientId, pnr, totalPrice, emissionDate, createdAt);
+  int get hashCode => Object.hashAll([
+    id,
+    clientId,
+    pnr,
+    emissionDate,
+    transportType,
+    ticketNumber,
+    flightType,
+    passengerCategory,
+    issuingAgent,
+    status,
+    baseFare,
+    currency,
+    taxBO,
+    taxA7,
+    taxQM,
+    taxOM,
+    otherTaxes,
+    totalPrice,
+    commission,
+    originalTicketId,
+    createdAt,
+    updatedAt,
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1146,52 +1795,148 @@ class Ticket extends DataClass implements Insertable<Ticket> {
           other.id == this.id &&
           other.clientId == this.clientId &&
           other.pnr == this.pnr &&
-          other.totalPrice == this.totalPrice &&
           other.emissionDate == this.emissionDate &&
-          other.createdAt == this.createdAt);
+          other.transportType == this.transportType &&
+          other.ticketNumber == this.ticketNumber &&
+          other.flightType == this.flightType &&
+          other.passengerCategory == this.passengerCategory &&
+          other.issuingAgent == this.issuingAgent &&
+          other.status == this.status &&
+          other.baseFare == this.baseFare &&
+          other.currency == this.currency &&
+          other.taxBO == this.taxBO &&
+          other.taxA7 == this.taxA7 &&
+          other.taxQM == this.taxQM &&
+          other.taxOM == this.taxOM &&
+          other.otherTaxes == this.otherTaxes &&
+          other.totalPrice == this.totalPrice &&
+          other.commission == this.commission &&
+          other.originalTicketId == this.originalTicketId &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
 }
 
 class TicketsCompanion extends UpdateCompanion<Ticket> {
   final Value<int> id;
   final Value<int> clientId;
   final Value<String> pnr;
-  final Value<double> totalPrice;
   final Value<DateTime> emissionDate;
+  final Value<String> transportType;
+  final Value<String?> ticketNumber;
+  final Value<String?> flightType;
+  final Value<String?> passengerCategory;
+  final Value<String?> issuingAgent;
+  final Value<String?> status;
+  final Value<double> baseFare;
+  final Value<String> currency;
+  final Value<double?> taxBO;
+  final Value<double?> taxA7;
+  final Value<double?> taxQM;
+  final Value<double?> taxOM;
+  final Value<double?> otherTaxes;
+  final Value<double> totalPrice;
+  final Value<double?> commission;
+  final Value<int?> originalTicketId;
   final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
   const TicketsCompanion({
     this.id = const Value.absent(),
     this.clientId = const Value.absent(),
     this.pnr = const Value.absent(),
-    this.totalPrice = const Value.absent(),
     this.emissionDate = const Value.absent(),
+    this.transportType = const Value.absent(),
+    this.ticketNumber = const Value.absent(),
+    this.flightType = const Value.absent(),
+    this.passengerCategory = const Value.absent(),
+    this.issuingAgent = const Value.absent(),
+    this.status = const Value.absent(),
+    this.baseFare = const Value.absent(),
+    this.currency = const Value.absent(),
+    this.taxBO = const Value.absent(),
+    this.taxA7 = const Value.absent(),
+    this.taxQM = const Value.absent(),
+    this.taxOM = const Value.absent(),
+    this.otherTaxes = const Value.absent(),
+    this.totalPrice = const Value.absent(),
+    this.commission = const Value.absent(),
+    this.originalTicketId = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
   TicketsCompanion.insert({
     this.id = const Value.absent(),
     required int clientId,
     required String pnr,
-    required double totalPrice,
     required DateTime emissionDate,
+    this.transportType = const Value.absent(),
+    this.ticketNumber = const Value.absent(),
+    this.flightType = const Value.absent(),
+    this.passengerCategory = const Value.absent(),
+    this.issuingAgent = const Value.absent(),
+    this.status = const Value.absent(),
+    this.baseFare = const Value.absent(),
+    this.currency = const Value.absent(),
+    this.taxBO = const Value.absent(),
+    this.taxA7 = const Value.absent(),
+    this.taxQM = const Value.absent(),
+    this.taxOM = const Value.absent(),
+    this.otherTaxes = const Value.absent(),
+    required double totalPrice,
+    this.commission = const Value.absent(),
+    this.originalTicketId = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   }) : clientId = Value(clientId),
        pnr = Value(pnr),
-       totalPrice = Value(totalPrice),
-       emissionDate = Value(emissionDate);
+       emissionDate = Value(emissionDate),
+       totalPrice = Value(totalPrice);
   static Insertable<Ticket> custom({
     Expression<int>? id,
     Expression<int>? clientId,
     Expression<String>? pnr,
-    Expression<double>? totalPrice,
     Expression<DateTime>? emissionDate,
+    Expression<String>? transportType,
+    Expression<String>? ticketNumber,
+    Expression<String>? flightType,
+    Expression<String>? passengerCategory,
+    Expression<String>? issuingAgent,
+    Expression<String>? status,
+    Expression<double>? baseFare,
+    Expression<String>? currency,
+    Expression<double>? taxBO,
+    Expression<double>? taxA7,
+    Expression<double>? taxQM,
+    Expression<double>? taxOM,
+    Expression<double>? otherTaxes,
+    Expression<double>? totalPrice,
+    Expression<double>? commission,
+    Expression<int>? originalTicketId,
     Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (clientId != null) 'client_id': clientId,
       if (pnr != null) 'pnr': pnr,
-      if (totalPrice != null) 'total_price': totalPrice,
       if (emissionDate != null) 'emission_date': emissionDate,
+      if (transportType != null) 'transport_type': transportType,
+      if (ticketNumber != null) 'ticket_number': ticketNumber,
+      if (flightType != null) 'flight_type': flightType,
+      if (passengerCategory != null) 'passenger_category': passengerCategory,
+      if (issuingAgent != null) 'issuing_agent': issuingAgent,
+      if (status != null) 'status': status,
+      if (baseFare != null) 'base_fare': baseFare,
+      if (currency != null) 'currency': currency,
+      if (taxBO != null) 'tax_b_o': taxBO,
+      if (taxA7 != null) 'tax_a7': taxA7,
+      if (taxQM != null) 'tax_q_m': taxQM,
+      if (taxOM != null) 'tax_o_m': taxOM,
+      if (otherTaxes != null) 'other_taxes': otherTaxes,
+      if (totalPrice != null) 'total_price': totalPrice,
+      if (commission != null) 'commission': commission,
+      if (originalTicketId != null) 'original_ticket_id': originalTicketId,
       if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
@@ -1199,17 +1944,49 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     Value<int>? id,
     Value<int>? clientId,
     Value<String>? pnr,
-    Value<double>? totalPrice,
     Value<DateTime>? emissionDate,
+    Value<String>? transportType,
+    Value<String?>? ticketNumber,
+    Value<String?>? flightType,
+    Value<String?>? passengerCategory,
+    Value<String?>? issuingAgent,
+    Value<String?>? status,
+    Value<double>? baseFare,
+    Value<String>? currency,
+    Value<double?>? taxBO,
+    Value<double?>? taxA7,
+    Value<double?>? taxQM,
+    Value<double?>? taxOM,
+    Value<double?>? otherTaxes,
+    Value<double>? totalPrice,
+    Value<double?>? commission,
+    Value<int?>? originalTicketId,
     Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
   }) {
     return TicketsCompanion(
       id: id ?? this.id,
       clientId: clientId ?? this.clientId,
       pnr: pnr ?? this.pnr,
-      totalPrice: totalPrice ?? this.totalPrice,
       emissionDate: emissionDate ?? this.emissionDate,
+      transportType: transportType ?? this.transportType,
+      ticketNumber: ticketNumber ?? this.ticketNumber,
+      flightType: flightType ?? this.flightType,
+      passengerCategory: passengerCategory ?? this.passengerCategory,
+      issuingAgent: issuingAgent ?? this.issuingAgent,
+      status: status ?? this.status,
+      baseFare: baseFare ?? this.baseFare,
+      currency: currency ?? this.currency,
+      taxBO: taxBO ?? this.taxBO,
+      taxA7: taxA7 ?? this.taxA7,
+      taxQM: taxQM ?? this.taxQM,
+      taxOM: taxOM ?? this.taxOM,
+      otherTaxes: otherTaxes ?? this.otherTaxes,
+      totalPrice: totalPrice ?? this.totalPrice,
+      commission: commission ?? this.commission,
+      originalTicketId: originalTicketId ?? this.originalTicketId,
       createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -1225,14 +2002,62 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     if (pnr.present) {
       map['pnr'] = Variable<String>(pnr.value);
     }
-    if (totalPrice.present) {
-      map['total_price'] = Variable<double>(totalPrice.value);
-    }
     if (emissionDate.present) {
       map['emission_date'] = Variable<DateTime>(emissionDate.value);
     }
+    if (transportType.present) {
+      map['transport_type'] = Variable<String>(transportType.value);
+    }
+    if (ticketNumber.present) {
+      map['ticket_number'] = Variable<String>(ticketNumber.value);
+    }
+    if (flightType.present) {
+      map['flight_type'] = Variable<String>(flightType.value);
+    }
+    if (passengerCategory.present) {
+      map['passenger_category'] = Variable<String>(passengerCategory.value);
+    }
+    if (issuingAgent.present) {
+      map['issuing_agent'] = Variable<String>(issuingAgent.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (baseFare.present) {
+      map['base_fare'] = Variable<double>(baseFare.value);
+    }
+    if (currency.present) {
+      map['currency'] = Variable<String>(currency.value);
+    }
+    if (taxBO.present) {
+      map['tax_b_o'] = Variable<double>(taxBO.value);
+    }
+    if (taxA7.present) {
+      map['tax_a7'] = Variable<double>(taxA7.value);
+    }
+    if (taxQM.present) {
+      map['tax_q_m'] = Variable<double>(taxQM.value);
+    }
+    if (taxOM.present) {
+      map['tax_o_m'] = Variable<double>(taxOM.value);
+    }
+    if (otherTaxes.present) {
+      map['other_taxes'] = Variable<double>(otherTaxes.value);
+    }
+    if (totalPrice.present) {
+      map['total_price'] = Variable<double>(totalPrice.value);
+    }
+    if (commission.present) {
+      map['commission'] = Variable<double>(commission.value);
+    }
+    if (originalTicketId.present) {
+      map['original_ticket_id'] = Variable<int>(originalTicketId.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
     return map;
   }
@@ -1243,9 +2068,25 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
           ..write('id: $id, ')
           ..write('clientId: $clientId, ')
           ..write('pnr: $pnr, ')
-          ..write('totalPrice: $totalPrice, ')
           ..write('emissionDate: $emissionDate, ')
-          ..write('createdAt: $createdAt')
+          ..write('transportType: $transportType, ')
+          ..write('ticketNumber: $ticketNumber, ')
+          ..write('flightType: $flightType, ')
+          ..write('passengerCategory: $passengerCategory, ')
+          ..write('issuingAgent: $issuingAgent, ')
+          ..write('status: $status, ')
+          ..write('baseFare: $baseFare, ')
+          ..write('currency: $currency, ')
+          ..write('taxBO: $taxBO, ')
+          ..write('taxA7: $taxA7, ')
+          ..write('taxQM: $taxQM, ')
+          ..write('taxOM: $taxOM, ')
+          ..write('otherTaxes: $otherTaxes, ')
+          ..write('totalPrice: $totalPrice, ')
+          ..write('commission: $commission, ')
+          ..write('originalTicketId: $originalTicketId, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -1291,13 +2132,13 @@ class $FlightSegmentsTable extends FlightSegments
   late final GeneratedColumn<String> airlineCode = GeneratedColumn<String>(
     'airline_code',
     aliasedName,
-    false,
+    true,
     additionalChecks: GeneratedColumn.checkTextLength(
       minTextLength: 2,
       maxTextLength: 3,
     ),
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _flightNumberMeta = const VerificationMeta(
     'flightNumber',
@@ -1306,9 +2147,9 @@ class $FlightSegmentsTable extends FlightSegments
   late final GeneratedColumn<String> flightNumber = GeneratedColumn<String>(
     'flight_number',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _originMeta = const VerificationMeta('origin');
   @override
@@ -1361,6 +2202,17 @@ class $FlightSegmentsTable extends FlightSegments
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _stopoverMeta = const VerificationMeta(
+    'stopover',
+  );
+  @override
+  late final GeneratedColumn<String> stopover = GeneratedColumn<String>(
+    'stopover',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1371,6 +2223,7 @@ class $FlightSegmentsTable extends FlightSegments
     destination,
     departureDate,
     arrivalDate,
+    stopover,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1403,8 +2256,6 @@ class $FlightSegmentsTable extends FlightSegments
           _airlineCodeMeta,
         ),
       );
-    } else if (isInserting) {
-      context.missing(_airlineCodeMeta);
     }
     if (data.containsKey('flight_number')) {
       context.handle(
@@ -1414,8 +2265,6 @@ class $FlightSegmentsTable extends FlightSegments
           _flightNumberMeta,
         ),
       );
-    } else if (isInserting) {
-      context.missing(_flightNumberMeta);
     }
     if (data.containsKey('origin')) {
       context.handle(
@@ -1458,6 +2307,12 @@ class $FlightSegmentsTable extends FlightSegments
     } else if (isInserting) {
       context.missing(_arrivalDateMeta);
     }
+    if (data.containsKey('stopover')) {
+      context.handle(
+        _stopoverMeta,
+        stopover.isAcceptableOrUnknown(data['stopover']!, _stopoverMeta),
+      );
+    }
     return context;
   }
 
@@ -1478,11 +2333,11 @@ class $FlightSegmentsTable extends FlightSegments
       airlineCode: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}airline_code'],
-      )!,
+      ),
       flightNumber: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}flight_number'],
-      )!,
+      ),
       origin: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}origin'],
@@ -1499,6 +2354,10 @@ class $FlightSegmentsTable extends FlightSegments
         DriftSqlType.dateTime,
         data['${effectivePrefix}arrival_date'],
       )!,
+      stopover: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}stopover'],
+      ),
     );
   }
 
@@ -1511,33 +2370,42 @@ class $FlightSegmentsTable extends FlightSegments
 class FlightSegment extends DataClass implements Insertable<FlightSegment> {
   final int id;
   final int ticketId;
-  final String airlineCode;
-  final String flightNumber;
+  final String? airlineCode;
+  final String? flightNumber;
   final String origin;
   final String destination;
   final DateTime departureDate;
   final DateTime arrivalDate;
+  final String? stopover;
   const FlightSegment({
     required this.id,
     required this.ticketId,
-    required this.airlineCode,
-    required this.flightNumber,
+    this.airlineCode,
+    this.flightNumber,
     required this.origin,
     required this.destination,
     required this.departureDate,
     required this.arrivalDate,
+    this.stopover,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['ticket_id'] = Variable<int>(ticketId);
-    map['airline_code'] = Variable<String>(airlineCode);
-    map['flight_number'] = Variable<String>(flightNumber);
+    if (!nullToAbsent || airlineCode != null) {
+      map['airline_code'] = Variable<String>(airlineCode);
+    }
+    if (!nullToAbsent || flightNumber != null) {
+      map['flight_number'] = Variable<String>(flightNumber);
+    }
     map['origin'] = Variable<String>(origin);
     map['destination'] = Variable<String>(destination);
     map['departure_date'] = Variable<DateTime>(departureDate);
     map['arrival_date'] = Variable<DateTime>(arrivalDate);
+    if (!nullToAbsent || stopover != null) {
+      map['stopover'] = Variable<String>(stopover);
+    }
     return map;
   }
 
@@ -1545,12 +2413,19 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     return FlightSegmentsCompanion(
       id: Value(id),
       ticketId: Value(ticketId),
-      airlineCode: Value(airlineCode),
-      flightNumber: Value(flightNumber),
+      airlineCode: airlineCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(airlineCode),
+      flightNumber: flightNumber == null && nullToAbsent
+          ? const Value.absent()
+          : Value(flightNumber),
       origin: Value(origin),
       destination: Value(destination),
       departureDate: Value(departureDate),
       arrivalDate: Value(arrivalDate),
+      stopover: stopover == null && nullToAbsent
+          ? const Value.absent()
+          : Value(stopover),
     );
   }
 
@@ -1562,12 +2437,13 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     return FlightSegment(
       id: serializer.fromJson<int>(json['id']),
       ticketId: serializer.fromJson<int>(json['ticketId']),
-      airlineCode: serializer.fromJson<String>(json['airlineCode']),
-      flightNumber: serializer.fromJson<String>(json['flightNumber']),
+      airlineCode: serializer.fromJson<String?>(json['airlineCode']),
+      flightNumber: serializer.fromJson<String?>(json['flightNumber']),
       origin: serializer.fromJson<String>(json['origin']),
       destination: serializer.fromJson<String>(json['destination']),
       departureDate: serializer.fromJson<DateTime>(json['departureDate']),
       arrivalDate: serializer.fromJson<DateTime>(json['arrivalDate']),
+      stopover: serializer.fromJson<String?>(json['stopover']),
     );
   }
   @override
@@ -1576,33 +2452,36 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'ticketId': serializer.toJson<int>(ticketId),
-      'airlineCode': serializer.toJson<String>(airlineCode),
-      'flightNumber': serializer.toJson<String>(flightNumber),
+      'airlineCode': serializer.toJson<String?>(airlineCode),
+      'flightNumber': serializer.toJson<String?>(flightNumber),
       'origin': serializer.toJson<String>(origin),
       'destination': serializer.toJson<String>(destination),
       'departureDate': serializer.toJson<DateTime>(departureDate),
       'arrivalDate': serializer.toJson<DateTime>(arrivalDate),
+      'stopover': serializer.toJson<String?>(stopover),
     };
   }
 
   FlightSegment copyWith({
     int? id,
     int? ticketId,
-    String? airlineCode,
-    String? flightNumber,
+    Value<String?> airlineCode = const Value.absent(),
+    Value<String?> flightNumber = const Value.absent(),
     String? origin,
     String? destination,
     DateTime? departureDate,
     DateTime? arrivalDate,
+    Value<String?> stopover = const Value.absent(),
   }) => FlightSegment(
     id: id ?? this.id,
     ticketId: ticketId ?? this.ticketId,
-    airlineCode: airlineCode ?? this.airlineCode,
-    flightNumber: flightNumber ?? this.flightNumber,
+    airlineCode: airlineCode.present ? airlineCode.value : this.airlineCode,
+    flightNumber: flightNumber.present ? flightNumber.value : this.flightNumber,
     origin: origin ?? this.origin,
     destination: destination ?? this.destination,
     departureDate: departureDate ?? this.departureDate,
     arrivalDate: arrivalDate ?? this.arrivalDate,
+    stopover: stopover.present ? stopover.value : this.stopover,
   );
   FlightSegment copyWithCompanion(FlightSegmentsCompanion data) {
     return FlightSegment(
@@ -1624,6 +2503,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
       arrivalDate: data.arrivalDate.present
           ? data.arrivalDate.value
           : this.arrivalDate,
+      stopover: data.stopover.present ? data.stopover.value : this.stopover,
     );
   }
 
@@ -1637,7 +2517,8 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
           ..write('origin: $origin, ')
           ..write('destination: $destination, ')
           ..write('departureDate: $departureDate, ')
-          ..write('arrivalDate: $arrivalDate')
+          ..write('arrivalDate: $arrivalDate, ')
+          ..write('stopover: $stopover')
           ..write(')'))
         .toString();
   }
@@ -1652,6 +2533,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     destination,
     departureDate,
     arrivalDate,
+    stopover,
   );
   @override
   bool operator ==(Object other) =>
@@ -1664,18 +2546,20 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
           other.origin == this.origin &&
           other.destination == this.destination &&
           other.departureDate == this.departureDate &&
-          other.arrivalDate == this.arrivalDate);
+          other.arrivalDate == this.arrivalDate &&
+          other.stopover == this.stopover);
 }
 
 class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
   final Value<int> id;
   final Value<int> ticketId;
-  final Value<String> airlineCode;
-  final Value<String> flightNumber;
+  final Value<String?> airlineCode;
+  final Value<String?> flightNumber;
   final Value<String> origin;
   final Value<String> destination;
   final Value<DateTime> departureDate;
   final Value<DateTime> arrivalDate;
+  final Value<String?> stopover;
   const FlightSegmentsCompanion({
     this.id = const Value.absent(),
     this.ticketId = const Value.absent(),
@@ -1685,19 +2569,19 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
     this.destination = const Value.absent(),
     this.departureDate = const Value.absent(),
     this.arrivalDate = const Value.absent(),
+    this.stopover = const Value.absent(),
   });
   FlightSegmentsCompanion.insert({
     this.id = const Value.absent(),
     required int ticketId,
-    required String airlineCode,
-    required String flightNumber,
+    this.airlineCode = const Value.absent(),
+    this.flightNumber = const Value.absent(),
     required String origin,
     required String destination,
     required DateTime departureDate,
     required DateTime arrivalDate,
+    this.stopover = const Value.absent(),
   }) : ticketId = Value(ticketId),
-       airlineCode = Value(airlineCode),
-       flightNumber = Value(flightNumber),
        origin = Value(origin),
        destination = Value(destination),
        departureDate = Value(departureDate),
@@ -1711,6 +2595,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
     Expression<String>? destination,
     Expression<DateTime>? departureDate,
     Expression<DateTime>? arrivalDate,
+    Expression<String>? stopover,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1721,18 +2606,20 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
       if (destination != null) 'destination': destination,
       if (departureDate != null) 'departure_date': departureDate,
       if (arrivalDate != null) 'arrival_date': arrivalDate,
+      if (stopover != null) 'stopover': stopover,
     });
   }
 
   FlightSegmentsCompanion copyWith({
     Value<int>? id,
     Value<int>? ticketId,
-    Value<String>? airlineCode,
-    Value<String>? flightNumber,
+    Value<String?>? airlineCode,
+    Value<String?>? flightNumber,
     Value<String>? origin,
     Value<String>? destination,
     Value<DateTime>? departureDate,
     Value<DateTime>? arrivalDate,
+    Value<String?>? stopover,
   }) {
     return FlightSegmentsCompanion(
       id: id ?? this.id,
@@ -1743,6 +2630,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
       destination: destination ?? this.destination,
       departureDate: departureDate ?? this.departureDate,
       arrivalDate: arrivalDate ?? this.arrivalDate,
+      stopover: stopover ?? this.stopover,
     );
   }
 
@@ -1773,6 +2661,9 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
     if (arrivalDate.present) {
       map['arrival_date'] = Variable<DateTime>(arrivalDate.value);
     }
+    if (stopover.present) {
+      map['stopover'] = Variable<String>(stopover.value);
+    }
     return map;
   }
 
@@ -1786,7 +2677,8 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
           ..write('origin: $origin, ')
           ..write('destination: $destination, ')
           ..write('departureDate: $departureDate, ')
-          ..write('arrivalDate: $arrivalDate')
+          ..write('arrivalDate: $arrivalDate, ')
+          ..write('stopover: $stopover')
           ..write(')'))
         .toString();
   }
@@ -1799,6 +2691,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $TicketsTable tickets = $TicketsTable(this);
   late final $FlightSegmentsTable flightSegments = $FlightSegmentsTable(this);
   late final ClientDao clientDao = ClientDao(this as AppDatabase);
+  late final TicketDao ticketDao = TicketDao(this as AppDatabase);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -2286,18 +3179,50 @@ typedef $$TicketsTableCreateCompanionBuilder =
       Value<int> id,
       required int clientId,
       required String pnr,
-      required double totalPrice,
       required DateTime emissionDate,
+      Value<String> transportType,
+      Value<String?> ticketNumber,
+      Value<String?> flightType,
+      Value<String?> passengerCategory,
+      Value<String?> issuingAgent,
+      Value<String?> status,
+      Value<double> baseFare,
+      Value<String> currency,
+      Value<double?> taxBO,
+      Value<double?> taxA7,
+      Value<double?> taxQM,
+      Value<double?> taxOM,
+      Value<double?> otherTaxes,
+      required double totalPrice,
+      Value<double?> commission,
+      Value<int?> originalTicketId,
       Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
     });
 typedef $$TicketsTableUpdateCompanionBuilder =
     TicketsCompanion Function({
       Value<int> id,
       Value<int> clientId,
       Value<String> pnr,
-      Value<double> totalPrice,
       Value<DateTime> emissionDate,
+      Value<String> transportType,
+      Value<String?> ticketNumber,
+      Value<String?> flightType,
+      Value<String?> passengerCategory,
+      Value<String?> issuingAgent,
+      Value<String?> status,
+      Value<double> baseFare,
+      Value<String> currency,
+      Value<double?> taxBO,
+      Value<double?> taxA7,
+      Value<double?> taxQM,
+      Value<double?> taxOM,
+      Value<double?> otherTaxes,
+      Value<double> totalPrice,
+      Value<double?> commission,
+      Value<int?> originalTicketId,
       Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
     });
 
 final class $$TicketsTableReferences
@@ -2315,6 +3240,25 @@ final class $$TicketsTableReferences
       $_db.clients,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_clientIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $TicketsTable _originalTicketIdTable(_$AppDatabase db) =>
+      db.tickets.createAlias(
+        $_aliasNameGenerator(db.tickets.originalTicketId, db.tickets.id),
+      );
+
+  $$TicketsTableProcessedTableManager? get originalTicketId {
+    final $_column = $_itemColumn<int>('original_ticket_id');
+    if ($_column == null) return null;
+    final manager = $$TicketsTableTableManager(
+      $_db,
+      $_db.tickets,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_originalTicketIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -2359,18 +3303,93 @@ class $$TicketsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<double> get totalPrice => $composableBuilder(
-    column: $table.totalPrice,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<DateTime> get emissionDate => $composableBuilder(
     column: $table.emissionDate,
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get transportType => $composableBuilder(
+    column: $table.transportType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ticketNumber => $composableBuilder(
+    column: $table.ticketNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get flightType => $composableBuilder(
+    column: $table.flightType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get passengerCategory => $composableBuilder(
+    column: $table.passengerCategory,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get issuingAgent => $composableBuilder(
+    column: $table.issuingAgent,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get baseFare => $composableBuilder(
+    column: $table.baseFare,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get taxBO => $composableBuilder(
+    column: $table.taxBO,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get taxA7 => $composableBuilder(
+    column: $table.taxA7,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get taxQM => $composableBuilder(
+    column: $table.taxQM,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get taxOM => $composableBuilder(
+    column: $table.taxOM,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get otherTaxes => $composableBuilder(
+    column: $table.otherTaxes,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get totalPrice => $composableBuilder(
+    column: $table.totalPrice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get commission => $composableBuilder(
+    column: $table.commission,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2388,6 +3407,29 @@ class $$TicketsTableFilterComposer
           }) => $$ClientsTableFilterComposer(
             $db: $db,
             $table: $db.clients,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$TicketsTableFilterComposer get originalTicketId {
+    final $$TicketsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.originalTicketId,
+      referencedTable: $db.tickets,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TicketsTableFilterComposer(
+            $db: $db,
+            $table: $db.tickets,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -2442,18 +3484,93 @@ class $$TicketsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<double> get totalPrice => $composableBuilder(
-    column: $table.totalPrice,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<DateTime> get emissionDate => $composableBuilder(
     column: $table.emissionDate,
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get transportType => $composableBuilder(
+    column: $table.transportType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ticketNumber => $composableBuilder(
+    column: $table.ticketNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get flightType => $composableBuilder(
+    column: $table.flightType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get passengerCategory => $composableBuilder(
+    column: $table.passengerCategory,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get issuingAgent => $composableBuilder(
+    column: $table.issuingAgent,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get baseFare => $composableBuilder(
+    column: $table.baseFare,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get currency => $composableBuilder(
+    column: $table.currency,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get taxBO => $composableBuilder(
+    column: $table.taxBO,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get taxA7 => $composableBuilder(
+    column: $table.taxA7,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get taxQM => $composableBuilder(
+    column: $table.taxQM,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get taxOM => $composableBuilder(
+    column: $table.taxOM,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get otherTaxes => $composableBuilder(
+    column: $table.otherTaxes,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get totalPrice => $composableBuilder(
+    column: $table.totalPrice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get commission => $composableBuilder(
+    column: $table.commission,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2479,6 +3596,29 @@ class $$TicketsTableOrderingComposer
     );
     return composer;
   }
+
+  $$TicketsTableOrderingComposer get originalTicketId {
+    final $$TicketsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.originalTicketId,
+      referencedTable: $db.tickets,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TicketsTableOrderingComposer(
+            $db: $db,
+            $table: $db.tickets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$TicketsTableAnnotationComposer
@@ -2496,18 +3636,77 @@ class $$TicketsTableAnnotationComposer
   GeneratedColumn<String> get pnr =>
       $composableBuilder(column: $table.pnr, builder: (column) => column);
 
-  GeneratedColumn<double> get totalPrice => $composableBuilder(
-    column: $table.totalPrice,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<DateTime> get emissionDate => $composableBuilder(
     column: $table.emissionDate,
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get transportType => $composableBuilder(
+    column: $table.transportType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get ticketNumber => $composableBuilder(
+    column: $table.ticketNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get flightType => $composableBuilder(
+    column: $table.flightType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get passengerCategory => $composableBuilder(
+    column: $table.passengerCategory,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get issuingAgent => $composableBuilder(
+    column: $table.issuingAgent,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<double> get baseFare =>
+      $composableBuilder(column: $table.baseFare, builder: (column) => column);
+
+  GeneratedColumn<String> get currency =>
+      $composableBuilder(column: $table.currency, builder: (column) => column);
+
+  GeneratedColumn<double> get taxBO =>
+      $composableBuilder(column: $table.taxBO, builder: (column) => column);
+
+  GeneratedColumn<double> get taxA7 =>
+      $composableBuilder(column: $table.taxA7, builder: (column) => column);
+
+  GeneratedColumn<double> get taxQM =>
+      $composableBuilder(column: $table.taxQM, builder: (column) => column);
+
+  GeneratedColumn<double> get taxOM =>
+      $composableBuilder(column: $table.taxOM, builder: (column) => column);
+
+  GeneratedColumn<double> get otherTaxes => $composableBuilder(
+    column: $table.otherTaxes,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get totalPrice => $composableBuilder(
+    column: $table.totalPrice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get commission => $composableBuilder(
+    column: $table.commission,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
   $$ClientsTableAnnotationComposer get clientId {
     final $$ClientsTableAnnotationComposer composer = $composerBuilder(
@@ -2523,6 +3722,29 @@ class $$TicketsTableAnnotationComposer
           }) => $$ClientsTableAnnotationComposer(
             $db: $db,
             $table: $db.clients,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$TicketsTableAnnotationComposer get originalTicketId {
+    final $$TicketsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.originalTicketId,
+      referencedTable: $db.tickets,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TicketsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.tickets,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -2571,7 +3793,11 @@ class $$TicketsTableTableManager
           $$TicketsTableUpdateCompanionBuilder,
           (Ticket, $$TicketsTableReferences),
           Ticket,
-          PrefetchHooks Function({bool clientId, bool flightSegmentsRefs})
+          PrefetchHooks Function({
+            bool clientId,
+            bool originalTicketId,
+            bool flightSegmentsRefs,
+          })
         > {
   $$TicketsTableTableManager(_$AppDatabase db, $TicketsTable table)
     : super(
@@ -2589,32 +3815,96 @@ class $$TicketsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> clientId = const Value.absent(),
                 Value<String> pnr = const Value.absent(),
-                Value<double> totalPrice = const Value.absent(),
                 Value<DateTime> emissionDate = const Value.absent(),
+                Value<String> transportType = const Value.absent(),
+                Value<String?> ticketNumber = const Value.absent(),
+                Value<String?> flightType = const Value.absent(),
+                Value<String?> passengerCategory = const Value.absent(),
+                Value<String?> issuingAgent = const Value.absent(),
+                Value<String?> status = const Value.absent(),
+                Value<double> baseFare = const Value.absent(),
+                Value<String> currency = const Value.absent(),
+                Value<double?> taxBO = const Value.absent(),
+                Value<double?> taxA7 = const Value.absent(),
+                Value<double?> taxQM = const Value.absent(),
+                Value<double?> taxOM = const Value.absent(),
+                Value<double?> otherTaxes = const Value.absent(),
+                Value<double> totalPrice = const Value.absent(),
+                Value<double?> commission = const Value.absent(),
+                Value<int?> originalTicketId = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
               }) => TicketsCompanion(
                 id: id,
                 clientId: clientId,
                 pnr: pnr,
-                totalPrice: totalPrice,
                 emissionDate: emissionDate,
+                transportType: transportType,
+                ticketNumber: ticketNumber,
+                flightType: flightType,
+                passengerCategory: passengerCategory,
+                issuingAgent: issuingAgent,
+                status: status,
+                baseFare: baseFare,
+                currency: currency,
+                taxBO: taxBO,
+                taxA7: taxA7,
+                taxQM: taxQM,
+                taxOM: taxOM,
+                otherTaxes: otherTaxes,
+                totalPrice: totalPrice,
+                commission: commission,
+                originalTicketId: originalTicketId,
                 createdAt: createdAt,
+                updatedAt: updatedAt,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int clientId,
                 required String pnr,
-                required double totalPrice,
                 required DateTime emissionDate,
+                Value<String> transportType = const Value.absent(),
+                Value<String?> ticketNumber = const Value.absent(),
+                Value<String?> flightType = const Value.absent(),
+                Value<String?> passengerCategory = const Value.absent(),
+                Value<String?> issuingAgent = const Value.absent(),
+                Value<String?> status = const Value.absent(),
+                Value<double> baseFare = const Value.absent(),
+                Value<String> currency = const Value.absent(),
+                Value<double?> taxBO = const Value.absent(),
+                Value<double?> taxA7 = const Value.absent(),
+                Value<double?> taxQM = const Value.absent(),
+                Value<double?> taxOM = const Value.absent(),
+                Value<double?> otherTaxes = const Value.absent(),
+                required double totalPrice,
+                Value<double?> commission = const Value.absent(),
+                Value<int?> originalTicketId = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
               }) => TicketsCompanion.insert(
                 id: id,
                 clientId: clientId,
                 pnr: pnr,
-                totalPrice: totalPrice,
                 emissionDate: emissionDate,
+                transportType: transportType,
+                ticketNumber: ticketNumber,
+                flightType: flightType,
+                passengerCategory: passengerCategory,
+                issuingAgent: issuingAgent,
+                status: status,
+                baseFare: baseFare,
+                currency: currency,
+                taxBO: taxBO,
+                taxA7: taxA7,
+                taxQM: taxQM,
+                taxOM: taxOM,
+                otherTaxes: otherTaxes,
+                totalPrice: totalPrice,
+                commission: commission,
+                originalTicketId: originalTicketId,
                 createdAt: createdAt,
+                updatedAt: updatedAt,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -2625,7 +3915,11 @@ class $$TicketsTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({clientId = false, flightSegmentsRefs = false}) {
+              ({
+                clientId = false,
+                originalTicketId = false,
+                flightSegmentsRefs = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
@@ -2656,6 +3950,19 @@ class $$TicketsTableTableManager
                                         ._clientIdTable(db),
                                     referencedColumn: $$TicketsTableReferences
                                         ._clientIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+                        if (originalTicketId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.originalTicketId,
+                                    referencedTable: $$TicketsTableReferences
+                                        ._originalTicketIdTable(db),
+                                    referencedColumn: $$TicketsTableReferences
+                                        ._originalTicketIdTable(db)
                                         .id,
                                   )
                                   as T;
@@ -2706,29 +4013,35 @@ typedef $$TicketsTableProcessedTableManager =
       $$TicketsTableUpdateCompanionBuilder,
       (Ticket, $$TicketsTableReferences),
       Ticket,
-      PrefetchHooks Function({bool clientId, bool flightSegmentsRefs})
+      PrefetchHooks Function({
+        bool clientId,
+        bool originalTicketId,
+        bool flightSegmentsRefs,
+      })
     >;
 typedef $$FlightSegmentsTableCreateCompanionBuilder =
     FlightSegmentsCompanion Function({
       Value<int> id,
       required int ticketId,
-      required String airlineCode,
-      required String flightNumber,
+      Value<String?> airlineCode,
+      Value<String?> flightNumber,
       required String origin,
       required String destination,
       required DateTime departureDate,
       required DateTime arrivalDate,
+      Value<String?> stopover,
     });
 typedef $$FlightSegmentsTableUpdateCompanionBuilder =
     FlightSegmentsCompanion Function({
       Value<int> id,
       Value<int> ticketId,
-      Value<String> airlineCode,
-      Value<String> flightNumber,
+      Value<String?> airlineCode,
+      Value<String?> flightNumber,
       Value<String> origin,
       Value<String> destination,
       Value<DateTime> departureDate,
       Value<DateTime> arrivalDate,
+      Value<String?> stopover,
     });
 
 final class $$FlightSegmentsTableReferences
@@ -2803,6 +4116,11 @@ class $$FlightSegmentsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get stopover => $composableBuilder(
+    column: $table.stopover,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$TicketsTableFilterComposer get ticketId {
     final $$TicketsTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -2871,6 +4189,11 @@ class $$FlightSegmentsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get stopover => $composableBuilder(
+    column: $table.stopover,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$TicketsTableOrderingComposer get ticketId {
     final $$TicketsTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -2935,6 +4258,9 @@ class $$FlightSegmentsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get stopover =>
+      $composableBuilder(column: $table.stopover, builder: (column) => column);
+
   $$TicketsTableAnnotationComposer get ticketId {
     final $$TicketsTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -2991,12 +4317,13 @@ class $$FlightSegmentsTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<int> ticketId = const Value.absent(),
-                Value<String> airlineCode = const Value.absent(),
-                Value<String> flightNumber = const Value.absent(),
+                Value<String?> airlineCode = const Value.absent(),
+                Value<String?> flightNumber = const Value.absent(),
                 Value<String> origin = const Value.absent(),
                 Value<String> destination = const Value.absent(),
                 Value<DateTime> departureDate = const Value.absent(),
                 Value<DateTime> arrivalDate = const Value.absent(),
+                Value<String?> stopover = const Value.absent(),
               }) => FlightSegmentsCompanion(
                 id: id,
                 ticketId: ticketId,
@@ -3006,17 +4333,19 @@ class $$FlightSegmentsTableTableManager
                 destination: destination,
                 departureDate: departureDate,
                 arrivalDate: arrivalDate,
+                stopover: stopover,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int ticketId,
-                required String airlineCode,
-                required String flightNumber,
+                Value<String?> airlineCode = const Value.absent(),
+                Value<String?> flightNumber = const Value.absent(),
                 required String origin,
                 required String destination,
                 required DateTime departureDate,
                 required DateTime arrivalDate,
+                Value<String?> stopover = const Value.absent(),
               }) => FlightSegmentsCompanion.insert(
                 id: id,
                 ticketId: ticketId,
@@ -3026,6 +4355,7 @@ class $$FlightSegmentsTableTableManager
                 destination: destination,
                 departureDate: departureDate,
                 arrivalDate: arrivalDate,
+                stopover: stopover,
               ),
           withReferenceMapper: (p0) => p0
               .map(

@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/config/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../ticket_management/presentation/pages/ticket_list_page.dart';
 import '../../domain/entities/client_entity.dart';
 import '../bloc/client_detail/client_detail_bloc.dart';
 import '../bloc/client_list_bloc.dart';
 import 'client_edit_page.dart';
 
 /// ---
-/// /// [ClientDetailPage] Muestra toda la información de un cliente en un formato
-/// /// de solo lectura. Sirve como un hub central para ver datos y acceder a
-/// /// acciones como editar o eliminar.
+/// [ClientDetailPage] Muestra toda la información de un cliente en un formato
+/// de solo lectura. Sirve como un hub central para ver datos y acceder a
+/// acciones como editar o eliminar.
 /// ---
 class ClientDetailPage extends StatelessWidget {
   final ClientEntity client;
@@ -57,6 +58,25 @@ class ClientDetailPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => TicketListPage(
+                          clientId: client.id,
+                          clientName: client.fullName,
+                          client: client, 
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.airplane_ticket_outlined),
+                  label: const Text('Ver Boletos del Cliente'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.accentLight,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
                 _buildSectionTitle(context, 'Información Personal'),
                 _buildInfoCard([
                   _InfoRow(label: 'Nombre Completo', value: client.fullName),

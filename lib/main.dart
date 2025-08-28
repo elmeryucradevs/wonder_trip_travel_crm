@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/config/injection_container.dart' as di;
+import 'core/db/database.dart';
+import 'core/db/db_seeder.dart';
 import 'core/theme/theme.dart';
 import 'features/client_management/presentation/pages/client_list_page.dart';
 
@@ -21,6 +23,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await di.init();
+  // Obtenemos la instancia de la BD y ejecutamos el seeder.
+  await DbSeeder(di.sl<AppDatabase>()).seedDatabase();
   runApp(const App());
 }
 

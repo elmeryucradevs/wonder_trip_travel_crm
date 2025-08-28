@@ -5,6 +5,7 @@ import '../../features/client_management/data/datasources/local/client_dao.dart'
 
 import 'connection/native.dart'
     if (dart.library.html) 'connection/web.dart';
+import 'dao/ticket_dao.dart';
 
 // Esto importa el fichero que será generado por drift.
 // El nombre del fichero es el nombre de este fichero con la extensión ".g.dart"
@@ -13,18 +14,18 @@ part 'database.g.dart';
 // --- TABLAS ---
 
 /// ---
-/// /// Define la tabla 'clients' para almacenar la información de los clientes.
-/// ///
-/// /// Esta tabla es el núcleo del CRM, conteniendo todos los datos personales
-/// /// y de contacto de los clientes de la agencia.
-/// ///
-/// /// Campos:
-/// /// - [id]: Clave primaria autoincremental.
-/// /// - [name], [lastName]: Nombre y apellido del cliente.
-/// /// - [email], [phone]: Información de contacto.
-/// /// - [documentNumber]: Número de documento (CI, Pasaporte).
-/// /// - [birthDate]: Fecha de nacimiento.
-/// /// - [createdAt], [updatedAt]: Marcas de tiempo para auditoría.
+/// Define la tabla 'clients' para almacenar la información de los clientes.
+///
+/// Esta tabla es el núcleo del CRM, conteniendo todos los datos personales
+/// y de contacto de los clientes de la agencia.
+///
+/// Campos:
+/// - [id]: Clave primaria autoincremental.
+/// - [name], [lastName]: Nombre y apellido del cliente.
+/// - [email], [phone]: Información de contacto.
+/// - [documentNumber]: Número de documento (CI, Pasaporte).
+/// - [birthDate]: Fecha de nacimiento.
+/// - [createdAt], [updatedAt]: Marcas de tiempo para auditoría.
 /// ---
 @DataClassName('Client')
 class Clients extends Table {
@@ -60,9 +61,44 @@ class Tickets extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get clientId => integer().references(Clients, #id)();
   TextColumn get pnr => text().withLength(min: 6, max: 6)();
-  RealColumn get totalPrice => real()();
   DateTimeColumn get emissionDate => dateTime()();
+  /// Tipo de transporte: 'AEREO' o 'TERRESTRE'.
+  TextColumn get transportType => text().withLength(min: 5, max: 10).withDefault(const Constant('AEREO'))();
+  
+  /// Número de boleto completo.
+  TextColumn get ticketNumber => text().nullable()();
+
+  /// Tipo de Vuelo: OW (One-Way) o RT (Round-Trip).
+  TextColumn get flightType => text().withLength(min: 2, max: 2).nullable()();
+
+  /// Categoría del Pasajero: ADT (Adulto), CHD (Niño), INF (Infante).
+  TextColumn get passengerCategory => text().withLength(min: 3, max: 3).nullable()();
+
+  /// Proveedor o agente que emitió el boleto.
+  TextColumn get issuingAgent => text().nullable()();
+  
+  /// Estado del boleto: CONFIRMADO, CANCELADO, REEMBOLSADO.
+  TextColumn get status => text().nullable()();
+
+  // --- DESGLOSE DE TARIFAS ---
+  RealColumn get baseFare => real().withDefault(const Constant(0.0))();
+  TextColumn get currency => text().withLength(min: 3, max: 3).withDefault(const Constant('USD'))();
+  RealColumn get taxBO => real().nullable()();
+  RealColumn get taxA7 => real().nullable()();
+  RealColumn get taxQM => real().nullable()();
+  RealColumn get taxOM => real().nullable()();
+  RealColumn get otherTaxes => real().nullable()();
+  RealColumn get totalPrice => real()();
+
+  /// La comisión que recibe la agencia por la venta de este boleto.
+  RealColumn get commission => real().nullable()();
+
+  /// Si este boleto fue emitido por un cambio, aquí se guarda el ID del boleto original.
+  IntColumn get originalTicketId => integer().nullable().references(Tickets, #id)();
+
+  
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }
 
 /// ---
@@ -79,13 +115,19 @@ class Tickets extends Table {
 @DataClassName('FlightSegment')
 class FlightSegments extends Table {
   IntColumn get id => integer().autoIncrement()();
+  // --- CLAVE FORÁNEA PARA RELACIONAR CON UN TICKET ---
   IntColumn get ticketId => integer().references(Tickets, #id)();
-  TextColumn get airlineCode => text().withLength(min: 2, max: 3)();
-  TextColumn get flightNumber => text()();
+
+  // --- CAMPOS ESPECÍFICOS DE LA RUTA ---
+  TextColumn get airlineCode => text().withLength(min: 2, max: 3).nullable()();
+  TextColumn get flightNumber => text().nullable()();
   TextColumn get origin => text().withLength(min: 3, max: 3)();
   TextColumn get destination => text().withLength(min: 3, max: 3)();
   DateTimeColumn get departureDate => dateTime()();
   DateTimeColumn get arrivalDate => dateTime()();
+  
+  // Para registrar escalas en el futuro
+  TextColumn get stopover => text().nullable()(); 
 }
 
 
@@ -105,7 +147,9 @@ class FlightSegments extends Table {
 /// /// Drift ahora generará el código necesario para que AppDatabase pueda
 /// /// instanciar y proporcionar el ClientDao.
 /// ---
-@DriftDatabase(tables: [Clients, Tickets, FlightSegments], daos: [ClientDao])
+@DriftDatabase(
+  tables: [Clients, Tickets, FlightSegments],
+  daos: [ClientDao, TicketDao],) 
 class AppDatabase extends _$AppDatabase {
   /// El constructor ahora llama a la función `connect()` que importamos
   /// condicionalmente. Dart se encargará de llamar a la versión nativa o web.

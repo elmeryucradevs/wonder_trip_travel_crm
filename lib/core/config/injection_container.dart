@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import '../../features/client_management/client_management_injection.dart';
+import '../../features/ticket_management/ticket_management_injection.dart';
 
 /// ---
 /// /// Instancia global del Service Locator [GetIt].
@@ -45,6 +46,7 @@ Future<void> init() async {
   // #######################################################################
 
   // Aquí registraremos las dependencias de cada feature.
-  // Ejemplo:
+
   await initClientManagementFeature();
+  await initTicketManagementFeature();
 }

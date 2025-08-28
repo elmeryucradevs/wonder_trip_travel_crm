@@ -1,5 +1,6 @@
 import '../../core/config/injection_container.dart';
 import '../../core/db/database.dart';
+import '../../core/db/dao/ticket_dao.dart';
 import 'data/datasources/client_local_data_source.dart';
 import 'data/datasources/local/client_dao.dart';
 import 'data/repositories/client_repository_impl.dart';
@@ -52,4 +53,6 @@ Future<void> initClientManagementFeature() async {
   // Registra el DAO, que depende de la instancia de AppDatabase.
   // GetIt pasará automáticamente la instancia de AppDatabase al constructor del DAO.
   sl.registerLazySingleton(() => ClientDao(sl<AppDatabase>()));
+
+  sl.registerLazySingleton(() => TicketDao(sl<AppDatabase>()));
 }

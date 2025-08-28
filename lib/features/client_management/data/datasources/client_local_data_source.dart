@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
 
+import '../../../../core/config/injection_container.dart';
+import '../../../../core/db/dao/ticket_dao.dart';
 import 'local/client_dao.dart';
 import '../models/client_model.dart';
 import '../../../../core/db/database.dart';
@@ -23,8 +25,9 @@ abstract class IClientDataSource {
 class ClientLocalDataSourceImpl implements IClientDataSource {
   final ClientDao clientDao;
 
+  final TicketDao ticketDao = sl<TicketDao>();
+
   ClientLocalDataSourceImpl({required this.clientDao}) {
-    //_seedDatabaseIfEmpty();
   }
 
   /// ---
@@ -136,55 +139,4 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
     }
   }
 
-  /// ---
-  /// [seedDatabaseIfEmpty] es un método auxiliar para poblar la base de datos
-  /// con datos de prueba la primera vez que se ejecuta la aplicación.
-  ///
-  /// Comprueba si ya existen clientes. Si no, inserta una lista predefinida.
-  /// Esto evita tener una pantalla vacía al principio del desarrollo.
-  /// ---
-  /// 
-  // void _seedDatabaseIfEmpty() async {
-  //   final clients = await getAllClients();
-  //   if (clients.isEmpty) {
-  //     final mockClientsToSeed = [
-  //       ClientsCompanion(
-  //         name: const Value('Ana'),
-  //         lastName: const Value('García'),
-  //         email: const Value('ana.garcia@email.com'),
-  //         phone: const Value('123456789'),
-  //         birthDate: Value(DateTime(1990, 5, 15)),
-  //       ),
-  //       ClientsCompanion(
-  //         name: const Value('Carlos'),
-  //         lastName: const Value('Rodriguez'),
-  //         email: const Value('carlos.r@email.com'),
-  //         phone: const Value('987654321'),
-  //         birthDate: Value(DateTime(1985, 8, 22)),
-  //       ),
-  //       ClientsCompanion(
-  //         name: const Value('Lucía'),
-  //         lastName: const Value('Martinez'),
-  //         email: const Value('lucia.m@email.com'),
-  //       ),
-  //       ClientsCompanion(
-  //         name: const Value('Javier'),
-  //         lastName: const Value('Sánchez'),
-  //         email: const Value('javier.s@email.com'),
-  //         phone: const Value('555123456'),
-  //         birthDate: Value(DateTime(1992, 2, 10)),
-  //       ),
-  //       ClientsCompanion(
-  //         name: const Value('Elena'),
-  //         lastName: const Value('Pérez'),
-  //         email: const Value('elena.p@email.com'),
-  //         birthDate: Value(DateTime(2000, 11, 30)),
-  //       ),
-  //     ];
-
-  //     for (var client in mockClientsToSeed) {
-  //       await clientDao.insertClient(client);
-  //     }
-  //   }
-  // }
 }
