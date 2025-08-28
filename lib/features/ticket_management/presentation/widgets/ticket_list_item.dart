@@ -39,10 +39,14 @@ class TicketListItem extends StatelessWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: AppColors.accentLight.withOpacity(0.1),
+                // --- COLOR DINÁMICO ---
+                  color: (ticket.transportType == TransportType.aereo ? AppColors.accentLight : Colors.orange).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.airplane_ticket_outlined, color: AppColors.accentLight),
+                child: Icon(
+                  ticket.transportType == TransportType.aereo ? Icons.flight_takeoff : Icons.directions_bus,
+                  color: ticket.transportType == TransportType.aereo ? AppColors.accentLight : Colors.orange
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(

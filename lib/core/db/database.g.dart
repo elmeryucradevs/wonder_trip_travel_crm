@@ -956,6 +956,19 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
         type: DriftSqlType.string,
         requiredDuringInsert: false,
       );
+  static const VerificationMeta _unaccompaniedMinorMeta =
+      const VerificationMeta('unaccompaniedMinor');
+  @override
+  late final GeneratedColumn<bool> unaccompaniedMinor = GeneratedColumn<bool>(
+    'unaccompanied_minor',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("unaccompanied_minor" IN (0, 1))',
+    ),
+  );
   static const VerificationMeta _issuingAgentMeta = const VerificationMeta(
     'issuingAgent',
   );
@@ -976,18 +989,6 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _baseFareMeta = const VerificationMeta(
-    'baseFare',
-  );
-  @override
-  late final GeneratedColumn<double> baseFare = GeneratedColumn<double>(
-    'base_fare',
-    aliasedName,
-    false,
-    type: DriftSqlType.double,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(0.0),
-  );
   static const VerificationMeta _currencyMeta = const VerificationMeta(
     'currency',
   );
@@ -1003,53 +1004,6 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
     defaultValue: const Constant('USD'),
-  );
-  static const VerificationMeta _taxBOMeta = const VerificationMeta('taxBO');
-  @override
-  late final GeneratedColumn<double> taxBO = GeneratedColumn<double>(
-    'tax_b_o',
-    aliasedName,
-    true,
-    type: DriftSqlType.double,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _taxA7Meta = const VerificationMeta('taxA7');
-  @override
-  late final GeneratedColumn<double> taxA7 = GeneratedColumn<double>(
-    'tax_a7',
-    aliasedName,
-    true,
-    type: DriftSqlType.double,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _taxQMMeta = const VerificationMeta('taxQM');
-  @override
-  late final GeneratedColumn<double> taxQM = GeneratedColumn<double>(
-    'tax_q_m',
-    aliasedName,
-    true,
-    type: DriftSqlType.double,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _taxOMMeta = const VerificationMeta('taxOM');
-  @override
-  late final GeneratedColumn<double> taxOM = GeneratedColumn<double>(
-    'tax_o_m',
-    aliasedName,
-    true,
-    type: DriftSqlType.double,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _otherTaxesMeta = const VerificationMeta(
-    'otherTaxes',
-  );
-  @override
-  late final GeneratedColumn<double> otherTaxes = GeneratedColumn<double>(
-    'other_taxes',
-    aliasedName,
-    true,
-    type: DriftSqlType.double,
-    requiredDuringInsert: false,
   );
   static const VerificationMeta _totalPriceMeta = const VerificationMeta(
     'totalPrice',
@@ -1121,15 +1075,10 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     ticketNumber,
     flightType,
     passengerCategory,
+    unaccompaniedMinor,
     issuingAgent,
     status,
-    baseFare,
     currency,
-    taxBO,
-    taxA7,
-    taxQM,
-    taxOM,
-    otherTaxes,
     totalPrice,
     commission,
     originalTicketId,
@@ -1211,6 +1160,15 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
         ),
       );
     }
+    if (data.containsKey('unaccompanied_minor')) {
+      context.handle(
+        _unaccompaniedMinorMeta,
+        unaccompaniedMinor.isAcceptableOrUnknown(
+          data['unaccompanied_minor']!,
+          _unaccompaniedMinorMeta,
+        ),
+      );
+    }
     if (data.containsKey('issuing_agent')) {
       context.handle(
         _issuingAgentMeta,
@@ -1226,46 +1184,10 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
         status.isAcceptableOrUnknown(data['status']!, _statusMeta),
       );
     }
-    if (data.containsKey('base_fare')) {
-      context.handle(
-        _baseFareMeta,
-        baseFare.isAcceptableOrUnknown(data['base_fare']!, _baseFareMeta),
-      );
-    }
     if (data.containsKey('currency')) {
       context.handle(
         _currencyMeta,
         currency.isAcceptableOrUnknown(data['currency']!, _currencyMeta),
-      );
-    }
-    if (data.containsKey('tax_b_o')) {
-      context.handle(
-        _taxBOMeta,
-        taxBO.isAcceptableOrUnknown(data['tax_b_o']!, _taxBOMeta),
-      );
-    }
-    if (data.containsKey('tax_a7')) {
-      context.handle(
-        _taxA7Meta,
-        taxA7.isAcceptableOrUnknown(data['tax_a7']!, _taxA7Meta),
-      );
-    }
-    if (data.containsKey('tax_q_m')) {
-      context.handle(
-        _taxQMMeta,
-        taxQM.isAcceptableOrUnknown(data['tax_q_m']!, _taxQMMeta),
-      );
-    }
-    if (data.containsKey('tax_o_m')) {
-      context.handle(
-        _taxOMMeta,
-        taxOM.isAcceptableOrUnknown(data['tax_o_m']!, _taxOMMeta),
-      );
-    }
-    if (data.containsKey('other_taxes')) {
-      context.handle(
-        _otherTaxesMeta,
-        otherTaxes.isAcceptableOrUnknown(data['other_taxes']!, _otherTaxesMeta),
       );
     }
     if (data.containsKey('total_price')) {
@@ -1344,6 +1266,10 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
         DriftSqlType.string,
         data['${effectivePrefix}passenger_category'],
       ),
+      unaccompaniedMinor: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}unaccompanied_minor'],
+      ),
       issuingAgent: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}issuing_agent'],
@@ -1352,34 +1278,10 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
         DriftSqlType.string,
         data['${effectivePrefix}status'],
       ),
-      baseFare: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}base_fare'],
-      )!,
       currency: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}currency'],
       )!,
-      taxBO: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}tax_b_o'],
-      ),
-      taxA7: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}tax_a7'],
-      ),
-      taxQM: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}tax_q_m'],
-      ),
-      taxOM: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}tax_o_m'],
-      ),
-      otherTaxes: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}other_taxes'],
-      ),
       totalPrice: attachedDatabase.typeMapping.read(
         DriftSqlType.double,
         data['${effectivePrefix}total_price'],
@@ -1424,21 +1326,18 @@ class Ticket extends DataClass implements Insertable<Ticket> {
   /// Tipo de Vuelo: OW (One-Way) o RT (Round-Trip).
   final String? flightType;
 
-  /// Categoría del Pasajero: ADT (Adulto), CHD (Niño), INF (Infante).
+  /// Categoría del Pasajero: ADT (Adulto), CHD (Niño), INF (Infante), SNN (Adulto Mayor).
   final String? passengerCategory;
+
+  /// NUEVO: Indica si el menor viaja solo.
+  final bool? unaccompaniedMinor;
 
   /// Proveedor o agente que emitió el boleto.
   final String? issuingAgent;
 
   /// Estado del boleto: CONFIRMADO, CANCELADO, REEMBOLSADO.
   final String? status;
-  final double baseFare;
   final String currency;
-  final double? taxBO;
-  final double? taxA7;
-  final double? taxQM;
-  final double? taxOM;
-  final double? otherTaxes;
   final double totalPrice;
 
   /// La comisión que recibe la agencia por la venta de este boleto.
@@ -1457,15 +1356,10 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     this.ticketNumber,
     this.flightType,
     this.passengerCategory,
+    this.unaccompaniedMinor,
     this.issuingAgent,
     this.status,
-    required this.baseFare,
     required this.currency,
-    this.taxBO,
-    this.taxA7,
-    this.taxQM,
-    this.taxOM,
-    this.otherTaxes,
     required this.totalPrice,
     this.commission,
     this.originalTicketId,
@@ -1489,29 +1383,16 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     if (!nullToAbsent || passengerCategory != null) {
       map['passenger_category'] = Variable<String>(passengerCategory);
     }
+    if (!nullToAbsent || unaccompaniedMinor != null) {
+      map['unaccompanied_minor'] = Variable<bool>(unaccompaniedMinor);
+    }
     if (!nullToAbsent || issuingAgent != null) {
       map['issuing_agent'] = Variable<String>(issuingAgent);
     }
     if (!nullToAbsent || status != null) {
       map['status'] = Variable<String>(status);
     }
-    map['base_fare'] = Variable<double>(baseFare);
     map['currency'] = Variable<String>(currency);
-    if (!nullToAbsent || taxBO != null) {
-      map['tax_b_o'] = Variable<double>(taxBO);
-    }
-    if (!nullToAbsent || taxA7 != null) {
-      map['tax_a7'] = Variable<double>(taxA7);
-    }
-    if (!nullToAbsent || taxQM != null) {
-      map['tax_q_m'] = Variable<double>(taxQM);
-    }
-    if (!nullToAbsent || taxOM != null) {
-      map['tax_o_m'] = Variable<double>(taxOM);
-    }
-    if (!nullToAbsent || otherTaxes != null) {
-      map['other_taxes'] = Variable<double>(otherTaxes);
-    }
     map['total_price'] = Variable<double>(totalPrice);
     if (!nullToAbsent || commission != null) {
       map['commission'] = Variable<double>(commission);
@@ -1540,29 +1421,16 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       passengerCategory: passengerCategory == null && nullToAbsent
           ? const Value.absent()
           : Value(passengerCategory),
+      unaccompaniedMinor: unaccompaniedMinor == null && nullToAbsent
+          ? const Value.absent()
+          : Value(unaccompaniedMinor),
       issuingAgent: issuingAgent == null && nullToAbsent
           ? const Value.absent()
           : Value(issuingAgent),
       status: status == null && nullToAbsent
           ? const Value.absent()
           : Value(status),
-      baseFare: Value(baseFare),
       currency: Value(currency),
-      taxBO: taxBO == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxBO),
-      taxA7: taxA7 == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxA7),
-      taxQM: taxQM == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxQM),
-      taxOM: taxOM == null && nullToAbsent
-          ? const Value.absent()
-          : Value(taxOM),
-      otherTaxes: otherTaxes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(otherTaxes),
       totalPrice: Value(totalPrice),
       commission: commission == null && nullToAbsent
           ? const Value.absent()
@@ -1591,15 +1459,12 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       passengerCategory: serializer.fromJson<String?>(
         json['passengerCategory'],
       ),
+      unaccompaniedMinor: serializer.fromJson<bool?>(
+        json['unaccompaniedMinor'],
+      ),
       issuingAgent: serializer.fromJson<String?>(json['issuingAgent']),
       status: serializer.fromJson<String?>(json['status']),
-      baseFare: serializer.fromJson<double>(json['baseFare']),
       currency: serializer.fromJson<String>(json['currency']),
-      taxBO: serializer.fromJson<double?>(json['taxBO']),
-      taxA7: serializer.fromJson<double?>(json['taxA7']),
-      taxQM: serializer.fromJson<double?>(json['taxQM']),
-      taxOM: serializer.fromJson<double?>(json['taxOM']),
-      otherTaxes: serializer.fromJson<double?>(json['otherTaxes']),
       totalPrice: serializer.fromJson<double>(json['totalPrice']),
       commission: serializer.fromJson<double?>(json['commission']),
       originalTicketId: serializer.fromJson<int?>(json['originalTicketId']),
@@ -1619,15 +1484,10 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       'ticketNumber': serializer.toJson<String?>(ticketNumber),
       'flightType': serializer.toJson<String?>(flightType),
       'passengerCategory': serializer.toJson<String?>(passengerCategory),
+      'unaccompaniedMinor': serializer.toJson<bool?>(unaccompaniedMinor),
       'issuingAgent': serializer.toJson<String?>(issuingAgent),
       'status': serializer.toJson<String?>(status),
-      'baseFare': serializer.toJson<double>(baseFare),
       'currency': serializer.toJson<String>(currency),
-      'taxBO': serializer.toJson<double?>(taxBO),
-      'taxA7': serializer.toJson<double?>(taxA7),
-      'taxQM': serializer.toJson<double?>(taxQM),
-      'taxOM': serializer.toJson<double?>(taxOM),
-      'otherTaxes': serializer.toJson<double?>(otherTaxes),
       'totalPrice': serializer.toJson<double>(totalPrice),
       'commission': serializer.toJson<double?>(commission),
       'originalTicketId': serializer.toJson<int?>(originalTicketId),
@@ -1645,15 +1505,10 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     Value<String?> ticketNumber = const Value.absent(),
     Value<String?> flightType = const Value.absent(),
     Value<String?> passengerCategory = const Value.absent(),
+    Value<bool?> unaccompaniedMinor = const Value.absent(),
     Value<String?> issuingAgent = const Value.absent(),
     Value<String?> status = const Value.absent(),
-    double? baseFare,
     String? currency,
-    Value<double?> taxBO = const Value.absent(),
-    Value<double?> taxA7 = const Value.absent(),
-    Value<double?> taxQM = const Value.absent(),
-    Value<double?> taxOM = const Value.absent(),
-    Value<double?> otherTaxes = const Value.absent(),
     double? totalPrice,
     Value<double?> commission = const Value.absent(),
     Value<int?> originalTicketId = const Value.absent(),
@@ -1670,15 +1525,12 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     passengerCategory: passengerCategory.present
         ? passengerCategory.value
         : this.passengerCategory,
+    unaccompaniedMinor: unaccompaniedMinor.present
+        ? unaccompaniedMinor.value
+        : this.unaccompaniedMinor,
     issuingAgent: issuingAgent.present ? issuingAgent.value : this.issuingAgent,
     status: status.present ? status.value : this.status,
-    baseFare: baseFare ?? this.baseFare,
     currency: currency ?? this.currency,
-    taxBO: taxBO.present ? taxBO.value : this.taxBO,
-    taxA7: taxA7.present ? taxA7.value : this.taxA7,
-    taxQM: taxQM.present ? taxQM.value : this.taxQM,
-    taxOM: taxOM.present ? taxOM.value : this.taxOM,
-    otherTaxes: otherTaxes.present ? otherTaxes.value : this.otherTaxes,
     totalPrice: totalPrice ?? this.totalPrice,
     commission: commission.present ? commission.value : this.commission,
     originalTicketId: originalTicketId.present
@@ -1707,19 +1559,14 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       passengerCategory: data.passengerCategory.present
           ? data.passengerCategory.value
           : this.passengerCategory,
+      unaccompaniedMinor: data.unaccompaniedMinor.present
+          ? data.unaccompaniedMinor.value
+          : this.unaccompaniedMinor,
       issuingAgent: data.issuingAgent.present
           ? data.issuingAgent.value
           : this.issuingAgent,
       status: data.status.present ? data.status.value : this.status,
-      baseFare: data.baseFare.present ? data.baseFare.value : this.baseFare,
       currency: data.currency.present ? data.currency.value : this.currency,
-      taxBO: data.taxBO.present ? data.taxBO.value : this.taxBO,
-      taxA7: data.taxA7.present ? data.taxA7.value : this.taxA7,
-      taxQM: data.taxQM.present ? data.taxQM.value : this.taxQM,
-      taxOM: data.taxOM.present ? data.taxOM.value : this.taxOM,
-      otherTaxes: data.otherTaxes.present
-          ? data.otherTaxes.value
-          : this.otherTaxes,
       totalPrice: data.totalPrice.present
           ? data.totalPrice.value
           : this.totalPrice,
@@ -1745,15 +1592,10 @@ class Ticket extends DataClass implements Insertable<Ticket> {
           ..write('ticketNumber: $ticketNumber, ')
           ..write('flightType: $flightType, ')
           ..write('passengerCategory: $passengerCategory, ')
+          ..write('unaccompaniedMinor: $unaccompaniedMinor, ')
           ..write('issuingAgent: $issuingAgent, ')
           ..write('status: $status, ')
-          ..write('baseFare: $baseFare, ')
           ..write('currency: $currency, ')
-          ..write('taxBO: $taxBO, ')
-          ..write('taxA7: $taxA7, ')
-          ..write('taxQM: $taxQM, ')
-          ..write('taxOM: $taxOM, ')
-          ..write('otherTaxes: $otherTaxes, ')
           ..write('totalPrice: $totalPrice, ')
           ..write('commission: $commission, ')
           ..write('originalTicketId: $originalTicketId, ')
@@ -1764,7 +1606,7 @@ class Ticket extends DataClass implements Insertable<Ticket> {
   }
 
   @override
-  int get hashCode => Object.hashAll([
+  int get hashCode => Object.hash(
     id,
     clientId,
     pnr,
@@ -1773,21 +1615,16 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     ticketNumber,
     flightType,
     passengerCategory,
+    unaccompaniedMinor,
     issuingAgent,
     status,
-    baseFare,
     currency,
-    taxBO,
-    taxA7,
-    taxQM,
-    taxOM,
-    otherTaxes,
     totalPrice,
     commission,
     originalTicketId,
     createdAt,
     updatedAt,
-  ]);
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1800,15 +1637,10 @@ class Ticket extends DataClass implements Insertable<Ticket> {
           other.ticketNumber == this.ticketNumber &&
           other.flightType == this.flightType &&
           other.passengerCategory == this.passengerCategory &&
+          other.unaccompaniedMinor == this.unaccompaniedMinor &&
           other.issuingAgent == this.issuingAgent &&
           other.status == this.status &&
-          other.baseFare == this.baseFare &&
           other.currency == this.currency &&
-          other.taxBO == this.taxBO &&
-          other.taxA7 == this.taxA7 &&
-          other.taxQM == this.taxQM &&
-          other.taxOM == this.taxOM &&
-          other.otherTaxes == this.otherTaxes &&
           other.totalPrice == this.totalPrice &&
           other.commission == this.commission &&
           other.originalTicketId == this.originalTicketId &&
@@ -1825,15 +1657,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
   final Value<String?> ticketNumber;
   final Value<String?> flightType;
   final Value<String?> passengerCategory;
+  final Value<bool?> unaccompaniedMinor;
   final Value<String?> issuingAgent;
   final Value<String?> status;
-  final Value<double> baseFare;
   final Value<String> currency;
-  final Value<double?> taxBO;
-  final Value<double?> taxA7;
-  final Value<double?> taxQM;
-  final Value<double?> taxOM;
-  final Value<double?> otherTaxes;
   final Value<double> totalPrice;
   final Value<double?> commission;
   final Value<int?> originalTicketId;
@@ -1848,15 +1675,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     this.ticketNumber = const Value.absent(),
     this.flightType = const Value.absent(),
     this.passengerCategory = const Value.absent(),
+    this.unaccompaniedMinor = const Value.absent(),
     this.issuingAgent = const Value.absent(),
     this.status = const Value.absent(),
-    this.baseFare = const Value.absent(),
     this.currency = const Value.absent(),
-    this.taxBO = const Value.absent(),
-    this.taxA7 = const Value.absent(),
-    this.taxQM = const Value.absent(),
-    this.taxOM = const Value.absent(),
-    this.otherTaxes = const Value.absent(),
     this.totalPrice = const Value.absent(),
     this.commission = const Value.absent(),
     this.originalTicketId = const Value.absent(),
@@ -1872,15 +1694,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     this.ticketNumber = const Value.absent(),
     this.flightType = const Value.absent(),
     this.passengerCategory = const Value.absent(),
+    this.unaccompaniedMinor = const Value.absent(),
     this.issuingAgent = const Value.absent(),
     this.status = const Value.absent(),
-    this.baseFare = const Value.absent(),
     this.currency = const Value.absent(),
-    this.taxBO = const Value.absent(),
-    this.taxA7 = const Value.absent(),
-    this.taxQM = const Value.absent(),
-    this.taxOM = const Value.absent(),
-    this.otherTaxes = const Value.absent(),
     required double totalPrice,
     this.commission = const Value.absent(),
     this.originalTicketId = const Value.absent(),
@@ -1899,15 +1716,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     Expression<String>? ticketNumber,
     Expression<String>? flightType,
     Expression<String>? passengerCategory,
+    Expression<bool>? unaccompaniedMinor,
     Expression<String>? issuingAgent,
     Expression<String>? status,
-    Expression<double>? baseFare,
     Expression<String>? currency,
-    Expression<double>? taxBO,
-    Expression<double>? taxA7,
-    Expression<double>? taxQM,
-    Expression<double>? taxOM,
-    Expression<double>? otherTaxes,
     Expression<double>? totalPrice,
     Expression<double>? commission,
     Expression<int>? originalTicketId,
@@ -1923,15 +1735,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
       if (ticketNumber != null) 'ticket_number': ticketNumber,
       if (flightType != null) 'flight_type': flightType,
       if (passengerCategory != null) 'passenger_category': passengerCategory,
+      if (unaccompaniedMinor != null) 'unaccompanied_minor': unaccompaniedMinor,
       if (issuingAgent != null) 'issuing_agent': issuingAgent,
       if (status != null) 'status': status,
-      if (baseFare != null) 'base_fare': baseFare,
       if (currency != null) 'currency': currency,
-      if (taxBO != null) 'tax_b_o': taxBO,
-      if (taxA7 != null) 'tax_a7': taxA7,
-      if (taxQM != null) 'tax_q_m': taxQM,
-      if (taxOM != null) 'tax_o_m': taxOM,
-      if (otherTaxes != null) 'other_taxes': otherTaxes,
       if (totalPrice != null) 'total_price': totalPrice,
       if (commission != null) 'commission': commission,
       if (originalTicketId != null) 'original_ticket_id': originalTicketId,
@@ -1949,15 +1756,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     Value<String?>? ticketNumber,
     Value<String?>? flightType,
     Value<String?>? passengerCategory,
+    Value<bool?>? unaccompaniedMinor,
     Value<String?>? issuingAgent,
     Value<String?>? status,
-    Value<double>? baseFare,
     Value<String>? currency,
-    Value<double?>? taxBO,
-    Value<double?>? taxA7,
-    Value<double?>? taxQM,
-    Value<double?>? taxOM,
-    Value<double?>? otherTaxes,
     Value<double>? totalPrice,
     Value<double?>? commission,
     Value<int?>? originalTicketId,
@@ -1973,15 +1775,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
       ticketNumber: ticketNumber ?? this.ticketNumber,
       flightType: flightType ?? this.flightType,
       passengerCategory: passengerCategory ?? this.passengerCategory,
+      unaccompaniedMinor: unaccompaniedMinor ?? this.unaccompaniedMinor,
       issuingAgent: issuingAgent ?? this.issuingAgent,
       status: status ?? this.status,
-      baseFare: baseFare ?? this.baseFare,
       currency: currency ?? this.currency,
-      taxBO: taxBO ?? this.taxBO,
-      taxA7: taxA7 ?? this.taxA7,
-      taxQM: taxQM ?? this.taxQM,
-      taxOM: taxOM ?? this.taxOM,
-      otherTaxes: otherTaxes ?? this.otherTaxes,
       totalPrice: totalPrice ?? this.totalPrice,
       commission: commission ?? this.commission,
       originalTicketId: originalTicketId ?? this.originalTicketId,
@@ -2017,32 +1814,17 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     if (passengerCategory.present) {
       map['passenger_category'] = Variable<String>(passengerCategory.value);
     }
+    if (unaccompaniedMinor.present) {
+      map['unaccompanied_minor'] = Variable<bool>(unaccompaniedMinor.value);
+    }
     if (issuingAgent.present) {
       map['issuing_agent'] = Variable<String>(issuingAgent.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
-    if (baseFare.present) {
-      map['base_fare'] = Variable<double>(baseFare.value);
-    }
     if (currency.present) {
       map['currency'] = Variable<String>(currency.value);
-    }
-    if (taxBO.present) {
-      map['tax_b_o'] = Variable<double>(taxBO.value);
-    }
-    if (taxA7.present) {
-      map['tax_a7'] = Variable<double>(taxA7.value);
-    }
-    if (taxQM.present) {
-      map['tax_q_m'] = Variable<double>(taxQM.value);
-    }
-    if (taxOM.present) {
-      map['tax_o_m'] = Variable<double>(taxOM.value);
-    }
-    if (otherTaxes.present) {
-      map['other_taxes'] = Variable<double>(otherTaxes.value);
     }
     if (totalPrice.present) {
       map['total_price'] = Variable<double>(totalPrice.value);
@@ -2073,15 +1855,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
           ..write('ticketNumber: $ticketNumber, ')
           ..write('flightType: $flightType, ')
           ..write('passengerCategory: $passengerCategory, ')
+          ..write('unaccompaniedMinor: $unaccompaniedMinor, ')
           ..write('issuingAgent: $issuingAgent, ')
           ..write('status: $status, ')
-          ..write('baseFare: $baseFare, ')
           ..write('currency: $currency, ')
-          ..write('taxBO: $taxBO, ')
-          ..write('taxA7: $taxA7, ')
-          ..write('taxQM: $taxQM, ')
-          ..write('taxOM: $taxOM, ')
-          ..write('otherTaxes: $otherTaxes, ')
           ..write('totalPrice: $totalPrice, ')
           ..write('commission: $commission, ')
           ..write('originalTicketId: $originalTicketId, ')
@@ -2202,6 +1979,21 @@ class $FlightSegmentsTable extends FlightSegments
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _flightClassMeta = const VerificationMeta(
+    'flightClass',
+  );
+  @override
+  late final GeneratedColumn<String> flightClass = GeneratedColumn<String>(
+    'flight_class',
+    aliasedName,
+    true,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 20,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _stopoverMeta = const VerificationMeta(
     'stopover',
   );
@@ -2223,6 +2015,7 @@ class $FlightSegmentsTable extends FlightSegments
     destination,
     departureDate,
     arrivalDate,
+    flightClass,
     stopover,
   ];
   @override
@@ -2307,6 +2100,15 @@ class $FlightSegmentsTable extends FlightSegments
     } else if (isInserting) {
       context.missing(_arrivalDateMeta);
     }
+    if (data.containsKey('flight_class')) {
+      context.handle(
+        _flightClassMeta,
+        flightClass.isAcceptableOrUnknown(
+          data['flight_class']!,
+          _flightClassMeta,
+        ),
+      );
+    }
     if (data.containsKey('stopover')) {
       context.handle(
         _stopoverMeta,
@@ -2354,6 +2156,10 @@ class $FlightSegmentsTable extends FlightSegments
         DriftSqlType.dateTime,
         data['${effectivePrefix}arrival_date'],
       )!,
+      flightClass: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}flight_class'],
+      ),
       stopover: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}stopover'],
@@ -2376,6 +2182,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
   final String destination;
   final DateTime departureDate;
   final DateTime arrivalDate;
+  final String? flightClass;
   final String? stopover;
   const FlightSegment({
     required this.id,
@@ -2386,6 +2193,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     required this.destination,
     required this.departureDate,
     required this.arrivalDate,
+    this.flightClass,
     this.stopover,
   });
   @override
@@ -2403,6 +2211,9 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     map['destination'] = Variable<String>(destination);
     map['departure_date'] = Variable<DateTime>(departureDate);
     map['arrival_date'] = Variable<DateTime>(arrivalDate);
+    if (!nullToAbsent || flightClass != null) {
+      map['flight_class'] = Variable<String>(flightClass);
+    }
     if (!nullToAbsent || stopover != null) {
       map['stopover'] = Variable<String>(stopover);
     }
@@ -2423,6 +2234,9 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
       destination: Value(destination),
       departureDate: Value(departureDate),
       arrivalDate: Value(arrivalDate),
+      flightClass: flightClass == null && nullToAbsent
+          ? const Value.absent()
+          : Value(flightClass),
       stopover: stopover == null && nullToAbsent
           ? const Value.absent()
           : Value(stopover),
@@ -2443,6 +2257,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
       destination: serializer.fromJson<String>(json['destination']),
       departureDate: serializer.fromJson<DateTime>(json['departureDate']),
       arrivalDate: serializer.fromJson<DateTime>(json['arrivalDate']),
+      flightClass: serializer.fromJson<String?>(json['flightClass']),
       stopover: serializer.fromJson<String?>(json['stopover']),
     );
   }
@@ -2458,6 +2273,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
       'destination': serializer.toJson<String>(destination),
       'departureDate': serializer.toJson<DateTime>(departureDate),
       'arrivalDate': serializer.toJson<DateTime>(arrivalDate),
+      'flightClass': serializer.toJson<String?>(flightClass),
       'stopover': serializer.toJson<String?>(stopover),
     };
   }
@@ -2471,6 +2287,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     String? destination,
     DateTime? departureDate,
     DateTime? arrivalDate,
+    Value<String?> flightClass = const Value.absent(),
     Value<String?> stopover = const Value.absent(),
   }) => FlightSegment(
     id: id ?? this.id,
@@ -2481,6 +2298,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     destination: destination ?? this.destination,
     departureDate: departureDate ?? this.departureDate,
     arrivalDate: arrivalDate ?? this.arrivalDate,
+    flightClass: flightClass.present ? flightClass.value : this.flightClass,
     stopover: stopover.present ? stopover.value : this.stopover,
   );
   FlightSegment copyWithCompanion(FlightSegmentsCompanion data) {
@@ -2503,6 +2321,9 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
       arrivalDate: data.arrivalDate.present
           ? data.arrivalDate.value
           : this.arrivalDate,
+      flightClass: data.flightClass.present
+          ? data.flightClass.value
+          : this.flightClass,
       stopover: data.stopover.present ? data.stopover.value : this.stopover,
     );
   }
@@ -2518,6 +2339,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
           ..write('destination: $destination, ')
           ..write('departureDate: $departureDate, ')
           ..write('arrivalDate: $arrivalDate, ')
+          ..write('flightClass: $flightClass, ')
           ..write('stopover: $stopover')
           ..write(')'))
         .toString();
@@ -2533,6 +2355,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
     destination,
     departureDate,
     arrivalDate,
+    flightClass,
     stopover,
   );
   @override
@@ -2547,6 +2370,7 @@ class FlightSegment extends DataClass implements Insertable<FlightSegment> {
           other.destination == this.destination &&
           other.departureDate == this.departureDate &&
           other.arrivalDate == this.arrivalDate &&
+          other.flightClass == this.flightClass &&
           other.stopover == this.stopover);
 }
 
@@ -2559,6 +2383,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
   final Value<String> destination;
   final Value<DateTime> departureDate;
   final Value<DateTime> arrivalDate;
+  final Value<String?> flightClass;
   final Value<String?> stopover;
   const FlightSegmentsCompanion({
     this.id = const Value.absent(),
@@ -2569,6 +2394,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
     this.destination = const Value.absent(),
     this.departureDate = const Value.absent(),
     this.arrivalDate = const Value.absent(),
+    this.flightClass = const Value.absent(),
     this.stopover = const Value.absent(),
   });
   FlightSegmentsCompanion.insert({
@@ -2580,6 +2406,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
     required String destination,
     required DateTime departureDate,
     required DateTime arrivalDate,
+    this.flightClass = const Value.absent(),
     this.stopover = const Value.absent(),
   }) : ticketId = Value(ticketId),
        origin = Value(origin),
@@ -2595,6 +2422,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
     Expression<String>? destination,
     Expression<DateTime>? departureDate,
     Expression<DateTime>? arrivalDate,
+    Expression<String>? flightClass,
     Expression<String>? stopover,
   }) {
     return RawValuesInsertable({
@@ -2606,6 +2434,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
       if (destination != null) 'destination': destination,
       if (departureDate != null) 'departure_date': departureDate,
       if (arrivalDate != null) 'arrival_date': arrivalDate,
+      if (flightClass != null) 'flight_class': flightClass,
       if (stopover != null) 'stopover': stopover,
     });
   }
@@ -2619,6 +2448,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
     Value<String>? destination,
     Value<DateTime>? departureDate,
     Value<DateTime>? arrivalDate,
+    Value<String?>? flightClass,
     Value<String?>? stopover,
   }) {
     return FlightSegmentsCompanion(
@@ -2630,6 +2460,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
       destination: destination ?? this.destination,
       departureDate: departureDate ?? this.departureDate,
       arrivalDate: arrivalDate ?? this.arrivalDate,
+      flightClass: flightClass ?? this.flightClass,
       stopover: stopover ?? this.stopover,
     );
   }
@@ -2661,6 +2492,9 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
     if (arrivalDate.present) {
       map['arrival_date'] = Variable<DateTime>(arrivalDate.value);
     }
+    if (flightClass.present) {
+      map['flight_class'] = Variable<String>(flightClass.value);
+    }
     if (stopover.present) {
       map['stopover'] = Variable<String>(stopover.value);
     }
@@ -2678,6 +2512,7 @@ class FlightSegmentsCompanion extends UpdateCompanion<FlightSegment> {
           ..write('destination: $destination, ')
           ..write('departureDate: $departureDate, ')
           ..write('arrivalDate: $arrivalDate, ')
+          ..write('flightClass: $flightClass, ')
           ..write('stopover: $stopover')
           ..write(')'))
         .toString();
@@ -3184,15 +3019,10 @@ typedef $$TicketsTableCreateCompanionBuilder =
       Value<String?> ticketNumber,
       Value<String?> flightType,
       Value<String?> passengerCategory,
+      Value<bool?> unaccompaniedMinor,
       Value<String?> issuingAgent,
       Value<String?> status,
-      Value<double> baseFare,
       Value<String> currency,
-      Value<double?> taxBO,
-      Value<double?> taxA7,
-      Value<double?> taxQM,
-      Value<double?> taxOM,
-      Value<double?> otherTaxes,
       required double totalPrice,
       Value<double?> commission,
       Value<int?> originalTicketId,
@@ -3209,15 +3039,10 @@ typedef $$TicketsTableUpdateCompanionBuilder =
       Value<String?> ticketNumber,
       Value<String?> flightType,
       Value<String?> passengerCategory,
+      Value<bool?> unaccompaniedMinor,
       Value<String?> issuingAgent,
       Value<String?> status,
-      Value<double> baseFare,
       Value<String> currency,
-      Value<double?> taxBO,
-      Value<double?> taxA7,
-      Value<double?> taxQM,
-      Value<double?> taxOM,
-      Value<double?> otherTaxes,
       Value<double> totalPrice,
       Value<double?> commission,
       Value<int?> originalTicketId,
@@ -3328,6 +3153,11 @@ class $$TicketsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<bool> get unaccompaniedMinor => $composableBuilder(
+    column: $table.unaccompaniedMinor,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get issuingAgent => $composableBuilder(
     column: $table.issuingAgent,
     builder: (column) => ColumnFilters(column),
@@ -3338,38 +3168,8 @@ class $$TicketsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<double> get baseFare => $composableBuilder(
-    column: $table.baseFare,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<String> get currency => $composableBuilder(
     column: $table.currency,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<double> get taxBO => $composableBuilder(
-    column: $table.taxBO,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<double> get taxA7 => $composableBuilder(
-    column: $table.taxA7,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<double> get taxQM => $composableBuilder(
-    column: $table.taxQM,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<double> get taxOM => $composableBuilder(
-    column: $table.taxOM,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<double> get otherTaxes => $composableBuilder(
-    column: $table.otherTaxes,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -3509,6 +3309,11 @@ class $$TicketsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get unaccompaniedMinor => $composableBuilder(
+    column: $table.unaccompaniedMinor,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get issuingAgent => $composableBuilder(
     column: $table.issuingAgent,
     builder: (column) => ColumnOrderings(column),
@@ -3519,38 +3324,8 @@ class $$TicketsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<double> get baseFare => $composableBuilder(
-    column: $table.baseFare,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get currency => $composableBuilder(
     column: $table.currency,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<double> get taxBO => $composableBuilder(
-    column: $table.taxBO,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<double> get taxA7 => $composableBuilder(
-    column: $table.taxA7,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<double> get taxQM => $composableBuilder(
-    column: $table.taxQM,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<double> get taxOM => $composableBuilder(
-    column: $table.taxOM,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<double> get otherTaxes => $composableBuilder(
-    column: $table.otherTaxes,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -3661,6 +3436,11 @@ class $$TicketsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<bool> get unaccompaniedMinor => $composableBuilder(
+    column: $table.unaccompaniedMinor,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get issuingAgent => $composableBuilder(
     column: $table.issuingAgent,
     builder: (column) => column,
@@ -3669,28 +3449,8 @@ class $$TicketsTableAnnotationComposer
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
-  GeneratedColumn<double> get baseFare =>
-      $composableBuilder(column: $table.baseFare, builder: (column) => column);
-
   GeneratedColumn<String> get currency =>
       $composableBuilder(column: $table.currency, builder: (column) => column);
-
-  GeneratedColumn<double> get taxBO =>
-      $composableBuilder(column: $table.taxBO, builder: (column) => column);
-
-  GeneratedColumn<double> get taxA7 =>
-      $composableBuilder(column: $table.taxA7, builder: (column) => column);
-
-  GeneratedColumn<double> get taxQM =>
-      $composableBuilder(column: $table.taxQM, builder: (column) => column);
-
-  GeneratedColumn<double> get taxOM =>
-      $composableBuilder(column: $table.taxOM, builder: (column) => column);
-
-  GeneratedColumn<double> get otherTaxes => $composableBuilder(
-    column: $table.otherTaxes,
-    builder: (column) => column,
-  );
 
   GeneratedColumn<double> get totalPrice => $composableBuilder(
     column: $table.totalPrice,
@@ -3820,15 +3580,10 @@ class $$TicketsTableTableManager
                 Value<String?> ticketNumber = const Value.absent(),
                 Value<String?> flightType = const Value.absent(),
                 Value<String?> passengerCategory = const Value.absent(),
+                Value<bool?> unaccompaniedMinor = const Value.absent(),
                 Value<String?> issuingAgent = const Value.absent(),
                 Value<String?> status = const Value.absent(),
-                Value<double> baseFare = const Value.absent(),
                 Value<String> currency = const Value.absent(),
-                Value<double?> taxBO = const Value.absent(),
-                Value<double?> taxA7 = const Value.absent(),
-                Value<double?> taxQM = const Value.absent(),
-                Value<double?> taxOM = const Value.absent(),
-                Value<double?> otherTaxes = const Value.absent(),
                 Value<double> totalPrice = const Value.absent(),
                 Value<double?> commission = const Value.absent(),
                 Value<int?> originalTicketId = const Value.absent(),
@@ -3843,15 +3598,10 @@ class $$TicketsTableTableManager
                 ticketNumber: ticketNumber,
                 flightType: flightType,
                 passengerCategory: passengerCategory,
+                unaccompaniedMinor: unaccompaniedMinor,
                 issuingAgent: issuingAgent,
                 status: status,
-                baseFare: baseFare,
                 currency: currency,
-                taxBO: taxBO,
-                taxA7: taxA7,
-                taxQM: taxQM,
-                taxOM: taxOM,
-                otherTaxes: otherTaxes,
                 totalPrice: totalPrice,
                 commission: commission,
                 originalTicketId: originalTicketId,
@@ -3868,15 +3618,10 @@ class $$TicketsTableTableManager
                 Value<String?> ticketNumber = const Value.absent(),
                 Value<String?> flightType = const Value.absent(),
                 Value<String?> passengerCategory = const Value.absent(),
+                Value<bool?> unaccompaniedMinor = const Value.absent(),
                 Value<String?> issuingAgent = const Value.absent(),
                 Value<String?> status = const Value.absent(),
-                Value<double> baseFare = const Value.absent(),
                 Value<String> currency = const Value.absent(),
-                Value<double?> taxBO = const Value.absent(),
-                Value<double?> taxA7 = const Value.absent(),
-                Value<double?> taxQM = const Value.absent(),
-                Value<double?> taxOM = const Value.absent(),
-                Value<double?> otherTaxes = const Value.absent(),
                 required double totalPrice,
                 Value<double?> commission = const Value.absent(),
                 Value<int?> originalTicketId = const Value.absent(),
@@ -3891,15 +3636,10 @@ class $$TicketsTableTableManager
                 ticketNumber: ticketNumber,
                 flightType: flightType,
                 passengerCategory: passengerCategory,
+                unaccompaniedMinor: unaccompaniedMinor,
                 issuingAgent: issuingAgent,
                 status: status,
-                baseFare: baseFare,
                 currency: currency,
-                taxBO: taxBO,
-                taxA7: taxA7,
-                taxQM: taxQM,
-                taxOM: taxOM,
-                otherTaxes: otherTaxes,
                 totalPrice: totalPrice,
                 commission: commission,
                 originalTicketId: originalTicketId,
@@ -4029,6 +3769,7 @@ typedef $$FlightSegmentsTableCreateCompanionBuilder =
       required String destination,
       required DateTime departureDate,
       required DateTime arrivalDate,
+      Value<String?> flightClass,
       Value<String?> stopover,
     });
 typedef $$FlightSegmentsTableUpdateCompanionBuilder =
@@ -4041,6 +3782,7 @@ typedef $$FlightSegmentsTableUpdateCompanionBuilder =
       Value<String> destination,
       Value<DateTime> departureDate,
       Value<DateTime> arrivalDate,
+      Value<String?> flightClass,
       Value<String?> stopover,
     });
 
@@ -4113,6 +3855,11 @@ class $$FlightSegmentsTableFilterComposer
 
   ColumnFilters<DateTime> get arrivalDate => $composableBuilder(
     column: $table.arrivalDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get flightClass => $composableBuilder(
+    column: $table.flightClass,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4189,6 +3936,11 @@ class $$FlightSegmentsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get flightClass => $composableBuilder(
+    column: $table.flightClass,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get stopover => $composableBuilder(
     column: $table.stopover,
     builder: (column) => ColumnOrderings(column),
@@ -4258,6 +4010,11 @@ class $$FlightSegmentsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get flightClass => $composableBuilder(
+    column: $table.flightClass,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get stopover =>
       $composableBuilder(column: $table.stopover, builder: (column) => column);
 
@@ -4323,6 +4080,7 @@ class $$FlightSegmentsTableTableManager
                 Value<String> destination = const Value.absent(),
                 Value<DateTime> departureDate = const Value.absent(),
                 Value<DateTime> arrivalDate = const Value.absent(),
+                Value<String?> flightClass = const Value.absent(),
                 Value<String?> stopover = const Value.absent(),
               }) => FlightSegmentsCompanion(
                 id: id,
@@ -4333,6 +4091,7 @@ class $$FlightSegmentsTableTableManager
                 destination: destination,
                 departureDate: departureDate,
                 arrivalDate: arrivalDate,
+                flightClass: flightClass,
                 stopover: stopover,
               ),
           createCompanionCallback:
@@ -4345,6 +4104,7 @@ class $$FlightSegmentsTableTableManager
                 required String destination,
                 required DateTime departureDate,
                 required DateTime arrivalDate,
+                Value<String?> flightClass = const Value.absent(),
                 Value<String?> stopover = const Value.absent(),
               }) => FlightSegmentsCompanion.insert(
                 id: id,
@@ -4355,6 +4115,7 @@ class $$FlightSegmentsTableTableManager
                 destination: destination,
                 departureDate: departureDate,
                 arrivalDate: arrivalDate,
+                flightClass: flightClass,
                 stopover: stopover,
               ),
           withReferenceMapper: (p0) => p0

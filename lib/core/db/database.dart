@@ -1,3 +1,4 @@
+// lib/core/db/database.dart
 
 import 'package:drift/drift.dart';
 
@@ -6,9 +7,8 @@ import '../../features/client_management/data/datasources/local/client_dao.dart'
 import 'connection/native.dart'
     if (dart.library.html) 'connection/web.dart';
 import 'dao/ticket_dao.dart';
+import '../../features/ticket_management/domain/entities/ticket_entity.dart';
 
-// Esto importa el fichero que será generado por drift.
-// El nombre del fichero es el nombre de este fichero con la extensión ".g.dart"
 part 'database.g.dart';
 
 // --- TABLAS ---
@@ -71,8 +71,11 @@ class Tickets extends Table {
   /// Tipo de Vuelo: OW (One-Way) o RT (Round-Trip).
   TextColumn get flightType => text().withLength(min: 2, max: 2).nullable()();
 
-  /// Categoría del Pasajero: ADT (Adulto), CHD (Niño), INF (Infante).
+  /// Categoría del Pasajero: ADT (Adulto), CHD (Niño), INF (Infante), SNN (Adulto Mayor).
   TextColumn get passengerCategory => text().withLength(min: 3, max: 3).nullable()();
+  
+  /// NUEVO: Indica si el menor viaja solo.
+  BoolColumn get unaccompaniedMinor => boolean().nullable()();
 
   /// Proveedor o agente que emitió el boleto.
   TextColumn get issuingAgent => text().nullable()();
@@ -81,13 +84,7 @@ class Tickets extends Table {
   TextColumn get status => text().nullable()();
 
   // --- DESGLOSE DE TARIFAS ---
-  RealColumn get baseFare => real().withDefault(const Constant(0.0))();
   TextColumn get currency => text().withLength(min: 3, max: 3).withDefault(const Constant('USD'))();
-  RealColumn get taxBO => real().nullable()();
-  RealColumn get taxA7 => real().nullable()();
-  RealColumn get taxQM => real().nullable()();
-  RealColumn get taxOM => real().nullable()();
-  RealColumn get otherTaxes => real().nullable()();
   RealColumn get totalPrice => real()();
 
   /// La comisión que recibe la agencia por la venta de este boleto.
@@ -125,6 +122,8 @@ class FlightSegments extends Table {
   TextColumn get destination => text().withLength(min: 3, max: 3)();
   DateTimeColumn get departureDate => dateTime()();
   DateTimeColumn get arrivalDate => dateTime()();
+
+  TextColumn get flightClass => text().withLength(min: 1, max: 20).nullable()();
   
   // Para registrar escalas en el futuro
   TextColumn get stopover => text().nullable()(); 

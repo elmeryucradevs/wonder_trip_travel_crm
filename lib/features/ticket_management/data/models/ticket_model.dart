@@ -1,3 +1,5 @@
+// lib/features/ticket_management/data/models/ticket_model.dart
+
 import 'package:drift/drift.dart';
 
 import '../../../../core/db/database.dart';
@@ -12,7 +14,6 @@ class TicketModel extends TicketEntity {
     required super.emissionDate,
 
     required super.transportType,
-    required super.baseFare,
     required super.currency,
 
     required super.createdAt,
@@ -21,13 +22,9 @@ class TicketModel extends TicketEntity {
     super.ticketNumber,
     super.flightType,
     super.passengerCategory,
+    super.unaccompaniedMinor,
     super.issuingAgent,
     super.status,
-    super.taxBO,
-    super.taxA7,
-    super.taxQM,
-    super.taxOM,
-    super.otherTaxes,
 
     super.commission,
     super.originalTicketId,
@@ -40,7 +37,20 @@ class TicketModel extends TicketEntity {
       id: isInsert ? const Value.absent() : Value(id),
       clientId: Value(clientId),
       pnr: Value(pnr),
-      // ... (añade todos los demás campos del ticket aquí)
+      emissionDate: Value(emissionDate),
+      transportType: Value(transportType.name),
+      ticketNumber: Value(ticketNumber),
+      flightType: Value(flightType),
+      passengerCategory: Value(passengerCategory),
+      unaccompaniedMinor: Value(unaccompaniedMinor),
+      issuingAgent: Value(issuingAgent),
+      status: Value(status),
+      currency: Value(currency),
+      totalPrice: Value(totalPrice),
+      commission: Value(commission),
+      originalTicketId: Value(originalTicketId),
+      createdAt: isInsert ? const Value.absent() : Value(createdAt),
+      updatedAt: Value(DateTime.now()), // Siempre actualizamos esta fecha
     );
   }
   // Puedes añadir métodos fromJson/toJson aquí cuando conectemos a una API remota.

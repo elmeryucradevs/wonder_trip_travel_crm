@@ -3,6 +3,7 @@ import 'package:drift/drift.dart';
 import '../../../../core/db/dao/ticket_dao.dart';
 import '../../../../core/db/database.dart';
 import '../../../../core/error/exceptions.dart';
+import '../../domain/entities/flight_segment_entity.dart';
 import '../../domain/entities/ticket_entity.dart';
 import '../models/ticket_model.dart';
 
@@ -21,32 +22,43 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
   Future<List<TicketModel>> getTicketsForClient(int clientId) async {
     try {
       final ticketsFromDb = await ticketDao.getTicketsForClient(clientId);
-      return ticketsFromDb
-          .map((ticket) => TicketModel(
-                id: ticket.id,
-                clientId: ticket.clientId,
-                pnr: ticket.pnr,
-                emissionDate: ticket.emissionDate,
-                transportType: ticket.transportType == 'TERRESTRE' ? TransportType.terrestre : TransportType.aereo,
-                ticketNumber: ticket.ticketNumber,
-                flightType: ticket.flightType,
-                passengerCategory: ticket.passengerCategory,
-                issuingAgent: ticket.issuingAgent,
-                status: ticket.status,
-                baseFare: ticket.baseFare,
-                currency: ticket.currency,
-                taxBO: ticket.taxBO,
-                taxA7: ticket.taxA7,
-                taxQM: ticket.taxQM,
-                taxOM: ticket.taxOM,
-                otherTaxes: ticket.otherTaxes,
-                totalPrice: ticket.totalPrice,
-                commission: ticket.commission,
-                originalTicketId: ticket.originalTicketId,
-                createdAt: ticket.createdAt,
-                updatedAt: ticket.updatedAt,
-              ))
-          .toList();
+      final List<TicketModel> ticketModels = [];
+      for (final ticket in ticketsFromDb) {
+        final segments = await ticketDao.getFlightSegmentsForTicket(ticket.id);
+        
+        ticketModels.add(TicketModel(
+          id: ticket.id,
+          clientId: ticket.clientId,
+          pnr: ticket.pnr,
+          emissionDate: ticket.emissionDate,
+          transportType: ticket.transportType == 'TERRESTRE' ? TransportType.terrestre : TransportType.aereo,
+          ticketNumber: ticket.ticketNumber,
+          flightType: ticket.flightType,
+          passengerCategory: ticket.passengerCategory,
+          unaccompaniedMinor: ticket.unaccompaniedMinor,
+          issuingAgent: ticket.issuingAgent,
+          status: ticket.status,
+          currency: ticket.currency,
+          totalPrice: ticket.totalPrice,
+          commission: ticket.commission,
+          originalTicketId: ticket.originalTicketId,
+          createdAt: ticket.createdAt,
+          updatedAt: ticket.updatedAt,
+          segments: segments.map((s) => FlightSegmentEntity(
+              id: s.id,
+              ticketId: s.ticketId,
+              airlineCode: s.airlineCode,
+              flightNumber: s.flightNumber,
+              origin: s.origin,
+              destination: s.destination,
+              departureDate: s.departureDate,
+              arrivalDate: s.arrivalDate,
+              flightClass: s.flightClass,
+              stopover: s.stopover,
+          )).toList(),
+        ));
+      }
+      return ticketModels;
     } catch (e) {
       throw CacheException('Error al obtener los boletos de la base de datos.');
     }
@@ -58,16 +70,7 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
       // Drift maneja transacciones para asegurar que ambas operaciones (o ninguna) se completen.
       await ticketDao.db.transaction(() async {
         // 1. Creamos el Companion para el Boleto
-        final ticketCompanion = TicketsCompanion(
-          clientId: Value(ticket.clientId),
-          pnr: Value(ticket.pnr),
-          emissionDate: Value(ticket.emissionDate),
-          transportType: Value(ticket.transportType.name),
-          ticketNumber: Value(ticket.ticketNumber),
-          // ... (todos los demás campos del ticket)
-          totalPrice: Value(ticket.totalPrice),
-          commission: Value(ticket.commission),
-        );
+        final ticketCompanion = ticket.toCompanion(true);
 
         // 2. Insertamos el boleto y obtenemos el ID recién creado
         final newTicketId = await ticketDao.insertTicket(ticketCompanion);
@@ -78,6 +81,8 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
             ticketId: Value(newTicketId),
             airlineCode: Value(segment.airlineCode),
             flightNumber: Value(segment.flightNumber),
+            flightClass: Value(segment.flightClass),
+            stopover: Value(segment.stopover),
             origin: Value(segment.origin),
             destination: Value(segment.destination),
             departureDate: Value(segment.departureDate),
@@ -105,7 +110,14 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
         for (final segment in ticket.segments) {
           final segmentCompanion = FlightSegmentsCompanion(
             ticketId: Value(ticket.id),
-            // ... (todos los campos del segmento)
+            airlineCode: Value(segment.airlineCode),
+            flightNumber: Value(segment.flightNumber),
+            origin: Value(segment.origin),
+            destination: Value(segment.destination),
+            departureDate: Value(segment.departureDate),
+            arrivalDate: Value(segment.arrivalDate),
+            flightClass: Value(segment.flightClass),
+            stopover: Value(segment.stopover)
           );
           await ticketDao.insertFlightSegment(segmentCompanion);
         }

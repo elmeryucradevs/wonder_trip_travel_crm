@@ -9,6 +9,8 @@ class FlightSegmentEntity extends Equatable {
   final String destination;
   final DateTime departureDate;
   final DateTime arrivalDate;
+  final String? flightClass;
+  final String? stopover;
 
   const FlightSegmentEntity({
     required this.id,
@@ -19,6 +21,8 @@ class FlightSegmentEntity extends Equatable {
     required this.destination,
     required this.departureDate,
     required this.arrivalDate,
+    this.flightClass,    
+    this.stopover,
   });
 
   FlightSegmentEntity copyWith({
@@ -30,6 +34,8 @@ class FlightSegmentEntity extends Equatable {
     String? destination,
     DateTime? departureDate,
     DateTime? arrivalDate,
+    String? flightClass,
+    String? stopover,
 
   }) { 
     return FlightSegmentEntity(
@@ -41,9 +47,12 @@ class FlightSegmentEntity extends Equatable {
       destination: destination ?? this.destination,
       departureDate: departureDate ?? this.departureDate,
       arrivalDate: arrivalDate ?? this.arrivalDate,
+      flightClass: flightClass ?? this.flightClass,
+      stopover: stopover ?? this.stopover,
   );}
 
 
   @override
-  List<Object?> get props => [id, ticketId, origin, destination];
+  List<Object?> get props => [id, ticketId, origin, destination, departureDate, 
+                              arrivalDate, flightClass, airlineCode, flightNumber, stopover];
 }

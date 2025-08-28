@@ -1,3 +1,5 @@
+// lib/features/ticket_management/domain/entities/ticket_entity.dart
+
 import 'package:equatable/equatable.dart';
 import 'flight_segment_entity.dart'; 
 
@@ -15,16 +17,11 @@ class TicketEntity extends Equatable {
   final TransportType transportType;
   final String? ticketNumber;
   final String? flightType;
-  final String? passengerCategory;
+  final String? passengerCategory; // NUEVO: Categoría del pasajero
+  final bool? unaccompaniedMinor;  // NUEVO: Indica si un menor viaja solo
   final String? issuingAgent;
   final String? status;
-  final double baseFare;
   final String currency;
-  final double? taxBO;
-  final double? taxA7;
-  final double? taxQM;
-  final double? taxOM;
-  final double? otherTaxes;
   final double totalPrice;
 
   final DateTime createdAt;
@@ -41,15 +38,10 @@ class TicketEntity extends Equatable {
     this.ticketNumber,
     this.flightType,
     this.passengerCategory,
+    this.unaccompaniedMinor,
     this.issuingAgent,
     this.status,
-    required this.baseFare,
     required this.currency,
-    this.taxBO,
-    this.taxA7,
-    this.taxQM,
-    this.taxOM,
-    this.otherTaxes,
     required this.totalPrice,
 
     this.commission,
@@ -66,10 +58,11 @@ class TicketEntity extends Equatable {
     DateTime? emissionDate,
     String? ticketNumber,
     String? flightType,
+    String? passengerCategory,
+    bool? unaccompaniedMinor,
     String? issuingAgent,
     String? status,
     String? currency,
-    double? baseFare,
     double? totalPrice,
     double? commission,
     List<FlightSegmentEntity>? segments,
@@ -82,10 +75,10 @@ class TicketEntity extends Equatable {
       transportType: transportType, // No se puede cambiar
       ticketNumber: ticketNumber ?? this.ticketNumber,
       flightType: flightType ?? this.flightType,
-      passengerCategory: passengerCategory, // No se suele cambiar
+      passengerCategory: passengerCategory ?? this.passengerCategory,
+      unaccompaniedMinor: unaccompaniedMinor ?? this.unaccompaniedMinor,
       issuingAgent: issuingAgent ?? this.issuingAgent,
       status: status ?? this.status,
-      baseFare: baseFare ?? this.baseFare,
       currency: currency ?? this.currency,
       totalPrice: totalPrice ?? this.totalPrice,
       commission: commission ?? this.commission,
@@ -93,20 +86,13 @@ class TicketEntity extends Equatable {
       createdAt: createdAt, // No se puede cambiar
       updatedAt: DateTime.now(), // Se actualiza la fecha
       segments: segments ?? this.segments,
-      // Los impuestos se dejan como están, ya que dependen de la tarifa
-      taxBO: taxBO,
-      taxA7: taxA7,
-      taxQM: taxQM,
-      taxOM: taxOM,
-      otherTaxes: otherTaxes,
     );
   }
-  
+
   @override
   List<Object?> get props => [
         id, clientId, pnr, emissionDate, transportType, ticketNumber,
-        flightType, passengerCategory, issuingAgent, status, baseFare,
-        currency, taxBO, taxA7, taxQM, taxOM, otherTaxes, totalPrice,
-        commission, originalTicketId, createdAt, updatedAt, segments 
+        flightType, passengerCategory, unaccompaniedMinor, issuingAgent, status, 
+        currency, totalPrice, commission, originalTicketId, createdAt, updatedAt, segments 
       ];
 }

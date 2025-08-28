@@ -7,12 +7,12 @@ import '../bloc/ticket_list_bloc.dart';
 import '../widgets/ticket_list_item.dart';
 
 /// ---
-/// /// [TicketListPage] es la pantalla que muestra una lista de boletos para un cliente específico.
-/// ///
-/// /// Recibe el [clientId] y el [clientName] para saber qué boletos buscar y
-/// /// para mostrar un título contextual en la AppBar.
-/// /// Utiliza [BlocProvider] para crear una instancia de [TicketListBloc] y
-/// /// despacha el evento inicial para cargar los datos.
+/// [TicketListPage] es la pantalla que muestra una lista de boletos para un cliente específico.
+///
+/// Recibe el [clientId] y el [clientName] para saber qué boletos buscar y
+/// para mostrar un título contextual en la AppBar.
+/// Utiliza [BlocProvider] para crear una instancia de [TicketListBloc] y
+/// despacha el evento inicial para cargar los datos.
 /// ---
 class TicketListPage extends StatelessWidget {
   final int clientId;

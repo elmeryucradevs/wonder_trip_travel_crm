@@ -35,22 +35,16 @@ class TicketRepositoryImpl implements ITicketRepository {
         ticketNumber: ticket.ticketNumber,
         flightType: ticket.flightType,
         passengerCategory: ticket.passengerCategory,
+        unaccompaniedMinor: ticket.unaccompaniedMinor,
         issuingAgent: ticket.issuingAgent,
         status: ticket.status,
-        baseFare: ticket.baseFare,
         currency: ticket.currency,
-        taxBO: ticket.taxBO,
-        taxA7: ticket.taxA7,
-        taxQM: ticket.taxQM,
-        taxOM: ticket.taxOM,
-        otherTaxes: ticket.otherTaxes,
         totalPrice: ticket.totalPrice,
         commission: ticket.commission,
         originalTicketId: ticket.originalTicketId,
         createdAt: ticket.createdAt,
         updatedAt: ticket.updatedAt,
-        // No olvides mapear también los segmentos en el futuro
-        segments: const [], // Por ahora, pasamos una lista vacía de segmentos
+        segments: ticket.segments,
       );
       await localDataSource.saveTicket(ticketModel);
       return const Right(null);
@@ -72,22 +66,16 @@ class TicketRepositoryImpl implements ITicketRepository {
         ticketNumber: ticket.ticketNumber,
         flightType: ticket.flightType,
         passengerCategory: ticket.passengerCategory,
+        unaccompaniedMinor: ticket.unaccompaniedMinor,
         issuingAgent: ticket.issuingAgent,
         status: ticket.status,
-        baseFare: ticket.baseFare,
         currency: ticket.currency,
-        taxBO: ticket.taxBO,
-        taxA7: ticket.taxA7,
-        taxQM: ticket.taxQM,
-        taxOM: ticket.taxOM,
-        otherTaxes: ticket.otherTaxes,
         totalPrice: ticket.totalPrice,
         commission: ticket.commission,
         originalTicketId: ticket.originalTicketId,
         createdAt: ticket.createdAt,
         updatedAt: ticket.updatedAt,
-        // No olvides mapear también los segmentos en el futuro
-        segments: const [], // Por ahora, pasamos una lista vacía de segmentos
+        segments: ticket.segments,
       );
       await localDataSource.updateTicket(ticketModel);
       return const Right(null);

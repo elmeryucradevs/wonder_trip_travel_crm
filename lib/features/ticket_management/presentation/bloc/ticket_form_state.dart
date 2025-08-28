@@ -8,7 +8,13 @@ abstract class TicketCreationState extends Equatable {
 
 class TicketCreationInitial extends TicketCreationState {}
 class TicketCreationLoading extends TicketCreationState {}
-class TicketCreationSuccess extends TicketCreationState {}
+class TicketCreationSuccess extends TicketCreationState {
+  final TicketEntity ticket;
+  const TicketCreationSuccess(this.ticket);
+
+  @override
+  List<Object> get props => [ticket];
+}
 class TicketCreationFailure extends TicketCreationState {
   final String message;
   const TicketCreationFailure(this.message);

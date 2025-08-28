@@ -1,3 +1,5 @@
+// lib/features/ticket_management/presentation/bloc/ticket_form_event.dart
+
 part of 'ticket_form_bloc.dart';
 
 abstract class TicketCreationEvent extends Equatable {
@@ -24,9 +26,18 @@ class CreateTicketSubmitted extends TicketCreationEvent {
   final String status;
   final String currency;
   final String flightType;
-  final double baseFare;
   final double totalPrice;
   final double? commission;
+  final double? taxBO;
+  final double? taxA7;
+  final double? taxQM;
+  final double? taxOM;
+  final double? otherTaxes;
+  final String? passengerCategory; // NUEVO: Categoría del pasajero
+  final bool? unaccompaniedMinor; // NUEVO: Indica si un menor viaja solo
+
+  final TransportType transportType;
+  final String? stopovers;
 
   // Datos del Segmento de Ida
   final String segmentAirline;
@@ -48,18 +59,33 @@ class CreateTicketSubmitted extends TicketCreationEvent {
     required this.status,
     required this.currency,
     required this.flightType,
-    required this.baseFare,
     required this.totalPrice,
     this.commission,
+    this.taxBO,
+    this.taxA7,
+    this.taxQM,
+    this.taxOM,
+    this.otherTaxes,
+    required this.transportType,
+    this.stopovers,
     required this.segmentAirline,
     required this.segmentFlightNumber,
     required this.segmentOrigin,
     required this.segmentDestination,
     required this.segmentDepartureTime,
     required this.segmentArrivalTime,
-    this.returnSegment, 
+    this.returnSegment,
+    this.passengerCategory,
+    this.unaccompaniedMinor,
   });
 
   @override
-  List<Object?> get props => [clientId, pnr, totalPrice];
+  List<Object?> get props => [
+    clientId, pnr, totalPrice, emissionDate, status, 
+    currency, flightType,  commission, transportType, 
+    stopovers, segmentAirline, segmentFlightNumber, segmentOrigin, 
+    segmentDestination, segmentDepartureTime, segmentArrivalTime, returnSegment,
+    ticketNumber, issuingAgent, taxBO, taxA7, taxQM, taxOM, otherTaxes,
+    passengerCategory, unaccompaniedMinor
+  ];
 }

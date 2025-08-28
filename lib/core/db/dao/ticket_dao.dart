@@ -12,9 +12,14 @@ class TicketDao extends DatabaseAccessor<AppDatabase> with _$TicketDaoMixin {
     return (select(tickets)..where((t) => t.clientId.equals(clientId))).get();
   }
 
+  Future<List<FlightSegment>> getFlightSegmentsForTicket(int ticketId) {
+    return (select(flightSegments)..where((s) => s.ticketId.equals(ticketId))).get();
+  }
+
   Future<int> insertTicket(TicketsCompanion ticket) => into(tickets).insert(ticket);
 
   Future<bool> updateTicket(TicketsCompanion ticket) => update(tickets).replace(ticket);
+  
   Future<int> insertFlightSegment(FlightSegmentsCompanion segment) => into(flightSegments).insert(segment);
 
   Future<void> deleteFlightSegmentsForTicket(int ticketId) {

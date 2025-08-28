@@ -35,6 +35,7 @@ class TicketFormBloc extends Bloc<TicketCreationEvent, TicketCreationState> {
       destination: event.segmentDestination,
       departureDate: event.segmentDepartureTime,
       arrivalDate: event.segmentArrivalTime,
+      stopover: event.stopovers,
     );
 
     List<FlightSegmentEntity> segments = [outboundSegment];
@@ -56,12 +57,12 @@ class TicketFormBloc extends Bloc<TicketCreationEvent, TicketCreationState> {
       currency: event.currency,
       totalPrice: event.totalPrice,
       commission: event.commission,
-      baseFare: event.baseFare,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
       segments: segments,
       ticketNumber: event.ticketNumber,
       issuingAgent: event.issuingAgent,
+      
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
 
     // 4. Llamamos al caso de uso para guardar el boleto.
@@ -70,7 +71,7 @@ class TicketFormBloc extends Bloc<TicketCreationEvent, TicketCreationState> {
     // 5. Emitimos el estado de éxito o fracaso.
     result.fold(
       (failure) => emit(TicketCreationFailure(failure.message)),
-      (_) => emit(TicketCreationSuccess()),
+      (_) => emit(TicketCreationSuccess(newTicket)),
     );
   }
 
@@ -80,7 +81,7 @@ class TicketFormBloc extends Bloc<TicketCreationEvent, TicketCreationState> {
     final result = await updateTicketUseCase(event.updatedTicket);
     result.fold(
       (failure) => emit(TicketCreationFailure(failure.message)),
-      (_) => emit(TicketCreationSuccess()),
+      (_) => emit(TicketCreationSuccess(event.updatedTicket)),
     );
   }
 }
