@@ -5,7 +5,7 @@ import '../../../../core/config/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../client_management/domain/entities/client_entity.dart';
 import '../../domain/entities/flight_segment_entity.dart';
-import '../bloc/ticket_creation_bloc.dart';
+import '../bloc/ticket_form_bloc.dart';
 import '../bloc/ticket_list_bloc.dart';
 
 class TicketCreationPage extends StatelessWidget {
@@ -15,10 +15,10 @@ class TicketCreationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<TicketCreationBloc>(),
+      create: (_) => sl<TicketFormBloc>(),
       child: Scaffold(
         appBar: AppBar(title: Text('Nuevo Boleto para ${client.name}')),
-        body: BlocListener<TicketCreationBloc, TicketCreationState>(
+        body: BlocListener<TicketFormBloc, TicketCreationState>(
           listener: (context, state) {
             if (state is TicketCreationSuccess) {
               // Refresca la lista de boletos y vuelve
@@ -309,7 +309,7 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
             ),
 
             const SizedBox(height: 32),
-            BlocBuilder<TicketCreationBloc, TicketCreationState>(
+            BlocBuilder<TicketFormBloc, TicketCreationState>(
               builder: (context, state) {
                 if (state is TicketCreationLoading) {
                   return const Center(child: CircularProgressIndicator());
@@ -352,7 +352,7 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                       }
 
                       // Despachamos el evento al BLoC
-                      context.read<TicketCreationBloc>().add(
+                      context.read<TicketFormBloc>().add(
                             CreateTicketSubmitted(
                               clientId: widget.client.id,
                               pnr: _pnrController.text,

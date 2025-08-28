@@ -1,9 +1,17 @@
-part of 'ticket_creation_bloc.dart';
+part of 'ticket_form_bloc.dart';
 
 abstract class TicketCreationEvent extends Equatable {
   const TicketCreationEvent();
   @override
   List<Object?> get props => [];
+}
+
+class UpdateTicketSubmitted extends TicketCreationEvent {
+  final TicketEntity updatedTicket;
+  const UpdateTicketSubmitted(this.updatedTicket);
+
+  @override
+  List<Object?> get props => [updatedTicket];
 }
 
 class CreateTicketSubmitted extends TicketCreationEvent {

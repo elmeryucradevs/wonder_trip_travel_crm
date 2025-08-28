@@ -1,3 +1,6 @@
+import 'package:drift/drift.dart';
+
+import '../../../../core/db/database.dart';
 import '../../domain/entities/ticket_entity.dart';
 
 class TicketModel extends TicketEntity {
@@ -32,5 +35,13 @@ class TicketModel extends TicketEntity {
     super.segments,
   });
 
+  TicketsCompanion toCompanion(bool isInsert) {
+    return TicketsCompanion(
+      id: isInsert ? const Value.absent() : Value(id),
+      clientId: Value(clientId),
+      pnr: Value(pnr),
+      // ... (añade todos los demás campos del ticket aquí)
+    );
+  }
   // Puedes añadir métodos fromJson/toJson aquí cuando conectemos a una API remota.
 }

@@ -58,7 +58,10 @@ class TicketListPage extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     itemCount: state.tickets.length,
                     itemBuilder: (context, index) {
-                      return TicketListItem(ticket: state.tickets[index]);
+                      return TicketListItem(
+                        ticket: state.tickets[index],
+                        client: client,
+                      );
                     },
                     separatorBuilder: (context, index) => const SizedBox(height: 0),
                   );

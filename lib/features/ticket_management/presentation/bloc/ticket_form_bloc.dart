@@ -4,15 +4,21 @@ import 'package:wonder_trip_travel_crm/features/ticket_management/domain/entitie
 import '../../data/models/ticket_model.dart';
 import '../../domain/entities/ticket_entity.dart';
 import '../../domain/usecases/save_ticket_usecase.dart';
+import '../../domain/usecases/update_ticket_usecase.dart';
 
-part 'ticket_creation_event.dart';
-part 'ticket_creation_state.dart';
+part 'ticket_form_event.dart';
+part 'ticket_form_state.dart';
 
-class TicketCreationBloc extends Bloc<TicketCreationEvent, TicketCreationState> {
+class TicketFormBloc extends Bloc<TicketCreationEvent, TicketCreationState> {
   final SaveTicketUseCase saveTicketUseCase;
+  final UpdateTicketUseCase updateTicketUseCase;  
 
-  TicketCreationBloc({required this.saveTicketUseCase}) : super(TicketCreationInitial()) {
+  TicketFormBloc({
+    required this.saveTicketUseCase,
+    required this.updateTicketUseCase,
+  }) : super(TicketCreationInitial()) {
     on<CreateTicketSubmitted>(_onSubmit);
+    on<UpdateTicketSubmitted>(_onUpdate);
   }
 
   Future<void> _onSubmit(
@@ -62,6 +68,16 @@ class TicketCreationBloc extends Bloc<TicketCreationEvent, TicketCreationState> 
     final result = await saveTicketUseCase(newTicket);
 
     // 5. Emitimos el estado de éxito o fracaso.
+    result.fold(
+      (failure) => emit(TicketCreationFailure(failure.message)),
+      (_) => emit(TicketCreationSuccess()),
+    );
+  }
+
+  Future<void> _onUpdate(
+      UpdateTicketSubmitted event, Emitter<TicketCreationState> emit) async {
+    emit(TicketCreationLoading());
+    final result = await updateTicketUseCase(event.updatedTicket);
     result.fold(
       (failure) => emit(TicketCreationFailure(failure.message)),
       (_) => emit(TicketCreationSuccess()),

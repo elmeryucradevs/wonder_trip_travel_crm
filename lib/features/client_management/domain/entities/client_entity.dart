@@ -40,34 +40,34 @@ class ClientEntity extends Equatable {
   });
 
     ClientEntity copyWith({
-    int? id,
-    String? name,
-    String? lastName,
-    String? email,
-    String? phone,
-    DateTime? birthDate,
-    String? documentNumber,
-    String? documentType,
-    String? travelerNumber,
-    String? billingName,
-    String? billingDocument,
-    String? billingAddress,
-  }) {
-    return ClientEntity(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      lastName: lastName ?? this.lastName,
-      email: email ?? this.email,
-      phone: phone ?? this.phone,
-      birthDate: birthDate ?? this.birthDate,
-      documentNumber: documentNumber ?? this.documentNumber,
-      documentType: documentType ?? this.documentType,
-      travelerNumber: travelerNumber ?? this.travelerNumber,
-      billingName: billingName ?? this.billingName,
-      billingDocument: billingDocument ?? this.billingDocument,
-      billingAddress: billingAddress ?? this.billingAddress,
-    );
-  }
+      int? id,
+      String? name,
+      String? lastName,
+      String? email,
+      String? phone,
+      DateTime? birthDate,
+      String? documentNumber,
+      String? documentType,
+      String? travelerNumber,
+      String? billingName,
+      String? billingDocument,
+      String? billingAddress,
+    }) {
+      return ClientEntity(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        lastName: lastName ?? this.lastName,
+        email: email ?? this.email,
+        phone: phone ?? this.phone,
+        birthDate: birthDate ?? this.birthDate,
+        documentNumber: documentNumber ?? this.documentNumber,
+        documentType: documentType ?? this.documentType,
+        travelerNumber: travelerNumber ?? this.travelerNumber,
+        billingName: billingName ?? this.billingName,
+        billingDocument: billingDocument ?? this.billingDocument,
+        billingAddress: billingAddress ?? this.billingAddress,
+      );
+    }
 
   /// Devuelve el nombre completo del cliente.
   String get fullName => '$name $lastName';

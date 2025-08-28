@@ -58,4 +58,41 @@ class TicketRepositoryImpl implements ITicketRepository {
       return Left(CacheFailure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updateTicket(TicketEntity ticket) async {
+    try {
+      // Mapeamos de Entidad a Modelo
+      final ticketModel = TicketModel(
+        id: ticket.id,
+        clientId: ticket.clientId,
+        pnr: ticket.pnr,
+        emissionDate: ticket.emissionDate,
+        transportType: ticket.transportType,
+        ticketNumber: ticket.ticketNumber,
+        flightType: ticket.flightType,
+        passengerCategory: ticket.passengerCategory,
+        issuingAgent: ticket.issuingAgent,
+        status: ticket.status,
+        baseFare: ticket.baseFare,
+        currency: ticket.currency,
+        taxBO: ticket.taxBO,
+        taxA7: ticket.taxA7,
+        taxQM: ticket.taxQM,
+        taxOM: ticket.taxOM,
+        otherTaxes: ticket.otherTaxes,
+        totalPrice: ticket.totalPrice,
+        commission: ticket.commission,
+        originalTicketId: ticket.originalTicketId,
+        createdAt: ticket.createdAt,
+        updatedAt: ticket.updatedAt,
+        // No olvides mapear también los segmentos en el futuro
+        segments: const [], // Por ahora, pasamos una lista vacía de segmentos
+      );
+      await localDataSource.updateTicket(ticketModel);
+      return const Right(null);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
+    }
+  }
 }

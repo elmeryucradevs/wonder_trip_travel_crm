@@ -1,4 +1,4 @@
-part of 'ticket_creation_bloc.dart';
+part of 'ticket_form_bloc.dart';
 
 abstract class TicketCreationState extends Equatable {
   const TicketCreationState();

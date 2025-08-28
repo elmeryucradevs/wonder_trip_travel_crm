@@ -9,6 +9,7 @@ import '../models/ticket_model.dart';
 abstract class ITicketDataSource {
   Future<List<TicketModel>> getTicketsForClient(int clientId);
   Future<void> saveTicket(TicketModel ticket);
+  Future<void> updateTicket(TicketModel ticket);
 }
 
 class TicketLocalDataSourceImpl implements ITicketDataSource {
@@ -87,6 +88,30 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
       });
     } catch (e) {
       throw CacheException('Error al guardar el boleto: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<void> updateTicket(TicketModel ticket) async {
+    try {
+      await ticketDao.db.transaction(() async {
+        // 1. Actualiza el registro principal del boleto.
+        await ticketDao.updateTicket(ticket.toCompanion(false)); // Usamos un helper que crearemos
+
+        // 2. Elimina todos los segmentos de vuelo antiguos asociados con este boleto.
+        await ticketDao.deleteFlightSegmentsForTicket(ticket.id);
+
+        // 3. Inserta los nuevos segmentos de vuelo de la entidad actualizada.
+        for (final segment in ticket.segments) {
+          final segmentCompanion = FlightSegmentsCompanion(
+            ticketId: Value(ticket.id),
+            // ... (todos los campos del segmento)
+          );
+          await ticketDao.insertFlightSegment(segmentCompanion);
+        }
+      });
+    } catch (e) {
+      throw CacheException('Error al actualizar el boleto: ${e.toString()}');
     }
   }
 }

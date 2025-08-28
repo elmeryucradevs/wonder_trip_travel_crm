@@ -4,17 +4,22 @@ import 'data/repositories/ticket_repository_impl.dart';
 import 'domain/repositories/i_ticket_repository.dart';
 import 'domain/usecases/get_tickets_for_client_usecase.dart';
 import 'domain/usecases/save_ticket_usecase.dart';
-import 'presentation/bloc/ticket_creation_bloc.dart';
+import 'domain/usecases/update_ticket_usecase.dart';
+import 'presentation/bloc/ticket_form_bloc.dart';
 import 'presentation/bloc/ticket_list_bloc.dart';
 
 Future<void> initTicketManagementFeature() async {
   // BLoC
   sl.registerFactory(() => TicketListBloc(getTicketsForClientUseCase: sl()));
-  sl.registerFactory(() => TicketCreationBloc(saveTicketUseCase: sl())); 
+  sl.registerFactory(() => TicketFormBloc(
+      saveTicketUseCase: sl(),
+      updateTicketUseCase: sl(),
+    )); 
 
   // Use cases
   sl.registerLazySingleton(() => GetTicketsForClientUseCase(sl()));
   sl.registerLazySingleton(() => SaveTicketUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateTicketUseCase(sl())); 
 
   // Repository
   sl.registerLazySingleton<ITicketRepository>(
