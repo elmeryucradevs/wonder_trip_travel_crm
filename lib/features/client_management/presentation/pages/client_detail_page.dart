@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/config/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../ticket_management/presentation/pages/ticket_list_page.dart';
@@ -80,6 +81,12 @@ class ClientDetailPage extends StatelessWidget {
                 _buildSectionTitle(context, 'Información Personal'),
                 _buildInfoCard([
                   _InfoRow(label: 'Nombre Completo', value: client.fullName),
+                  _InfoRow(
+                    label: 'Fecha de Nacimiento', 
+                    value: client.birthDate != null 
+                        ? DateFormat('dd/MM/yyyy').format(client.birthDate!) 
+                        : null
+                  ),
                   _InfoRow(label: 'Tipo Documento', value: client.documentType),
                   _InfoRow(label: 'Nº Documento', value: client.documentNumber),
                 ]),

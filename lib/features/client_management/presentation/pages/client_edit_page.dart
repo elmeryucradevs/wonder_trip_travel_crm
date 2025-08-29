@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/config/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/client_entity.dart';
@@ -79,6 +80,8 @@ class _ClientEditFormState extends State<ClientEditForm> {
   late final TextEditingController _billingNameController;
   late final TextEditingController _billingDocController;
   late final TextEditingController _billingAddrController;
+  late final TextEditingController _birthDateController;
+  DateTime? _selectedBirthDate;
 
   @override
   void initState() {
@@ -93,6 +96,10 @@ class _ClientEditFormState extends State<ClientEditForm> {
     _billingNameController = TextEditingController(text: widget.client.billingName);
     _billingDocController = TextEditingController(text: widget.client.billingDocument);
     _billingAddrController = TextEditingController(text: widget.client.billingAddress);
+    _selectedBirthDate = widget.client.birthDate;
+    _birthDateController = TextEditingController(
+      text: _selectedBirthDate != null ? DateFormat('dd/MM/yyyy').format(_selectedBirthDate!) : '',
+    );
   }
 
   @override
@@ -107,6 +114,7 @@ class _ClientEditFormState extends State<ClientEditForm> {
     _billingNameController.dispose();
     _billingDocController.dispose();
     _billingAddrController.dispose();
+    _birthDateController.dispose();
     super.dispose();
   }
 
@@ -126,6 +134,29 @@ class _ClientEditFormState extends State<ClientEditForm> {
             TextFormField(controller: _nameController, decoration: const InputDecoration(labelText: 'Nombres*')),
             const SizedBox(height: 16),
             TextFormField(controller: _lastNameController, decoration: const InputDecoration(labelText: 'Apellidos*')),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _birthDateController,
+              decoration: const InputDecoration(
+                labelText: 'Fecha de Nacimiento',
+                suffixIcon: Icon(Icons.calendar_today),
+              ),
+              readOnly: true,
+              onTap: () async {
+                final pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: _selectedBirthDate ?? DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    _selectedBirthDate = pickedDate;
+                    _birthDateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+                  });
+                }
+              },
+            ),
             const SizedBox(height: 16),
             TextFormField(controller: _docNumberController, decoration: const InputDecoration(labelText: 'Nº Documento*')),
             const SizedBox(height: 16),
@@ -166,6 +197,7 @@ class _ClientEditFormState extends State<ClientEditForm> {
                       final updatedClient = widget.client.copyWith(
                         name: _nameController.text,
                         lastName: _lastNameController.text,
+                        birthDate: _selectedBirthDate,
                         email: _emailController.text,
                         phone: _phoneController.text,
                         documentNumber: _docNumberController.text,

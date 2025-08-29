@@ -15,6 +15,7 @@ class SaveClientEvent extends ClientCreationEvent {
   final String? phone;
   final String documentNumber;
   final String? documentType;
+  final DateTime? birthDate;
   final String? travelerNumber;
   final String? billingName;
   final String? billingDocument;
@@ -27,6 +28,7 @@ class SaveClientEvent extends ClientCreationEvent {
     this.email,
     this.phone,
     this.documentType,
+    this.birthDate,
     this.travelerNumber,
     this.billingName,
     this.billingDocument,
@@ -37,6 +39,7 @@ class SaveClientEvent extends ClientCreationEvent {
   List<Object?> get props => [
         name,
         lastName,
+        birthDate,
         email,
         phone,
         documentNumber,

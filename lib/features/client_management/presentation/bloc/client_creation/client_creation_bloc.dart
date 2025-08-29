@@ -25,6 +25,7 @@ class ClientCreationBloc extends Bloc<ClientCreationEvent, ClientCreationState> 
       phone: event.phone,
       documentNumber: event.documentNumber,
       documentType: event.documentType,
+      birthDate: event.birthDate,
       travelerNumber: event.travelerNumber,
       billingName: event.billingName,
       billingDocument: event.billingDocument,

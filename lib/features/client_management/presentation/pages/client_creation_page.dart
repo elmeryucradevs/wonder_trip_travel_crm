@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/config/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../bloc/client_creation/client_creation_bloc.dart';
@@ -70,6 +71,8 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _lastNameController = TextEditingController();
+  final _birthDateController = TextEditingController();
+  DateTime? _selectedBirthDate;
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _docNumberController = TextEditingController();
@@ -83,6 +86,7 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
   void dispose() {
     _nameController.dispose();
     _lastNameController.dispose();
+    _birthDateController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _docNumberController.dispose();
@@ -115,6 +119,29 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
               controller: _lastNameController,
               decoration: const InputDecoration(labelText: 'Apellidos*'),
               validator: (v) => v!.isEmpty ? 'Campo requerido' : null,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _birthDateController,
+              decoration: const InputDecoration(
+                labelText: 'Fecha de Nacimiento',
+                suffixIcon: Icon(Icons.calendar_today),
+              ),
+              readOnly: true,
+              onTap: () async {
+                final pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now(),
+                );
+                if (pickedDate != null) {
+                  setState(() {
+                    _selectedBirthDate = pickedDate;
+                    _birthDateController.text = DateFormat('dd/MM/yyyy').format(pickedDate);
+                  });
+                }
+              },
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -178,6 +205,7 @@ class _ClientCreationFormState extends State<ClientCreationForm> {
                             SaveClientEvent(
                               name: _nameController.text,
                               lastName: _lastNameController.text,
+                              birthDate: _selectedBirthDate,
                               documentNumber: _docNumberController.text,
                               documentType: _docTypeController.text.isNotEmpty ? _docTypeController.text : null,
                               travelerNumber: _travelerNumController.text.isNotEmpty ? _travelerNumController.text : null,

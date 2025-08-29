@@ -1,3 +1,5 @@
+// lib/features/ticket_management/presentation/bloc/ticket_list_state.dart
+
 part of 'ticket_list_bloc.dart';
 
 abstract class TicketListState extends Equatable {
@@ -8,12 +10,19 @@ abstract class TicketListState extends Equatable {
 
 class TicketListInitial extends TicketListState {}
 class TicketListLoading extends TicketListState {}
+
 class TicketListLoaded extends TicketListState {
+  // Lista maestra con todos los boletos
   final List<TicketEntity> tickets;
-  const TicketListLoaded(this.tickets);
+  // Lista que se muestra en la UI después de aplicar filtros
+  final List<TicketEntity> filteredTickets;
+
+  const TicketListLoaded(this.tickets, this.filteredTickets);
+  
   @override
-  List<Object> get props => [tickets];
+  List<Object> get props => [tickets, filteredTickets];
 }
+
 class TicketListFailure extends TicketListState {
   final String message;
   const TicketListFailure(this.message);
