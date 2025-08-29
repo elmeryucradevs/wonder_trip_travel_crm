@@ -27,7 +27,7 @@ class TicketModel extends TicketEntity {
     super.status,
 
     super.commission,
-    super.originalTicketId,
+    super.originalTicketNumber,
 
     super.segments,
   });
@@ -48,7 +48,7 @@ class TicketModel extends TicketEntity {
       currency: Value(currency),
       totalPrice: Value(totalPrice),
       commission: Value(commission),
-      originalTicketId: Value(originalTicketId),
+      originalTicketNumber: Value(originalTicketNumber),
       createdAt: isInsert ? const Value.absent() : Value(createdAt),
       updatedAt: Value(DateTime.now()), // Siempre actualizamos esta fecha
     );

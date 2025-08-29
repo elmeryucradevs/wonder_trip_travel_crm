@@ -1027,20 +1027,17 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     type: DriftSqlType.double,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _originalTicketIdMeta = const VerificationMeta(
-    'originalTicketId',
-  );
+  static const VerificationMeta _originalTicketNumberMeta =
+      const VerificationMeta('originalTicketNumber');
   @override
-  late final GeneratedColumn<int> originalTicketId = GeneratedColumn<int>(
-    'original_ticket_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES tickets (id)',
-    ),
-  );
+  late final GeneratedColumn<String> originalTicketNumber =
+      GeneratedColumn<String>(
+        'original_ticket_number',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -1081,7 +1078,7 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
     currency,
     totalPrice,
     commission,
-    originalTicketId,
+    originalTicketNumber,
     createdAt,
     updatedAt,
   ];
@@ -1204,12 +1201,12 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
         commission.isAcceptableOrUnknown(data['commission']!, _commissionMeta),
       );
     }
-    if (data.containsKey('original_ticket_id')) {
+    if (data.containsKey('original_ticket_number')) {
       context.handle(
-        _originalTicketIdMeta,
-        originalTicketId.isAcceptableOrUnknown(
-          data['original_ticket_id']!,
-          _originalTicketIdMeta,
+        _originalTicketNumberMeta,
+        originalTicketNumber.isAcceptableOrUnknown(
+          data['original_ticket_number']!,
+          _originalTicketNumberMeta,
         ),
       );
     }
@@ -1290,9 +1287,9 @@ class $TicketsTable extends Tickets with TableInfo<$TicketsTable, Ticket> {
         DriftSqlType.double,
         data['${effectivePrefix}commission'],
       ),
-      originalTicketId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}original_ticket_id'],
+      originalTicketNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}original_ticket_number'],
       ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
@@ -1344,7 +1341,7 @@ class Ticket extends DataClass implements Insertable<Ticket> {
   final double? commission;
 
   /// Si este boleto fue emitido por un cambio, aquí se guarda el ID del boleto original.
-  final int? originalTicketId;
+  final String? originalTicketNumber;
   final DateTime createdAt;
   final DateTime updatedAt;
   const Ticket({
@@ -1362,7 +1359,7 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     required this.currency,
     required this.totalPrice,
     this.commission,
-    this.originalTicketId,
+    this.originalTicketNumber,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -1397,8 +1394,8 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     if (!nullToAbsent || commission != null) {
       map['commission'] = Variable<double>(commission);
     }
-    if (!nullToAbsent || originalTicketId != null) {
-      map['original_ticket_id'] = Variable<int>(originalTicketId);
+    if (!nullToAbsent || originalTicketNumber != null) {
+      map['original_ticket_number'] = Variable<String>(originalTicketNumber);
     }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -1435,9 +1432,9 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       commission: commission == null && nullToAbsent
           ? const Value.absent()
           : Value(commission),
-      originalTicketId: originalTicketId == null && nullToAbsent
+      originalTicketNumber: originalTicketNumber == null && nullToAbsent
           ? const Value.absent()
-          : Value(originalTicketId),
+          : Value(originalTicketNumber),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -1467,7 +1464,9 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       currency: serializer.fromJson<String>(json['currency']),
       totalPrice: serializer.fromJson<double>(json['totalPrice']),
       commission: serializer.fromJson<double?>(json['commission']),
-      originalTicketId: serializer.fromJson<int?>(json['originalTicketId']),
+      originalTicketNumber: serializer.fromJson<String?>(
+        json['originalTicketNumber'],
+      ),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -1490,7 +1489,7 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       'currency': serializer.toJson<String>(currency),
       'totalPrice': serializer.toJson<double>(totalPrice),
       'commission': serializer.toJson<double?>(commission),
-      'originalTicketId': serializer.toJson<int?>(originalTicketId),
+      'originalTicketNumber': serializer.toJson<String?>(originalTicketNumber),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -1511,7 +1510,7 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     String? currency,
     double? totalPrice,
     Value<double?> commission = const Value.absent(),
-    Value<int?> originalTicketId = const Value.absent(),
+    Value<String?> originalTicketNumber = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => Ticket(
@@ -1533,9 +1532,9 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     currency: currency ?? this.currency,
     totalPrice: totalPrice ?? this.totalPrice,
     commission: commission.present ? commission.value : this.commission,
-    originalTicketId: originalTicketId.present
-        ? originalTicketId.value
-        : this.originalTicketId,
+    originalTicketNumber: originalTicketNumber.present
+        ? originalTicketNumber.value
+        : this.originalTicketNumber,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -1573,9 +1572,9 @@ class Ticket extends DataClass implements Insertable<Ticket> {
       commission: data.commission.present
           ? data.commission.value
           : this.commission,
-      originalTicketId: data.originalTicketId.present
-          ? data.originalTicketId.value
-          : this.originalTicketId,
+      originalTicketNumber: data.originalTicketNumber.present
+          ? data.originalTicketNumber.value
+          : this.originalTicketNumber,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -1598,7 +1597,7 @@ class Ticket extends DataClass implements Insertable<Ticket> {
           ..write('currency: $currency, ')
           ..write('totalPrice: $totalPrice, ')
           ..write('commission: $commission, ')
-          ..write('originalTicketId: $originalTicketId, ')
+          ..write('originalTicketNumber: $originalTicketNumber, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -1621,7 +1620,7 @@ class Ticket extends DataClass implements Insertable<Ticket> {
     currency,
     totalPrice,
     commission,
-    originalTicketId,
+    originalTicketNumber,
     createdAt,
     updatedAt,
   );
@@ -1643,7 +1642,7 @@ class Ticket extends DataClass implements Insertable<Ticket> {
           other.currency == this.currency &&
           other.totalPrice == this.totalPrice &&
           other.commission == this.commission &&
-          other.originalTicketId == this.originalTicketId &&
+          other.originalTicketNumber == this.originalTicketNumber &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -1663,7 +1662,7 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
   final Value<String> currency;
   final Value<double> totalPrice;
   final Value<double?> commission;
-  final Value<int?> originalTicketId;
+  final Value<String?> originalTicketNumber;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const TicketsCompanion({
@@ -1681,7 +1680,7 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     this.currency = const Value.absent(),
     this.totalPrice = const Value.absent(),
     this.commission = const Value.absent(),
-    this.originalTicketId = const Value.absent(),
+    this.originalTicketNumber = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
@@ -1700,7 +1699,7 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     this.currency = const Value.absent(),
     required double totalPrice,
     this.commission = const Value.absent(),
-    this.originalTicketId = const Value.absent(),
+    this.originalTicketNumber = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   }) : clientId = Value(clientId),
@@ -1722,7 +1721,7 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     Expression<String>? currency,
     Expression<double>? totalPrice,
     Expression<double>? commission,
-    Expression<int>? originalTicketId,
+    Expression<String>? originalTicketNumber,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -1741,7 +1740,8 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
       if (currency != null) 'currency': currency,
       if (totalPrice != null) 'total_price': totalPrice,
       if (commission != null) 'commission': commission,
-      if (originalTicketId != null) 'original_ticket_id': originalTicketId,
+      if (originalTicketNumber != null)
+        'original_ticket_number': originalTicketNumber,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -1762,7 +1762,7 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     Value<String>? currency,
     Value<double>? totalPrice,
     Value<double?>? commission,
-    Value<int?>? originalTicketId,
+    Value<String?>? originalTicketNumber,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
   }) {
@@ -1781,7 +1781,7 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
       currency: currency ?? this.currency,
       totalPrice: totalPrice ?? this.totalPrice,
       commission: commission ?? this.commission,
-      originalTicketId: originalTicketId ?? this.originalTicketId,
+      originalTicketNumber: originalTicketNumber ?? this.originalTicketNumber,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -1832,8 +1832,10 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
     if (commission.present) {
       map['commission'] = Variable<double>(commission.value);
     }
-    if (originalTicketId.present) {
-      map['original_ticket_id'] = Variable<int>(originalTicketId.value);
+    if (originalTicketNumber.present) {
+      map['original_ticket_number'] = Variable<String>(
+        originalTicketNumber.value,
+      );
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -1861,7 +1863,7 @@ class TicketsCompanion extends UpdateCompanion<Ticket> {
           ..write('currency: $currency, ')
           ..write('totalPrice: $totalPrice, ')
           ..write('commission: $commission, ')
-          ..write('originalTicketId: $originalTicketId, ')
+          ..write('originalTicketNumber: $originalTicketNumber, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -3025,7 +3027,7 @@ typedef $$TicketsTableCreateCompanionBuilder =
       Value<String> currency,
       required double totalPrice,
       Value<double?> commission,
-      Value<int?> originalTicketId,
+      Value<String?> originalTicketNumber,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -3045,7 +3047,7 @@ typedef $$TicketsTableUpdateCompanionBuilder =
       Value<String> currency,
       Value<double> totalPrice,
       Value<double?> commission,
-      Value<int?> originalTicketId,
+      Value<String?> originalTicketNumber,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -3065,25 +3067,6 @@ final class $$TicketsTableReferences
       $_db.clients,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_clientIdTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
-  }
-
-  static $TicketsTable _originalTicketIdTable(_$AppDatabase db) =>
-      db.tickets.createAlias(
-        $_aliasNameGenerator(db.tickets.originalTicketId, db.tickets.id),
-      );
-
-  $$TicketsTableProcessedTableManager? get originalTicketId {
-    final $_column = $_itemColumn<int>('original_ticket_id');
-    if ($_column == null) return null;
-    final manager = $$TicketsTableTableManager(
-      $_db,
-      $_db.tickets,
-    ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_originalTicketIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -3183,6 +3166,11 @@ class $$TicketsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get originalTicketNumber => $composableBuilder(
+    column: $table.originalTicketNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
@@ -3207,29 +3195,6 @@ class $$TicketsTableFilterComposer
           }) => $$ClientsTableFilterComposer(
             $db: $db,
             $table: $db.clients,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$TicketsTableFilterComposer get originalTicketId {
-    final $$TicketsTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.originalTicketId,
-      referencedTable: $db.tickets,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$TicketsTableFilterComposer(
-            $db: $db,
-            $table: $db.tickets,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3339,6 +3304,11 @@ class $$TicketsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get originalTicketNumber => $composableBuilder(
+    column: $table.originalTicketNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -3363,29 +3333,6 @@ class $$TicketsTableOrderingComposer
           }) => $$ClientsTableOrderingComposer(
             $db: $db,
             $table: $db.clients,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$TicketsTableOrderingComposer get originalTicketId {
-    final $$TicketsTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.originalTicketId,
-      referencedTable: $db.tickets,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$TicketsTableOrderingComposer(
-            $db: $db,
-            $table: $db.tickets,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3462,6 +3409,11 @@ class $$TicketsTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<String> get originalTicketNumber => $composableBuilder(
+    column: $table.originalTicketNumber,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
@@ -3482,29 +3434,6 @@ class $$TicketsTableAnnotationComposer
           }) => $$ClientsTableAnnotationComposer(
             $db: $db,
             $table: $db.clients,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  $$TicketsTableAnnotationComposer get originalTicketId {
-    final $$TicketsTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.originalTicketId,
-      referencedTable: $db.tickets,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$TicketsTableAnnotationComposer(
-            $db: $db,
-            $table: $db.tickets,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -3553,11 +3482,7 @@ class $$TicketsTableTableManager
           $$TicketsTableUpdateCompanionBuilder,
           (Ticket, $$TicketsTableReferences),
           Ticket,
-          PrefetchHooks Function({
-            bool clientId,
-            bool originalTicketId,
-            bool flightSegmentsRefs,
-          })
+          PrefetchHooks Function({bool clientId, bool flightSegmentsRefs})
         > {
   $$TicketsTableTableManager(_$AppDatabase db, $TicketsTable table)
     : super(
@@ -3586,7 +3511,7 @@ class $$TicketsTableTableManager
                 Value<String> currency = const Value.absent(),
                 Value<double> totalPrice = const Value.absent(),
                 Value<double?> commission = const Value.absent(),
-                Value<int?> originalTicketId = const Value.absent(),
+                Value<String?> originalTicketNumber = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => TicketsCompanion(
@@ -3604,7 +3529,7 @@ class $$TicketsTableTableManager
                 currency: currency,
                 totalPrice: totalPrice,
                 commission: commission,
-                originalTicketId: originalTicketId,
+                originalTicketNumber: originalTicketNumber,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -3624,7 +3549,7 @@ class $$TicketsTableTableManager
                 Value<String> currency = const Value.absent(),
                 required double totalPrice,
                 Value<double?> commission = const Value.absent(),
-                Value<int?> originalTicketId = const Value.absent(),
+                Value<String?> originalTicketNumber = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => TicketsCompanion.insert(
@@ -3642,7 +3567,7 @@ class $$TicketsTableTableManager
                 currency: currency,
                 totalPrice: totalPrice,
                 commission: commission,
-                originalTicketId: originalTicketId,
+                originalTicketNumber: originalTicketNumber,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -3655,11 +3580,7 @@ class $$TicketsTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({
-                clientId = false,
-                originalTicketId = false,
-                flightSegmentsRefs = false,
-              }) {
+              ({clientId = false, flightSegmentsRefs = false}) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
@@ -3690,19 +3611,6 @@ class $$TicketsTableTableManager
                                         ._clientIdTable(db),
                                     referencedColumn: $$TicketsTableReferences
                                         ._clientIdTable(db)
-                                        .id,
-                                  )
-                                  as T;
-                        }
-                        if (originalTicketId) {
-                          state =
-                              state.withJoin(
-                                    currentTable: table,
-                                    currentColumn: table.originalTicketId,
-                                    referencedTable: $$TicketsTableReferences
-                                        ._originalTicketIdTable(db),
-                                    referencedColumn: $$TicketsTableReferences
-                                        ._originalTicketIdTable(db)
                                         .id,
                                   )
                                   as T;
@@ -3753,11 +3661,7 @@ typedef $$TicketsTableProcessedTableManager =
       $$TicketsTableUpdateCompanionBuilder,
       (Ticket, $$TicketsTableReferences),
       Ticket,
-      PrefetchHooks Function({
-        bool clientId,
-        bool originalTicketId,
-        bool flightSegmentsRefs,
-      })
+      PrefetchHooks Function({bool clientId, bool flightSegmentsRefs})
     >;
 typedef $$FlightSegmentsTableCreateCompanionBuilder =
     FlightSegmentsCompanion Function({

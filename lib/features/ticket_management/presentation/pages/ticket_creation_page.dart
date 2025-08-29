@@ -13,14 +13,23 @@ import '../bloc/ticket_list_bloc.dart';
 
 class TicketCreationPage extends StatelessWidget {
   final ClientEntity client;
-  const TicketCreationPage({super.key, required this.client});
+  final String? originalTicketNumber;
+  const TicketCreationPage({
+    super.key, 
+    required this.client,
+    this.originalTicketNumber,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<TicketFormBloc>(),
       child: Scaffold(
-        appBar: AppBar(title: Text('Nuevo Boleto para ${client.name}')),
+        appBar: AppBar(
+          title: Text(originalTicketNumber == null
+              ? 'Nuevo Boleto para ${client.name}'
+              : 'Canje para Boleto ID: $originalTicketNumber'),
+        ),
         body: BlocListener<TicketFormBloc, TicketCreationState>(
           listener: (context, state) {
             if (state is TicketCreationSuccess) {
@@ -44,7 +53,10 @@ class TicketCreationPage extends StatelessWidget {
               );
             }
           },
-          child: TicketCreationForm(client: client),
+          child: TicketCreationForm(
+            client: client,
+            originalTicketNumber: originalTicketNumber,
+          ),
         ),
       ),
     );
@@ -53,7 +65,8 @@ class TicketCreationPage extends StatelessWidget {
 
 class TicketCreationForm extends StatefulWidget {
   final ClientEntity client;
-  const TicketCreationForm({super.key, required this.client});
+  final String? originalTicketNumber; 
+  const TicketCreationForm({super.key, required this.client, this.originalTicketNumber});
 
   @override
   State<TicketCreationForm> createState() => _TicketCreationFormState();
@@ -66,12 +79,13 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
   Set<String> _tripTypeSelection = {'OW'}; // Por defecto, 'OW' (One-Way)
 
   // Controladores para datos del BOLETO
+  final _ticketNumberController = TextEditingController();
   final _pnrController = TextEditingController();
   final _agentController = TextEditingController();
   final _issueDateController = TextEditingController();
   final _totalPriceController = TextEditingController();
   final _commissionController = TextEditingController();
-  String _selectedCurrency = 'USD';
+  String _selectedCurrency = 'BOB';
   String _selectedStatus = 'CONFIRMADO';
   String _transportType = 'AEREO';
   String? _passengerCategory;
@@ -112,6 +126,7 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
 
   @override
   void dispose() {
+    _ticketNumberController.dispose();
     _pnrController.dispose();
     _agentController.dispose();
     _issueDateController.dispose();
@@ -207,6 +222,13 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                 labelText: 'PNR o Código de Reserva*',
               ),
               validator: (v) => v!.isEmpty ? 'Requerido' : null,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _ticketNumberController,
+              decoration: const InputDecoration(labelText: 'Número de Boleto'),
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.characters,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -483,6 +505,7 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                         CreateTicketSubmitted(
                           clientId: widget.client.id,
                           pnr: _pnrController.text,
+                          ticketNumber: _ticketNumberController.text,
                           emissionDate: _selectedIssueDate!,
                           transportType: _transportType == 'AEREO' ? TransportType.aereo : TransportType.terrestre,
                           flightType: _tripTypeSelection.first,
@@ -501,6 +524,8 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                           segmentArrivalTime: _selectedOutboundArrivalDate!,
                           stopovers: _hasStopovers ? _stopoversController.text : null,
                           returnSegment: returnSegment,
+                          originalTicketNumber: widget.originalTicketNumber,
+                          
                         ),
                       );
                     }

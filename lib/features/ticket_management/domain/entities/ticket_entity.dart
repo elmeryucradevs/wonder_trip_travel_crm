@@ -12,13 +12,13 @@ class TicketEntity extends Equatable {
   final DateTime emissionDate;
 
   final double? commission;
-  final int? originalTicketId;
+  final String? originalTicketNumber;
 
   final TransportType transportType;
   final String? ticketNumber;
   final String? flightType;
-  final String? passengerCategory; // NUEVO: Categoría del pasajero
-  final bool? unaccompaniedMinor;  // NUEVO: Indica si un menor viaja solo
+  final String? passengerCategory; 
+  final bool? unaccompaniedMinor; 
   final String? issuingAgent;
   final String? status;
   final String currency;
@@ -45,7 +45,7 @@ class TicketEntity extends Equatable {
     required this.totalPrice,
 
     this.commission,
-    this.originalTicketId,
+    this.originalTicketNumber,
 
     required this.createdAt,
     required this.updatedAt,
@@ -82,7 +82,7 @@ class TicketEntity extends Equatable {
       currency: currency ?? this.currency,
       totalPrice: totalPrice ?? this.totalPrice,
       commission: commission ?? this.commission,
-      originalTicketId: originalTicketId, // No se puede cambiar
+      originalTicketNumber: originalTicketNumber ?? originalTicketNumber,  // No se puede cambiar
       createdAt: createdAt, // No se puede cambiar
       updatedAt: DateTime.now(), // Se actualiza la fecha
       segments: segments ?? this.segments,
@@ -93,6 +93,6 @@ class TicketEntity extends Equatable {
   List<Object?> get props => [
         id, clientId, pnr, emissionDate, transportType, ticketNumber,
         flightType, passengerCategory, unaccompaniedMinor, issuingAgent, status, 
-        currency, totalPrice, commission, originalTicketId, createdAt, updatedAt, segments 
+        currency, totalPrice, commission, originalTicketNumber, createdAt, updatedAt, segments 
       ];
 }

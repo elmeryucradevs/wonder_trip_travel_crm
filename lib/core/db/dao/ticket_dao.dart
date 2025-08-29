@@ -25,4 +25,11 @@ class TicketDao extends DatabaseAccessor<AppDatabase> with _$TicketDaoMixin {
   Future<void> deleteFlightSegmentsForTicket(int ticketId) {
     return (delete(flightSegments)..where((tbl) => tbl.ticketId.equals(ticketId))).go();
   }
+
+  Future<void> deleteTicketAndSegments(int ticketId) {
+    return transaction(() async {
+      await deleteFlightSegmentsForTicket(ticketId);
+      await (delete(tickets)..where((tbl) => tbl.id.equals(ticketId))).go();
+    });
+  }
 }

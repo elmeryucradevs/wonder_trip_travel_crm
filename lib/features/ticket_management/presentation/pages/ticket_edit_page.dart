@@ -22,20 +22,21 @@ class TicketEditPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => sl<TicketFormBloc>(),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Editar Boleto ${ticket.pnr}'),
-        ),
+        appBar: AppBar(title: Text('Editar Boleto ${ticket.pnr}')),
         body: BlocListener<TicketFormBloc, TicketCreationState>(
           listener: (context, state) {
             if (state is TicketCreationSuccess) {
-              context.read<TicketListBloc>().add(FetchTicketsForClient(client.id));
+              context.read<TicketListBloc>().add(
+                FetchTicketsForClient(client.id),
+              );
               Navigator.of(context).pop(state.ticket);
-
             } else if (state is TicketCreationFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text('Error: ${state.message}'),
-                backgroundColor: Colors.red,
-              ));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error: ${state.message}'),
+                  backgroundColor: Colors.red,
+                ),
+              );
             }
           },
           child: TicketEditForm(ticket: ticket),
@@ -55,8 +56,9 @@ class TicketEditForm extends StatefulWidget {
 
 class _TicketEditFormState extends State<TicketEditForm> {
   final _formKey = GlobalKey<FormState>();
-  
+
   // 1. Declaración de todos los controladores y variables de estado
+  late final TextEditingController _ticketNumberController;
   late final TextEditingController _pnrController;
   late final TextEditingController _agentController;
   late final TextEditingController _issueDateController;
@@ -67,7 +69,6 @@ class _TicketEditFormState extends State<TicketEditForm> {
   late Set<String> _tripTypeSelection;
   late String? _passengerCategory;
   late bool _isUnaccompaniedMinor;
-
 
   late bool _hasStopovers;
   late final TextEditingController _stopoversController;
@@ -85,7 +86,7 @@ class _TicketEditFormState extends State<TicketEditForm> {
   late final TextEditingController _outboundDepartureDateController;
   late final TextEditingController _outboundArrivalDateController;
   late final TextEditingController _outboundClassController;
-  
+
   // Controladores y variables de estado para el SEGMENTO DE VUELTA
   late final TextEditingController _returnAirlineController;
   late final TextEditingController _returnFlightNumController;
@@ -94,7 +95,6 @@ class _TicketEditFormState extends State<TicketEditForm> {
   late final TextEditingController _returnDepartureDateController;
   late final TextEditingController _returnArrivalDateController;
   late final TextEditingController _returnClassController;
-
 
   DateTime? _selectedIssueDate;
   DateTime? _selectedOutboundDepartureDate;
@@ -107,19 +107,25 @@ class _TicketEditFormState extends State<TicketEditForm> {
     super.initState();
     // 2. Inicialización COMPLETA de todos los campos en initState
     final ticket = widget.ticket;
+    _ticketNumberController = TextEditingController(text: ticket.ticketNumber);
     _pnrController = TextEditingController(text: ticket.pnr);
     _agentController = TextEditingController(text: ticket.issuingAgent);
     _selectedIssueDate = ticket.emissionDate;
-    _issueDateController = TextEditingController(text: DateFormat('dd/MM/yyyy HH:mm').format(_selectedIssueDate!));
-    _totalPriceController = TextEditingController(text: ticket.totalPrice.toString());
-    _commissionController = TextEditingController(text: ticket.commission?.toString() ?? '');
+    _issueDateController = TextEditingController(
+      text: DateFormat('dd/MM/yyyy HH:mm').format(_selectedIssueDate!),
+    );
+    _totalPriceController = TextEditingController(
+      text: ticket.totalPrice.toString(),
+    );
+    _commissionController = TextEditingController(
+      text: ticket.commission?.toString() ?? '',
+    );
     _selectedCurrency = ticket.currency;
     _selectedStatus = ticket.status ?? 'CONFIRMADO';
     _tripTypeSelection = {ticket.flightType ?? 'OW'};
     _transportType = ticket.transportType.name.toUpperCase();
     _passengerCategory = ticket.passengerCategory;
     _isUnaccompaniedMinor = ticket.unaccompaniedMinor ?? false;
-
 
     // Inicializa segmentos de ida (asumiendo que siempre hay al menos uno)
     final segments = ticket.segments;
@@ -139,10 +145,15 @@ class _TicketEditFormState extends State<TicketEditForm> {
       _outboundOriginController.text = outbound.origin;
       _outboundDestinationController.text = outbound.destination;
       _selectedOutboundDepartureDate = outbound.departureDate;
-      _outboundDepartureDateController.text = DateFormat('dd/MM/yyyy HH:mm').format(outbound.departureDate);
+      _outboundDepartureDateController.text = DateFormat(
+        'dd/MM/yyyy HH:mm',
+      ).format(outbound.departureDate);
       _selectedOutboundArrivalDate = outbound.arrivalDate;
-      _outboundArrivalDateController.text = DateFormat('dd/MM/yyyy HH:mm').format(outbound.arrivalDate);
-      _hasStopovers = outbound.stopover != null && outbound.stopover!.isNotEmpty;
+      _outboundArrivalDateController.text = DateFormat(
+        'dd/MM/yyyy HH:mm',
+      ).format(outbound.arrivalDate);
+      _hasStopovers =
+          outbound.stopover != null && outbound.stopover!.isNotEmpty;
       _stopoversController.text = outbound.stopover ?? '';
       _outboundClassController.text = outbound.flightClass ?? '';
     } else {
@@ -157,9 +168,9 @@ class _TicketEditFormState extends State<TicketEditForm> {
     _returnDepartureDateController = TextEditingController();
     _returnArrivalDateController = TextEditingController();
     _returnStopoversController = TextEditingController();
-    _hasReturnStopovers = false; // Se inicializa como false por si el viaje cambia de RT a OW
+    _hasReturnStopovers =
+        false; // Se inicializa como false por si el viaje cambia de RT a OW
     _returnClassController = TextEditingController();
-
 
     if (segments.length > 1) {
       final returnSeg = segments[1];
@@ -168,10 +179,15 @@ class _TicketEditFormState extends State<TicketEditForm> {
       _returnOriginController.text = returnSeg.origin;
       _returnDestinationController.text = returnSeg.destination;
       _selectedReturnDepartureDate = returnSeg.departureDate;
-      _returnDepartureDateController.text = DateFormat('dd/MM/yyyy HH:mm').format(returnSeg.departureDate);
+      _returnDepartureDateController.text = DateFormat(
+        'dd/MM/yyyy HH:mm',
+      ).format(returnSeg.departureDate);
       _selectedReturnArrivalDate = returnSeg.arrivalDate;
-      _returnArrivalDateController.text = DateFormat('dd/MM/yyyy HH:mm').format(returnSeg.arrivalDate);
-      _hasReturnStopovers = returnSeg.stopover != null && returnSeg.stopover!.isNotEmpty;
+      _returnArrivalDateController.text = DateFormat(
+        'dd/MM/yyyy HH:mm',
+      ).format(returnSeg.arrivalDate);
+      _hasReturnStopovers =
+          returnSeg.stopover != null && returnSeg.stopover!.isNotEmpty;
       _returnStopoversController.text = returnSeg.stopover ?? '';
       _returnClassController.text = returnSeg.flightClass ?? '';
     }
@@ -180,6 +196,7 @@ class _TicketEditFormState extends State<TicketEditForm> {
   @override
   void dispose() {
     // 3. Limpieza COMPLETA de todos los controladores en dispose
+    _ticketNumberController.dispose();
     _pnrController.dispose();
     _agentController.dispose();
     _issueDateController.dispose();
@@ -188,7 +205,6 @@ class _TicketEditFormState extends State<TicketEditForm> {
     _stopoversController.dispose();
     _outboundClassController.dispose();
     _returnClassController.dispose();
-
 
     _outboundAirlineController.dispose();
     _outboundFlightNumController.dispose();
@@ -208,12 +224,30 @@ class _TicketEditFormState extends State<TicketEditForm> {
   }
 
   /// Función auxiliar para el selector de fecha y hora.
-  Future<void> _selectDateTime(BuildContext context, TextEditingController controller, Function(DateTime) onDateSelected) async {
-    final DateTime? pickedDate = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2101));
+  Future<void> _selectDateTime(
+    BuildContext context,
+    TextEditingController controller,
+    Function(DateTime) onDateSelected,
+  ) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
     if (pickedDate != null && mounted) {
-      final TimeOfDay? pickedTime = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
       if (pickedTime != null) {
-        final fullDateTime = DateTime(pickedDate.year, pickedDate.month, pickedDate.day, pickedTime.hour, pickedTime.minute);
+        final fullDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
         if (!mounted) return;
         onDateSelected(fullDateTime);
         controller.text = DateFormat('dd/MM/yyyy HH:mm').format(fullDateTime);
@@ -238,8 +272,16 @@ class _TicketEditFormState extends State<TicketEditForm> {
             const SizedBox(height: 16),
             SegmentedButton<String>(
               segments: const <ButtonSegment<String>>[
-                ButtonSegment<String>(value: 'OW', label: Text('Solo Ida'), icon: Icon(Icons.arrow_forward)),
-                ButtonSegment<String>(value: 'RT', label: Text('Ida y Vuelta'), icon: Icon(Icons.sync_alt)),
+                ButtonSegment<String>(
+                  value: 'OW',
+                  label: Text('Solo Ida'),
+                  icon: Icon(Icons.arrow_forward),
+                ),
+                ButtonSegment<String>(
+                  value: 'RT',
+                  label: Text('Ida y Vuelta'),
+                  icon: Icon(Icons.sync_alt),
+                ),
               ],
               selected: _tripTypeSelection,
               onSelectionChanged: (Set<String> newSelection) {
@@ -253,14 +295,23 @@ class _TicketEditFormState extends State<TicketEditForm> {
             TextFormField(
               controller: _pnrController,
               textCapitalization: TextCapitalization.characters,
-              decoration: const InputDecoration(labelText: 'PNR o Código de Reserva*'),
-              validator: (v) => v!.isEmpty ? 'Requerido' : null
+              decoration: const InputDecoration(
+                labelText: 'PNR o Código de Reserva*',
+              ),
+              validator: (v) => v!.isEmpty ? 'Requerido' : null,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _ticketNumberController,
+              decoration: const InputDecoration(labelText: 'Número de Boleto'),
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.characters,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _agentController,
               decoration: const InputDecoration(labelText: 'Proveedor*'),
-              validator: (v) => v!.isEmpty ? 'Requerido' : null
+              validator: (v) => v!.isEmpty ? 'Requerido' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -282,8 +333,16 @@ class _TicketEditFormState extends State<TicketEditForm> {
             const SizedBox(height: 16),
             SegmentedButton<String>(
               segments: const <ButtonSegment<String>>[
-                ButtonSegment<String>(value: 'AEREO', label: Text('Aéreo'), icon: Icon(Icons.flight)),
-                ButtonSegment<String>(value: 'TERRESTRE', label: Text('Bus'), icon: Icon(Icons.directions_bus)),
+                ButtonSegment<String>(
+                  value: 'AEREO',
+                  label: Text('Aéreo'),
+                  icon: Icon(Icons.flight),
+                ),
+                ButtonSegment<String>(
+                  value: 'TERRESTRE',
+                  label: Text('Bus'),
+                  icon: Icon(Icons.directions_bus),
+                ),
               ],
               selected: {_transportType},
               onSelectionChanged: (Set<String> newSelection) {
@@ -298,10 +357,12 @@ class _TicketEditFormState extends State<TicketEditForm> {
             DropdownButtonFormField<String>(
               value: _passengerCategory,
               items: ['ADT', 'CHD', 'SNN', 'INF']
-                  .map((String value) => DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      ))
+                  .map(
+                    (String value) => DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    ),
+                  )
                   .toList(),
               onChanged: (v) {
                 setState(() {
@@ -335,8 +396,10 @@ class _TicketEditFormState extends State<TicketEditForm> {
               destinationController: _outboundDestinationController,
               departureDateController: _outboundDepartureDateController,
               arrivalDateController: _outboundArrivalDateController,
-              onDepartureDateSelected: (date) => _selectedOutboundDepartureDate = date,
-              onArrivalDateSelected: (date) => _selectedOutboundArrivalDate = date,
+              onDepartureDateSelected: (date) =>
+                  _selectedOutboundDepartureDate = date,
+              onArrivalDateSelected: (date) =>
+                  _selectedOutboundArrivalDate = date,
               isAirTicket: isAirTicket,
             ),
             CheckboxListTile(
@@ -354,7 +417,9 @@ class _TicketEditFormState extends State<TicketEditForm> {
               const SizedBox(height: 8),
               TextFormField(
                 controller: _stopoversController,
-                decoration: const InputDecoration(labelText: 'Detalles de las escalas (ej. LPB, MIA)'),
+                decoration: const InputDecoration(
+                  labelText: 'Detalles de las escalas (ej. LPB, MIA)',
+                ),
                 textCapitalization: TextCapitalization.characters,
               ),
             ],
@@ -377,7 +442,9 @@ class _TicketEditFormState extends State<TicketEditForm> {
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: _returnStopoversController,
-                  decoration: const InputDecoration(labelText: 'Detalles de las escalas (ej. LPB, MIA)'),
+                  decoration: const InputDecoration(
+                    labelText: 'Detalles de las escalas (ej. LPB, MIA)',
+                  ),
                   textCapitalization: TextCapitalization.characters,
                 ),
               ],
@@ -389,8 +456,10 @@ class _TicketEditFormState extends State<TicketEditForm> {
                 destinationController: _returnDestinationController,
                 departureDateController: _returnDepartureDateController,
                 arrivalDateController: _returnArrivalDateController,
-                onDepartureDateSelected: (date) => _selectedReturnDepartureDate = date,
-                onArrivalDateSelected: (date) => _selectedReturnArrivalDate = date,
+                onDepartureDateSelected: (date) =>
+                    _selectedReturnDepartureDate = date,
+                onArrivalDateSelected: (date) =>
+                    _selectedReturnArrivalDate = date,
                 isAirTicket: isAirTicket,
               ),
             ],
@@ -403,20 +472,30 @@ class _TicketEditFormState extends State<TicketEditForm> {
                 Expanded(
                   child: TextFormField(
                     controller: _totalPriceController,
-                    decoration: const InputDecoration(labelText: 'Precio Total*', prefixText: '\$ '),
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    validator: (v) => v!.isEmpty ? 'Requerido' : null
-                  )
+                    decoration: const InputDecoration(
+                      labelText: 'Precio Total*',
+                      prefixText: '\$ ',
+                    ),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    validator: (v) => v!.isEmpty ? 'Requerido' : null,
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: TextFormField(
                     controller: _commissionController,
-                    decoration: const InputDecoration(labelText: 'Comisión', prefixText: '\$ '),
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true)
-                  )
+                    decoration: const InputDecoration(
+                      labelText: 'Comisión',
+                      prefixText: '\$ ',
+                    ),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                  ),
                 ),
-              ]
+              ],
             ),
             const SizedBox(height: 16),
             Row(
@@ -424,21 +503,35 @@ class _TicketEditFormState extends State<TicketEditForm> {
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: _selectedCurrency,
-                    items: ['USD', 'BOB'].map((String value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+                    items: ['USD', 'BOB']
+                        .map(
+                          (String value) => DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          ),
+                        )
+                        .toList(),
                     onChanged: (v) => setState(() => _selectedCurrency = v!),
-                    decoration: const InputDecoration(labelText: 'Divisa')
-                  )
+                    decoration: const InputDecoration(labelText: 'Divisa'),
+                  ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: _selectedStatus,
-                    items: ['CONFIRMADO', 'CANCELADO', 'REEMBOLSADO'].map((String value) => DropdownMenuItem<String>(value: value, child: Text(value))).toList(),
+                    items: ['CONFIRMADO', 'CANCELADO', 'REEMBOLSADO']
+                        .map(
+                          (String value) => DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          ),
+                        )
+                        .toList(),
                     onChanged: (v) => setState(() => _selectedStatus = v!),
-                    decoration: const InputDecoration(labelText: 'Estado')
-                  )
+                    decoration: const InputDecoration(labelText: 'Estado'),
+                  ),
                 ),
-              ]
+              ],
             ),
             const SizedBox(height: 32),
 
@@ -453,50 +546,79 @@ class _TicketEditFormState extends State<TicketEditForm> {
                       if (_selectedIssueDate == null ||
                           _selectedOutboundDepartureDate == null ||
                           _selectedOutboundArrivalDate == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Por favor, complete todas las fechas requeridas.')));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Por favor, complete todas las fechas requeridas.',
+                            ),
+                          ),
+                        );
                         return;
                       }
 
                       if (isRoundTrip &&
                           (_selectedReturnDepartureDate == null ||
-                          _selectedReturnArrivalDate == null)) {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Por favor, complete las fechas del segmento de vuelta.')));
+                              _selectedReturnArrivalDate == null)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Por favor, complete las fechas del segmento de vuelta.',
+                            ),
+                          ),
+                        );
                         return;
                       }
 
                       final List<FlightSegmentEntity> updatedSegments = [];
-                      updatedSegments.add(FlightSegmentEntity(
-                        id: widget.ticket.segments.isNotEmpty ? widget.ticket.segments.first.id : 0,
-                        ticketId: widget.ticket.id,
-                        airlineCode: _outboundAirlineController.text,
-                        flightNumber: _outboundFlightNumController.text,
-                        origin: _outboundOriginController.text,
-                        destination: _outboundDestinationController.text,
-                        departureDate: _selectedOutboundDepartureDate!,
-                        arrivalDate: _selectedOutboundArrivalDate!,
-                        flightClass: _outboundClassController.text.isNotEmpty ? _outboundClassController.text : null,
-                        stopover: _hasStopovers ? _stopoversController.text : null,
-                      ));
+                      updatedSegments.add(
+                        FlightSegmentEntity(
+                          id: widget.ticket.segments.isNotEmpty
+                              ? widget.ticket.segments.first.id
+                              : 0,
+                          ticketId: widget.ticket.id,
+                          airlineCode: _outboundAirlineController.text,
+                          flightNumber: _outboundFlightNumController.text,
+                          origin: _outboundOriginController.text,
+                          destination: _outboundDestinationController.text,
+                          departureDate: _selectedOutboundDepartureDate!,
+                          arrivalDate: _selectedOutboundArrivalDate!,
+                          flightClass: _outboundClassController.text.isNotEmpty
+                              ? _outboundClassController.text
+                              : null,
+                          stopover: _hasStopovers
+                              ? _stopoversController.text
+                              : null,
+                        ),
+                      );
 
                       if (isRoundTrip) {
-                        updatedSegments.add(FlightSegmentEntity(
-                          id: widget.ticket.segments.length > 1 ? widget.ticket.segments[1].id : 0,
-                          ticketId: widget.ticket.id,
-                          airlineCode: _returnAirlineController.text,
-                          flightNumber: _returnFlightNumController.text,
-                          origin: _returnOriginController.text,
-                          destination: _returnDestinationController.text,
-                          departureDate: _selectedReturnDepartureDate!,
-                          arrivalDate: _selectedReturnArrivalDate!,
-                          flightClass: _returnClassController.text.isNotEmpty ? _returnClassController.text : null,
-                          stopover: _hasReturnStopovers ? _returnStopoversController.text : null,
-                        ));
+                        updatedSegments.add(
+                          FlightSegmentEntity(
+                            id: widget.ticket.segments.length > 1
+                                ? widget.ticket.segments[1].id
+                                : 0,
+                            ticketId: widget.ticket.id,
+                            airlineCode: _returnAirlineController.text,
+                            flightNumber: _returnFlightNumController.text,
+                            origin: _returnOriginController.text,
+                            destination: _returnDestinationController.text,
+                            departureDate: _selectedReturnDepartureDate!,
+                            arrivalDate: _selectedReturnArrivalDate!,
+                            flightClass: _returnClassController.text.isNotEmpty
+                                ? _returnClassController.text
+                                : null,
+                            stopover: _hasReturnStopovers
+                                ? _returnStopoversController.text
+                                : null,
+                          ),
+                        );
                       }
-                      
+
                       final updatedTicket = widget.ticket.copyWith(
                         pnr: _pnrController.text,
                         issuingAgent: _agentController.text,
                         emissionDate: _selectedIssueDate,
+                        ticketNumber: _ticketNumberController.text,
                         status: _selectedStatus,
                         currency: _selectedCurrency,
                         flightType: _tripTypeSelection.first,
@@ -506,8 +628,10 @@ class _TicketEditFormState extends State<TicketEditForm> {
                         commission: double.tryParse(_commissionController.text),
                         segments: updatedSegments,
                       );
-                      
-                      context.read<TicketFormBloc>().add(UpdateTicketSubmitted(updatedTicket));
+
+                      context.read<TicketFormBloc>().add(
+                        UpdateTicketSubmitted(updatedTicket),
+                      );
                     }
                   },
                   child: const Text('Guardar Cambios'),
@@ -523,7 +647,13 @@ class _TicketEditFormState extends State<TicketEditForm> {
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.only(top: 24.0, bottom: 8.0),
-      child: Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.fontTitleLight, fontWeight: FontWeight.w600)),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: AppColors.fontTitleLight,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     );
   }
 
@@ -547,8 +677,10 @@ class _TicketEditFormState extends State<TicketEditForm> {
               child: TextFormField(
                 controller: airlineController,
                 textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(labelText: isAirTicket ? 'Aerolínea*' : 'Empresa de Bus*'),
-                validator: (v) => v!.isEmpty ? 'Requerido' : null
+                decoration: InputDecoration(
+                  labelText: isAirTicket ? 'Aerolínea*' : 'Empresa de Bus*',
+                ),
+                validator: (v) => v!.isEmpty ? 'Requerido' : null,
               ),
             ),
             const SizedBox(width: 16),
@@ -556,8 +688,10 @@ class _TicketEditFormState extends State<TicketEditForm> {
               child: TextFormField(
                 controller: flightNumController,
                 textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(labelText: isAirTicket ? 'Nº Vuelo*' : 'Nº Asiento/Coche*'),
-                validator: (v) => v!.isEmpty ? 'Requerido' : null
+                decoration: InputDecoration(
+                  labelText: isAirTicket ? 'Nº Vuelo*' : 'Nº Asiento/Coche*',
+                ),
+                validator: (v) => v!.isEmpty ? 'Requerido' : null,
               ),
             ),
           ],
@@ -575,8 +709,12 @@ class _TicketEditFormState extends State<TicketEditForm> {
               child: TextFormField(
                 controller: originController,
                 textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(labelText: isAirTicket ? 'Origen* (ej. VVI)' : 'Terminal Origen*'),
-                validator: (v) => v!.isEmpty ? 'Requerido' : null
+                decoration: InputDecoration(
+                  labelText: isAirTicket
+                      ? 'Origen* (ej. VVI)'
+                      : 'Terminal Origen*',
+                ),
+                validator: (v) => v!.isEmpty ? 'Requerido' : null,
               ),
             ),
             const SizedBox(width: 16),
@@ -584,8 +722,12 @@ class _TicketEditFormState extends State<TicketEditForm> {
               child: TextFormField(
                 controller: destinationController,
                 textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(labelText: isAirTicket ? 'Destino* (ej. CBB)' : 'Terminal Destino*'),
-                validator: (v) => v!.isEmpty ? 'Requerido' : null
+                decoration: InputDecoration(
+                  labelText: isAirTicket
+                      ? 'Destino* (ej. CBB)'
+                      : 'Terminal Destino*',
+                ),
+                validator: (v) => v!.isEmpty ? 'Requerido' : null,
               ),
             ),
           ],
@@ -598,7 +740,11 @@ class _TicketEditFormState extends State<TicketEditForm> {
             suffixIcon: Icon(Icons.calendar_today),
           ),
           readOnly: true,
-          onTap: () => _selectDateTime(context, departureDateController, onDepartureDateSelected),
+          onTap: () => _selectDateTime(
+            context,
+            departureDateController,
+            onDepartureDateSelected,
+          ),
           validator: (v) => v!.isEmpty ? 'Requerido' : null,
         ),
         const SizedBox(height: 16),
@@ -609,7 +755,11 @@ class _TicketEditFormState extends State<TicketEditForm> {
             suffixIcon: Icon(Icons.calendar_today),
           ),
           readOnly: true,
-          onTap: () => _selectDateTime(context, arrivalDateController, onArrivalDateSelected),
+          onTap: () => _selectDateTime(
+            context,
+            arrivalDateController,
+            onArrivalDateSelected,
+          ),
           validator: (v) => v!.isEmpty ? 'Requerido' : null,
         ),
       ],

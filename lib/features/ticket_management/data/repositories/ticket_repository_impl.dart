@@ -41,7 +41,7 @@ class TicketRepositoryImpl implements ITicketRepository {
         currency: ticket.currency,
         totalPrice: ticket.totalPrice,
         commission: ticket.commission,
-        originalTicketId: ticket.originalTicketId,
+        originalTicketNumber: ticket.originalTicketNumber,
         createdAt: ticket.createdAt,
         updatedAt: ticket.updatedAt,
         segments: ticket.segments,
@@ -72,12 +72,22 @@ class TicketRepositoryImpl implements ITicketRepository {
         currency: ticket.currency,
         totalPrice: ticket.totalPrice,
         commission: ticket.commission,
-        originalTicketId: ticket.originalTicketId,
+        originalTicketNumber: ticket.originalTicketNumber,
         createdAt: ticket.createdAt,
         updatedAt: ticket.updatedAt,
         segments: ticket.segments,
       );
       await localDataSource.updateTicket(ticketModel);
+      return const Right(null);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteTicket(int ticketId) async {
+    try {
+      await localDataSource.deleteTicket(ticketId);
       return const Right(null);
     } on CacheException catch (e) {
       return Left(CacheFailure(e.message));

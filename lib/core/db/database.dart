@@ -7,7 +7,6 @@ import '../../features/client_management/data/datasources/local/client_dao.dart'
 import 'connection/native.dart'
     if (dart.library.html) 'connection/web.dart';
 import 'dao/ticket_dao.dart';
-import '../../features/ticket_management/domain/entities/ticket_entity.dart';
 
 part 'database.g.dart';
 
@@ -91,7 +90,7 @@ class Tickets extends Table {
   RealColumn get commission => real().nullable()();
 
   /// Si este boleto fue emitido por un cambio, aquí se guarda el ID del boleto original.
-  IntColumn get originalTicketId => integer().nullable().references(Tickets, #id)();
+  TextColumn get originalTicketNumber => text().nullable()();
 
   
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();

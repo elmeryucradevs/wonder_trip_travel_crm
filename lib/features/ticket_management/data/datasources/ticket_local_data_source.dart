@@ -11,6 +11,7 @@ abstract class ITicketDataSource {
   Future<List<TicketModel>> getTicketsForClient(int clientId);
   Future<void> saveTicket(TicketModel ticket);
   Future<void> updateTicket(TicketModel ticket);
+  Future<void> deleteTicket(int ticketId);
 }
 
 class TicketLocalDataSourceImpl implements ITicketDataSource {
@@ -41,7 +42,7 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
           currency: ticket.currency,
           totalPrice: ticket.totalPrice,
           commission: ticket.commission,
-          originalTicketId: ticket.originalTicketId,
+          originalTicketNumber: ticket.originalTicketNumber,
           createdAt: ticket.createdAt,
           updatedAt: ticket.updatedAt,
           segments: segments.map((s) => FlightSegmentEntity(
@@ -124,6 +125,14 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
       });
     } catch (e) {
       throw CacheException('Error al actualizar el boleto: ${e.toString()}');
+    }
+  }
+  @override
+  Future<void> deleteTicket(int ticketId) async {
+    try {
+      await ticketDao.deleteTicketAndSegments(ticketId);
+    } catch (e) {
+      throw CacheException('Error al eliminar el boleto: ${e.toString()}');
     }
   }
 }

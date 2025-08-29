@@ -39,13 +39,13 @@ class FlightTimeline extends StatelessWidget {
               
               // Muestra la tarjeta de escala si no es el último segmento
               if (!isLastSegment)
-                _LayoverCard(
-                  currentSegment: segment,
-                  nextSegment: segments[index + 1],
+                _StayDurationCard(
+                  arrivalSegment: segment,
+                  departureSegment: segments[index + 1],
                 ),
             ],
           );
-        }).toList(),
+        }),
       ],
     );
   }
@@ -161,7 +161,7 @@ class _FlightSegmentCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(airportName, style: textTheme.bodySmall?.copyWith(color: AppColors.fontSubtitleLight)),
-              Text('(${airportCode})', style: textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, color: AppColors.fontSubtitleLight)),
+              Text('($airportCode)', style: textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold, color: AppColors.fontSubtitleLight)),
             ],
           ),
         ),
@@ -170,38 +170,39 @@ class _FlightSegmentCard extends StatelessWidget {
   }
 }
 
-/// Widget auxiliar para mostrar el tiempo de escala entre dos vuelos.
-class _LayoverCard extends StatelessWidget {
-  final FlightSegmentEntity currentSegment;
-  final FlightSegmentEntity nextSegment;
+/// Muestra la duración de la estancia entre dos segmentos de vuelo.
+class _StayDurationCard extends StatelessWidget {
+  final FlightSegmentEntity arrivalSegment;
+  final FlightSegmentEntity departureSegment;
 
-  const _LayoverCard({required this.currentSegment, required this.nextSegment});
+  const _StayDurationCard({required this.arrivalSegment, required this.departureSegment});
 
   @override
   Widget build(BuildContext context) {
-    final layoverDuration = nextSegment.departureDate.difference(currentSegment.arrivalDate);
-    final hours = layoverDuration.inHours;
-    final minutes = layoverDuration.inMinutes.remainder(60);
+    final stayDuration = departureSegment.departureDate.difference(arrivalSegment.arrivalDate);
+    final days = stayDuration.inDays;
+    final hours = stayDuration.inHours % 24;
+    final minutes = stayDuration.inMinutes % 60;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: BoxDecoration(
-        color: AppColors.cardLight,
+        color: AppColors.primaryLight.withOpacity(0.05),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppColors.accentLight.withOpacity(0.5)),
+        border: Border.all(color: AppColors.primaryLight.withOpacity(0.2)),
       ),
       child: Row(
         children: [
-          const Icon(Icons.access_time, color: AppColors.accentLight, size: 20),
-          const SizedBox(width: 8),
+          const Icon(Icons.calendar_today_outlined, color: AppColors.primaryLight, size: 20),
+          const SizedBox(width: 12),
           Expanded(
             child: Text(
-              'Escala de ${hours}h ${minutes}m en ${currentSegment.destination}',
+              'Estancia de $days días, $hours horas y $minutes min en ${arrivalSegment.destination}',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.fontSubtitleLight,
-                fontWeight: FontWeight.w600,
+                color: AppColors.fontTitleLight,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),

@@ -81,7 +81,7 @@ class TicketListPage extends StatelessWidget {
                       // 2. Usamos BlocProvider.value para proveer esa misma instancia a la nueva página.
                       return BlocProvider.value(
                         value: context.read<TicketListBloc>(),
-                        child: TicketCreationPage(client: client),
+                        child: TicketCreationPage(client: client, ),
                       );
                     },
                   ),

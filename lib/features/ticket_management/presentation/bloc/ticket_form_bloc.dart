@@ -60,6 +60,7 @@ class TicketFormBloc extends Bloc<TicketCreationEvent, TicketCreationState> {
       segments: segments,
       ticketNumber: event.ticketNumber,
       issuingAgent: event.issuingAgent,
+      originalTicketNumber: event.originalTicketNumber,
       
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

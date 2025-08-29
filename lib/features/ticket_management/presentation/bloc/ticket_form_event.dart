@@ -28,11 +28,6 @@ class CreateTicketSubmitted extends TicketCreationEvent {
   final String flightType;
   final double totalPrice;
   final double? commission;
-  final double? taxBO;
-  final double? taxA7;
-  final double? taxQM;
-  final double? taxOM;
-  final double? otherTaxes;
   final String? passengerCategory; // NUEVO: Categoría del pasajero
   final bool? unaccompaniedMinor; // NUEVO: Indica si un menor viaja solo
 
@@ -50,6 +45,8 @@ class CreateTicketSubmitted extends TicketCreationEvent {
   // --- NUEVO CAMPO OPCIONAL PARA EL SEGMENTO DE VUELTA ---
   final FlightSegmentEntity? returnSegment;
 
+  final String? originalTicketNumber;
+
   const CreateTicketSubmitted({
     required this.clientId,
     required this.pnr,
@@ -61,11 +58,6 @@ class CreateTicketSubmitted extends TicketCreationEvent {
     required this.flightType,
     required this.totalPrice,
     this.commission,
-    this.taxBO,
-    this.taxA7,
-    this.taxQM,
-    this.taxOM,
-    this.otherTaxes,
     required this.transportType,
     this.stopovers,
     required this.segmentAirline,
@@ -77,6 +69,7 @@ class CreateTicketSubmitted extends TicketCreationEvent {
     this.returnSegment,
     this.passengerCategory,
     this.unaccompaniedMinor,
+    this.originalTicketNumber,
   });
 
   @override
@@ -85,7 +78,7 @@ class CreateTicketSubmitted extends TicketCreationEvent {
     currency, flightType,  commission, transportType, 
     stopovers, segmentAirline, segmentFlightNumber, segmentOrigin, 
     segmentDestination, segmentDepartureTime, segmentArrivalTime, returnSegment,
-    ticketNumber, issuingAgent, taxBO, taxA7, taxQM, taxOM, otherTaxes,
-    passengerCategory, unaccompaniedMinor
+    ticketNumber, issuingAgent, passengerCategory, unaccompaniedMinor, originalTicketNumber,
+
   ];
 }
