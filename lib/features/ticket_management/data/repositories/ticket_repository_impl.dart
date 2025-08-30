@@ -93,4 +93,14 @@ class TicketRepositoryImpl implements ITicketRepository {
       return Left(CacheFailure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, List<TicketEntity>>> getUpcomingFlights() async {
+    try {
+      final localTickets = await localDataSource.getUpcomingFlights();
+      return Right(localTickets);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
+    }
+  }
 }

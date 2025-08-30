@@ -32,4 +32,19 @@ class TicketDao extends DatabaseAccessor<AppDatabase> with _$TicketDaoMixin {
       await (delete(tickets)..where((tbl) => tbl.id.equals(ticketId))).go();
     });
   }
+  /// ---
+  /// Obtiene una lista de los próximos segmentos de vuelo.
+  ///
+  /// Busca segmentos cuya fecha de salida sea posterior a la actual y los
+  /// ordena por la fecha de salida más cercana. Opcionalmente, se puede
+  /// limitar el número de resultados.
+  /// ---
+  Future<List<FlightSegment>> getUpcomingFlights({int limit = 5}) {
+    final now = DateTime.now();
+    return (select(flightSegments)
+          ..where((s) => s.departureDate.isBiggerThanValue(now))
+          ..orderBy([(s) => OrderingTerm(expression: s.departureDate)])
+          ..limit(limit))
+        .get();
+  }
 }

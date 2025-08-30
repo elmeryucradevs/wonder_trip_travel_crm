@@ -4,6 +4,8 @@ import 'package:wonder_trip_travel_crm/core/config/injection_container.dart';
 import 'package:wonder_trip_travel_crm/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:wonder_trip_travel_crm/features/dashboard/presentation/widgets/birthday_card.dart';
 
+import '../widgets/upcoming_flights_card.dart';
+
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
@@ -26,6 +28,7 @@ class DashboardPage extends StatelessWidget {
                 child: Column(
                   children: [
                     BirthdayCard(clients: state.birthdayClients),
+                    UpcomingFlightsCard(tickets: state.upcomingFlights),
                     // Aquí irán las otras tarjetas (vuelos, etc.)
                   ],
                 ),

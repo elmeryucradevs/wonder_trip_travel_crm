@@ -10,12 +10,14 @@ class DashboardLoading extends DashboardState {}
 
 class DashboardLoaded extends DashboardState {
   final List<ClientEntity> birthdayClients;
+  final List<TicketEntity> upcomingFlights;
   // Aquí añadiremos las otras listas (vuelos, etc.) en el futuro
 
-  const DashboardLoaded({required this.birthdayClients});
+  const DashboardLoaded({required this.birthdayClients, required this.upcomingFlights,});
+  
 
   @override
-  List<Object> get props => [birthdayClients];
+  List<Object> get props => [birthdayClients, upcomingFlights];
 }
 
 class DashboardFailure extends DashboardState {
