@@ -1,10 +1,10 @@
 part of 'client_list_bloc.dart';
 
 /// ---
-/// /// [ClientListState] es la clase base para los estados de la pantalla de lista de clientes.
-/// ///
-/// /// Extiende [Equatable] para que el [BlocBuilder] pueda comparar eficientemente
-/// /// el estado anterior y el nuevo, y solo reconstruir la UI si el estado ha cambiado.
+/// [ClientListState] es la clase base para los estados de la pantalla de lista de clientes.
+///
+/// Extiende [Equatable] para que el [BlocBuilder] pueda comparar eficientemente
+/// el estado anterior y el nuevo, y solo reconstruir la UI si el estado ha cambiado.
 /// ---
 abstract class ClientListState extends Equatable {
   const ClientListState();

@@ -46,14 +46,14 @@ class Clients extends Table {
 }
 
 /// ---
-/// /// Define la tabla 'tickets' para los boletos aéreos emitidos.
-/// ///
-/// /// Almacena información clave sobre cada boleto, vinculándolo a un cliente.
-/// ///
-/// /// Campos:
-/// /// - [clientId]: Clave foránea que referencia a la tabla 'clients'.
-/// /// - [pnr]: Código de reserva de la aerolínea.
-/// /// - [totalPrice]: Precio total del boleto.
+/// Define la tabla 'tickets' para los boletos aéreos emitidos.
+///
+/// Almacena información clave sobre cada boleto, vinculándolo a un cliente.
+///
+/// Campos:
+/// - [clientId]: Clave foránea que referencia a la tabla 'clients'.
+/// - [pnr]: Código de reserva de la aerolínea.
+/// - [totalPrice]: Precio total del boleto.
 /// ---
 @DataClassName('Ticket')
 class Tickets extends Table {
@@ -98,15 +98,15 @@ class Tickets extends Table {
 }
 
 /// ---
-/// /// Define la tabla 'flight_segments' para los tramos de un vuelo.
-/// ///
-/// /// Un boleto puede consistir en múltiples segmentos de vuelo.
-/// ///
-/// /// Campos:
-/// /// - [ticketId]: Clave foránea que referencia a la tabla 'tickets'.
-/// /// - [airlineCode], [flightNumber]: Identificadores del vuelo.
-/// /// - [origin], [destination]: Códigos IATA de los aeropuertos.
-/// /// - [departureDate], [arrivalDate]: Fechas y horas del segmento.
+/// Define la tabla 'flight_segments' para los tramos de un vuelo.
+///
+/// Un boleto puede consistir en múltiples segmentos de vuelo.
+///
+/// Campos:
+/// - [ticketId]: Clave foránea que referencia a la tabla 'tickets'.
+/// - [airlineCode], [flightNumber]: Identificadores del vuelo.
+/// - [origin], [destination]: Códigos IATA de los aeropuertos.
+/// - [departureDate], [arrivalDate]: Fechas y horas del segmento.
 /// ---
 @DataClassName('FlightSegment')
 class FlightSegments extends Table {
@@ -130,20 +130,20 @@ class FlightSegments extends Table {
 
 
 /// ---
-/// /// [AppDatabase] es la clase principal que gestiona la base de datos de la aplicación.
-/// ///
-/// /// Utiliza el decorador [@DriftDatabase] para indicar a `drift_dev` que genere
-/// /// el código necesario para las tablas y DAOs (Data Access Objects) especificados.
-/// ///
-/// /// La clase extiende la clase generada `_$AppDatabase` que contiene la implementación
-/// /// real de la lógica de la base de datos.
-/// ///
-/// /// Incluye las tablas: [Clients], [Tickets], [FlightSegments].
-/// /// Incluye los DAOs: [ClientDao], [TicketDao] (se crearán más adelante).
+/// [AppDatabase] es la clase principal que gestiona la base de datos de la aplicación.
+///
+/// Utiliza el decorador [@DriftDatabase] para indicar a `drift_dev` que genere
+/// el código necesario para las tablas y DAOs (Data Access Objects) especificados.
+///
+/// La clase extiende la clase generada `_$AppDatabase` que contiene la implementación
+/// real de la lógica de la base de datos.
+///
+/// Incluye las tablas: [Clients], [Tickets], [FlightSegments].
+/// Incluye los DAOs: [ClientDao], [TicketDao] (se crearán más adelante).
 /// ---
-/// /// Se añade el DAO [ClientDao] a la lista de 'daos' en el decorador.
-/// /// Drift ahora generará el código necesario para que AppDatabase pueda
-/// /// instanciar y proporcionar el ClientDao.
+/// Se añade el DAO [ClientDao] a la lista de 'daos' en el decorador.
+/// Drift ahora generará el código necesario para que AppDatabase pueda
+/// instanciar y proporcionar el ClientDao.
 /// ---
 @DriftDatabase(
   tables: [Clients, Tickets, FlightSegments],
@@ -158,9 +158,9 @@ class AppDatabase extends _$AppDatabase {
 }
 
 /// ---
-/// /// [_openConnection] es una función privada que configura la conexión a la
-/// /// base de datos SQLite.
-/// ///
-/// /// Determina la ubicación del fichero de la base de datos en el directorio de
-/// /// documentos de la aplicación y crea una conexión [NativeDatabase].
+/// [_openConnection] es una función privada que configura la conexión a la
+/// base de datos SQLite.
+///
+/// Determina la ubicación del fichero de la base de datos en el directorio de
+/// documentos de la aplicación y crea una conexión [NativeDatabase].
 /// ---

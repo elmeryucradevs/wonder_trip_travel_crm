@@ -6,10 +6,10 @@ import 'package:path/path.dart' as p;
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 /// ---
-/// /// [connect] es la función que configura la conexión para plataformas nativas.
-/// ///
-/// /// Determina la ubicación del fichero de la base de datos en el directorio de
-/// /// documentos de la aplicación y crea una conexión [NativeDatabase].
+/// [connect] es la función que configura la conexión para plataformas nativas.
+///
+/// Determina la ubicación del fichero de la base de datos en el directorio de
+/// documentos de la aplicación y crea una conexión [NativeDatabase].
 /// ---
 LazyDatabase connect() {
   return LazyDatabase(() async {

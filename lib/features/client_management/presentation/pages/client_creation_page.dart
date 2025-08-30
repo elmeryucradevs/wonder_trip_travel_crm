@@ -7,11 +7,11 @@ import '../bloc/client_creation/client_creation_bloc.dart';
 import '../bloc/client_list_bloc.dart';
 
 /// ---
-/// /// [ClientCreationPage] es la pantalla que contiene el formulario para
-/// /// crear un nuevo cliente.
-/// ///
-/// /// Utiliza un [GlobalKey<FormState>] para gestionar la validación y el estado
-/// /// del formulario.
+/// [ClientCreationPage] es la pantalla que contiene el formulario para
+/// crear un nuevo cliente.
+///
+/// Utiliza un [GlobalKey<FormState>] para gestionar la validación y el estado
+/// del formulario.
 /// ---
 class ClientCreationPage extends StatelessWidget {
   const ClientCreationPage({super.key});
@@ -55,10 +55,10 @@ class ClientCreationPage extends StatelessWidget {
 }
 
 /// ---
-/// /// [ClientCreationForm] es el widget que contiene la lógica y los campos
-/// /// del formulario.
-/// ///
-/// /// Es un [StatefulWidget] para poder gestionar los controladores de texto.
+/// [ClientCreationForm] es el widget que contiene la lógica y los campos
+/// del formulario.
+///
+/// Es un [StatefulWidget] para poder gestionar los controladores de texto.
 /// ---
 class ClientCreationForm extends StatefulWidget {
   const ClientCreationForm({super.key});

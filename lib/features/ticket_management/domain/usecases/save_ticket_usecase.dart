@@ -5,10 +5,10 @@ import 'package:wonder_trip_travel_crm/features/ticket_management/domain/entitie
 import 'package:wonder_trip_travel_crm/features/ticket_management/domain/repositories/i_ticket_repository.dart';
 
 /// ---
-/// /// [SaveTicketUseCase] define el caso de uso para guardar un nuevo boleto.
-/// ///
-/// /// Recibe una [TicketEntity] que ya contiene sus segmentos de vuelo y la pasa
-/// /// al repositorio para ser persistida.
+/// [SaveTicketUseCase] define el caso de uso para guardar un nuevo boleto.
+///
+/// Recibe una [TicketEntity] que ya contiene sus segmentos de vuelo y la pasa
+/// al repositorio para ser persistida.
 /// ---
 class SaveTicketUseCase implements UseCase<void, TicketEntity> {
   final ITicketRepository repository;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 /// ---
-/// /// [AppColors] define la paleta de colores centralizada para el rediseño
-/// /// de la interfaz de usuario de "Wonder Trip Travel".
-/// ///
-/// /// Inspirada en diseños modernos, utiliza un fondo suave y colores de acento
-/// /// vibrantes para crear una experiencia visual elegante y profesional.
+/// [AppColors] define la paleta de colores centralizada para el rediseño
+/// de la interfaz de usuario de "Wonder Trip Travel".
+///
+/// Inspirada en diseños modernos, utiliza un fondo suave y colores de acento
+/// vibrantes para crear una experiencia visual elegante y profesional.
 /// ---
 class AppColors {
   // Paleta para el Modo Claro

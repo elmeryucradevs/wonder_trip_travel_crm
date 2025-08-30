@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 
 /// ---
-/// /// [AppTheme] define el sistema de diseño visual rediseñado para la aplicación.
-/// ///
-/// /// Implementa la nueva paleta de colores y la tipografía 'Poppins' para
-/// /// lograr un aspecto moderno, limpio y profesional. Define temas explícitos
-/// /// para widgets comunes como AppBar, Card, ElevatedButton y TextFormField
-/// /// para garantizar la consistencia visual en toda la aplicación.
+/// [AppTheme] define el sistema de diseño visual rediseñado para la aplicación.
+///
+/// Implementa la nueva paleta de colores y la tipografía 'Poppins' para
+/// lograr un aspecto moderno, limpio y profesional. Define temas explícitos
+/// para widgets comunes como AppBar, Card, ElevatedButton y TextFormField
+/// para garantizar la consistencia visual en toda la aplicación.
 /// ---
 class AppTheme {
   // --- TEMA CLARO ---

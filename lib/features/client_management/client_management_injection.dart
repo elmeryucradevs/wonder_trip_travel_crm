@@ -14,16 +14,16 @@ import 'presentation/bloc/client_creation/client_creation_bloc.dart';
 
 
 /// ---
-/// /// [initClientManagementFeature] registra todas las dependencias necesarias
-/// /// para la funcionalidad de gestión de clientes.
-/// ///
-/// /// Sigue el patrón de la Arquitectura Limpia:
-/// /// 1. Registra el BLoC ([ClientListBloc]) como `factory` porque la UI puede
-/// ///    necesitar crear múltiples instancias.
-/// /// 2. Registra el Caso de Uso ([GetAllClientsUseCase]) como `lazy singleton`.
-/// /// 3. Registra el Repositorio ([ClientRepositoryImpl]) como `lazy singleton`,
-/// ///    mapeando la interfaz [IClientRepository] a su implementación.
-/// /// 4. Registra la Fuente de Datos ([ClientLocalDataSourceImpl]) como `lazy singleton`.
+/// [initClientManagementFeature] registra todas las dependencias necesarias
+/// para la funcionalidad de gestión de clientes.
+///
+/// Sigue el patrón de la Arquitectura Limpia:
+/// 1. Registra el BLoC ([ClientListBloc]) como `factory` porque la UI puede
+///    necesitar crear múltiples instancias.
+/// 2. Registra el Caso de Uso ([GetAllClientsUseCase]) como `lazy singleton`.
+/// 3. Registra el Repositorio ([ClientRepositoryImpl]) como `lazy singleton`,
+///    mapeando la interfaz [IClientRepository] a su implementación.
+/// 4. Registra la Fuente de Datos ([ClientLocalDataSourceImpl]) como `lazy singleton`.
 /// ---
 Future<void> initClientManagementFeature() async {
   // BLoC

@@ -1,13 +1,13 @@
 import '../../domain/entities/client_entity.dart';
 
 /// ---
-/// /// [ClientModel] es el Data Transfer Object (DTO) para la entidad [ClientEntity].
-/// ///
-/// /// Extiende [ClientEntity] para heredar sus propiedades, pero añade funcionalidades
-/// /// específicas de la capa de datos, como la serialización/deserialización
-/// /// desde/hacia JSON o cualquier otra fuente de datos.
-/// ///
-/// /// Esto mantiene la entidad de dominio limpia de dependencias externas.
+/// [ClientModel] es el Data Transfer Object (DTO) para la entidad [ClientEntity].
+///
+/// Extiende [ClientEntity] para heredar sus propiedades, pero añade funcionalidades
+/// específicas de la capa de datos, como la serialización/deserialización
+/// desde/hacia JSON o cualquier otra fuente de datos.
+///
+/// Esto mantiene la entidad de dominio limpia de dependencias externas.
 /// ---
 class ClientModel extends ClientEntity {
   const ClientModel({
@@ -26,10 +26,10 @@ class ClientModel extends ClientEntity {
   });
 
   /// ---
-  /// /// [fromJson] es un factory constructor para crear una instancia de [ClientModel]
-  /// /// a partir de un mapa (generalmente proveniente de una API JSON).
-  /// ///
-  /// /// Realiza la conversión de tipos y el manejo de valores nulos.
+  /// [fromJson] es un factory constructor para crear una instancia de [ClientModel]
+  /// a partir de un mapa (generalmente proveniente de una API JSON).
+  ///
+  /// Realiza la conversión de tipos y el manejo de valores nulos.
   /// ---
   factory ClientModel.fromJson(Map<String, dynamic> json) {
     return ClientModel(
@@ -49,9 +49,9 @@ class ClientModel extends ClientEntity {
   }
 
   /// ---
-  /// /// [toJson] convierte la instancia de [ClientModel] a un mapa JSON.
-  /// ///
-  /// /// Es útil para enviar datos a una API en formato JSON.
+  /// [toJson] convierte la instancia de [ClientModel] a un mapa JSON.
+  ///
+  /// Es útil para enviar datos a una API en formato JSON.
   /// ---
   Map<String, dynamic> toJson() {
     return {

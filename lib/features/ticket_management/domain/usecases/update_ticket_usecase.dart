@@ -5,7 +5,7 @@ import 'package:wonder_trip_travel_crm/features/ticket_management/domain/entitie
 import 'package:wonder_trip_travel_crm/features/ticket_management/domain/repositories/i_ticket_repository.dart';
 
 /// ---
-/// /// [UpdateTicketUseCase] define el caso de uso para actualizar un boleto existente.
+/// [UpdateTicketUseCase] define el caso de uso para actualizar un boleto existente.
 /// ---
 class UpdateTicketUseCase implements UseCase<void, TicketEntity> {
   final ITicketRepository repository;

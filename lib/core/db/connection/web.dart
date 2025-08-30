@@ -2,13 +2,13 @@ import 'package:drift/drift.dart';
 import 'package:drift/wasm.dart';
 
 /// ---
-/// /// [connect] es la función que configura la conexión para la web, utilizando
-/// /// el método moderno basado en WebAssembly (WASM).
-/// ///
-/// /// 1. Abre la base de datos WASM (`WasmDatabase.open`).
-/// /// 2. Especifica el nombre de la base de datos en IndexedDB.
-/// /// 3. Proporciona las URIs a los ficheros `sqlite3.wasm` y `drift_worker.js`
-/// ///    que copiamos a nuestra carpeta `web/`.
+/// [connect] es la función que configura la conexión para la web, utilizando
+/// el método moderno basado en WebAssembly (WASM).
+///
+/// 1. Abre la base de datos WASM (`WasmDatabase.open`).
+/// 2. Especifica el nombre de la base de datos en IndexedDB.
+/// 3. Proporciona las URIs a los ficheros `sqlite3.wasm` y `drift_worker.js`
+///    que copiamos a nuestra carpeta `web/`.
 /// ---
 LazyDatabase connect() {
   return LazyDatabase(() async {

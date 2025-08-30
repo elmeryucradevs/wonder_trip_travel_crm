@@ -10,17 +10,18 @@ import '../../../../core/error/exceptions.dart';
 
 abstract class IClientDataSource {
   Future<List<ClientModel>> getAllClients();
+  Future<List<ClientModel>> getClientsWithUpcomingBirthdays();
   Future<void> saveClient(ClientModel client);
   Future<void> updateClient(ClientModel client);
   Future<void> deleteClient(int id);
 }
 
 /// ---
-/// /// [ClientLocalDataSourceImpl] ahora depende del [ClientDao] para interactuar
-/// /// con la base de datos. La dependencia es inyectada por GetIt.
-/// ///
-/// /// Se ha añadido una lógica de "seeding" para poblar la base de datos con
-/// /// datos iniciales si está vacía, para facilitar el desarrollo.
+/// [ClientLocalDataSourceImpl] ahora depende del [ClientDao] para interactuar
+/// con la base de datos. La dependencia es inyectada por GetIt.
+///
+/// Se ha añadido una lógica de "seeding" para poblar la base de datos con
+/// datos iniciales si está vacía, para facilitar el desarrollo.
 /// ---
 class ClientLocalDataSourceImpl implements IClientDataSource {
   final ClientDao clientDao;
@@ -42,6 +43,27 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
   Future<List<ClientModel>> getAllClients() async {
     final clientListFromDb = await clientDao.getAllClients();
     // Mapeamos los nuevos campos
+    return clientListFromDb
+        .map((client) => ClientModel(
+              id: client.id,
+              name: client.name,
+              lastName: client.lastName,
+              email: client.email,
+              phone: client.phone,
+              birthDate: client.birthDate,
+              documentNumber: client.documentNumber,
+              documentType: client.documentType,
+              travelerNumber: client.travelerNumber,
+              billingName: client.billingName,
+              billingDocument: client.billingDocument,
+              billingAddress: client.billingAddress,
+            ))
+        .toList();
+  }
+
+  @override
+  Future<List<ClientModel>> getClientsWithUpcomingBirthdays() async {
+    final clientListFromDb = await clientDao.getClientsOrderedByNextBirthday();
     return clientListFromDb
         .map((client) => ClientModel(
               id: client.id,

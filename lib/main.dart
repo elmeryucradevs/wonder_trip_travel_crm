@@ -1,3 +1,4 @@
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -5,19 +6,19 @@ import 'core/config/injection_container.dart' as di;
 import 'core/db/database.dart';
 import 'core/db/db_seeder.dart';
 import 'core/theme/theme.dart';
-import 'features/client_management/presentation/pages/client_list_page.dart';
+import 'features/dashboard/presentation/pages/dashboard_page.dart';
 
 /// ---
-/// /// [main] es el punto de entrada principal de la aplicación.
-/// ///
-/// /// Se encarga de realizar las inicializaciones críticas antes de que la UI
-/// /// sea renderizada.
-/// ///
-/// /// Pasos que realiza:
-/// /// 1. Asegura que los bindings de Flutter estén inicializados.
-/// /// 2. Carga las variables de entorno desde el fichero .env.
-/// /// 3. Inicializa el contenedor de inyección de dependencias (Service Locator).
-/// /// 4. Ejecuta la aplicación principal [App].
+/// [main] es el punto de entrada principal de la aplicación.
+///
+/// Se encarga de realizar las inicializaciones críticas antes de que la UI
+/// sea renderizada.
+///
+/// Pasos que realiza:
+/// 1. Asegura que los bindings de Flutter estén inicializados.
+/// 2. Carga las variables de entorno desde el fichero .env.
+/// 3. Inicializa el contenedor de inyección de dependencias (Service Locator).
+/// 4. Ejecuta la aplicación principal [App].
 /// ---
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,16 +30,16 @@ void main() async {
 }
 
 /// ---
-/// /// [App] es el widget raíz de la aplicación.
-/// ///
-/// /// Es un [StatelessWidget] que configura el [MaterialApp] y proporciona
-/// /// el contexto global para temas y BLoCs.
-/// ///
-/// /// Configuración:
-/// /// - [MultiBlocProvider]: Aunque actualmente está vacío, aquí se registrarán los BLoCs
-/// ///   que necesiten tener un alcance global en la aplicación.
-/// /// - [MaterialApp]: Configura el tema, el soporte para modo oscuro y la
-/// ///   pantalla de inicio.
+/// [App] es el widget raíz de la aplicación.
+///
+/// Es un [StatelessWidget] que configura el [MaterialApp] y proporciona
+/// el contexto global para temas y BLoCs.
+///
+/// Configuración:
+/// - [MultiBlocProvider]: Aunque actualmente está vacío, aquí se registrarán los BLoCs
+///   que necesiten tener un alcance global en la aplicación.
+/// - [MaterialApp]: Configura el tema, el soporte para modo oscuro y la
+///   pantalla de inicio.
 /// ---
 class App extends StatelessWidget {
   const App({super.key});
@@ -51,7 +52,7 @@ class App extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const ClientListPage(),
+      home: const DashboardPage(),
     );
   }
 }

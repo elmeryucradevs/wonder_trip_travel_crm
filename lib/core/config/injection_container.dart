@@ -1,23 +1,25 @@
+// lib/core/config/injection_container.dart
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import '../../features/client_management/client_management_injection.dart';
+import '../../features/dashboard/dashboard_injection.dart';
 import '../../features/ticket_management/ticket_management_injection.dart';
 
 /// ---
-/// /// Instancia global del Service Locator [GetIt].
-/// ///
-/// /// [sl] (service locator) se utilizará en toda la aplicación para obtener
-/// /// instancias de clases registradas, como Repositorios, Casos de Uso, BLoCs, etc.
-/// /// Esto desacopla las capas y facilita las pruebas.
+/// Instancia global del Service Locator [GetIt].
+///
+/// [sl] (service locator) se utilizará en toda la aplicación para obtener
+/// instancias de clases registradas, como Repositorios, Casos de Uso, BLoCs, etc.
+/// Esto desacopla las capas y facilita las pruebas.
 /// ---
 final sl = GetIt.instance;
 
 /// ---
-/// /// [init] es la función de inicialización para el service locator.
-/// ///
-/// /// Aquí es donde se registrarán todas las dependencias de la aplicación.
-/// /// Se llamará una sola vez al iniciar la app desde `main.dart`.
-/// /// La organización de los registros se hará por feature.
+/// [init] es la función de inicialización para el service locator.
+///
+/// Aquí es donde se registrarán todas las dependencias de la aplicación.
+/// Se llamará una sola vez al iniciar la app desde `main.dart`.
+/// La organización de los registros se hará por feature.
 /// ---
 Future<void> init() async {
   // #######################################################################
@@ -49,4 +51,5 @@ Future<void> init() async {
 
   await initClientManagementFeature();
   await initTicketManagementFeature();
+  await initDashboardFeature();
 }

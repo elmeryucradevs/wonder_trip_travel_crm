@@ -2,19 +2,19 @@ import 'package:drift/drift.dart';
 import 'database.dart';
 
 /// ---
-/// /// [DbSeeder] es una clase de utilidad para poblar la base de datos con
-/// /// datos iniciales si está vacía.
-/// ///
-/// /// Esto centraliza la lógica de "seeding" y evita dependencias cruzadas
-/// /// entre las diferentes fuentes de datos (DataSources).
+/// [DbSeeder] es una clase de utilidad para poblar la base de datos con
+/// datos iniciales si está vacía.
+///
+/// Esto centraliza la lógica de "seeding" y evita dependencias cruzadas
+/// entre las diferentes fuentes de datos (DataSources).
 /// ---
 class DbSeeder {
   final AppDatabase db;
 
   DbSeeder(this.db);
 
-  /// /// [seedDatabase] comprueba si existen clientes y, si no, inserta
-  /// /// un conjunto de datos de prueba para clientes y boletos.
+  /// [seedDatabase] comprueba si existen clientes y, si no, inserta
+  /// un conjunto de datos de prueba para clientes y boletos.
   Future<void> seedDatabase() async {
     final clientCount =
         await (db.select(db.clients)..limit(1)).getSingleOrNull();

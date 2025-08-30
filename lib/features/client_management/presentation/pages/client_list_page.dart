@@ -51,16 +51,16 @@ class ClientListPage extends StatelessWidget {
 }
 
 /// ---
-/// /// [ClientListView] es el widget que realmente construye la UI de la lista.
-/// ///
-/// /// Utiliza [BlocBuilder] para escuchar los cambios de estado de [ClientListBloc]
-/// /// y reconstruir la UI en consecuencia.
-/// ///
-/// /// Maneja los cuatro estados posibles:
-/// /// - [ClientListLoading]: Muestra un [CircularProgressIndicator].
-/// /// - [ClientListLoaded]: Muestra un [ListView] con los clientes.
-/// /// - [ClientListError]: Muestra un mensaje de error.
-/// /// - Otro estado (inicial): Muestra un contenedor vacío.
+/// [ClientListView] es el widget que realmente construye la UI de la lista.
+///
+/// Utiliza [BlocBuilder] para escuchar los cambios de estado de [ClientListBloc]
+/// y reconstruir la UI en consecuencia.
+///
+/// Maneja los cuatro estados posibles:
+/// - [ClientListLoading]: Muestra un [CircularProgressIndicator].
+/// - [ClientListLoaded]: Muestra un [ListView] con los clientes.
+/// - [ClientListError]: Muestra un mensaje de error.
+/// - Otro estado (inicial): Muestra un contenedor vacío.
 /// ---
 class ClientListView extends StatelessWidget {
   const ClientListView({super.key});

@@ -9,12 +9,12 @@ import '../datasources/client_local_data_source.dart';
 import '../models/client_model.dart';
 
 /// ---
-/// /// [ClientRepositoryImpl] es la implementación concreta de [IClientRepository].
-/// ///
-/// /// Actúa como un puente entre la capa de dominio y la capa de datos. Su
-/// /// responsabilidad es obtener datos de las fuentes de datos (DataSource),
-/// /// capturar cualquier excepción que ocurra y convertirla en un [Failure]
-/// /// comprensible para la capa de dominio.
+/// [ClientRepositoryImpl] es la implementación concreta de [IClientRepository].
+///
+/// Actúa como un puente entre la capa de dominio y la capa de datos. Su
+/// responsabilidad es obtener datos de las fuentes de datos (DataSource),
+/// capturar cualquier excepción que ocurra y convertirla en un [Failure]
+/// comprensible para la capa de dominio.
 /// ---
 class ClientRepositoryImpl implements IClientRepository {
   final IClientDataSource localDataSource;
@@ -33,6 +33,16 @@ class ClientRepositoryImpl implements IClientRepository {
       const errorCode = '[ERROR-CRM001-ClientListFetch]';
       logger.e('$errorCode Error al obtener clientes de caché: ${e.message}');
       return Left(CacheFailure('Error al obtener datos locales: ${e.message}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ClientEntity>>> getClientsWithUpcomingBirthdays() async {
+    try {
+      final clientModels = await localDataSource.getClientsWithUpcomingBirthdays();
+      return Right(clientModels);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
     }
   }
 

@@ -8,10 +8,10 @@ import '../bloc/client_creation/client_creation_bloc.dart'; // Reutilizaremos es
 import '../bloc/client_list_bloc.dart';
 
 /// ---
-/// /// [ClientEditPage] es la pantalla que contiene el formulario para editar
-/// /// un cliente existente.
-/// ///
-/// /// Recibe un [ClientEntity] para pre-rellenar los campos del formulario.
+/// [ClientEditPage] es la pantalla que contiene el formulario para editar
+/// un cliente existente.
+///
+/// Recibe un [ClientEntity] para pre-rellenar los campos del formulario.
 /// ---
 class ClientEditPage extends StatelessWidget {
   final ClientEntity client;
