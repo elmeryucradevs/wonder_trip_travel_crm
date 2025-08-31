@@ -31,4 +31,6 @@ abstract class IClientRepository {
 
   Future<Either<Failure, List<ClientEntity>>> getClientsWithUpcomingBirthdays();
 
+  Future<Either<Failure, List<ClientEntity>>> getRecentClients();
+
 }

@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 
 import '../../../../core/config/injection_container.dart';
 import '../../../../core/db/dao/ticket_dao.dart';
+import '../../domain/entities/client_entity.dart';
 import 'local/client_dao.dart';
 import '../models/client_model.dart';
 import '../../../../core/db/database.dart';
@@ -14,6 +15,7 @@ abstract class IClientDataSource {
   Future<void> saveClient(ClientModel client);
   Future<void> updateClient(ClientModel client);
   Future<void> deleteClient(int id);
+  Future<List<ClientEntity>> getRecentClients();
 }
 
 /// ---
@@ -81,6 +83,28 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
             ))
         .toList();
   }
+
+  @override
+  Future<List<ClientEntity>> getRecentClients() async {
+    final recentClientsFromDb = await clientDao.getRecentClients();
+    return recentClientsFromDb
+        .map((client) => ClientModel(
+              id: client.id,
+              name: client.name,
+              lastName: client.lastName,
+              email: client.email,
+              phone: client.phone,
+              birthDate: client.birthDate,
+              documentNumber: client.documentNumber,
+              documentType: client.documentType,
+              travelerNumber: client.travelerNumber,
+              billingName: client.billingName,
+              billingDocument: client.billingDocument,
+              billingAddress: client.billingAddress,
+            ))
+        .toList();
+  }
+
 
   /// ---
   /// Implementación para guardar un nuevo cliente en la base de datos.

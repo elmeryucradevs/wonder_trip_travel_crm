@@ -139,10 +139,60 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
 
   @override
   Future<List<TicketModel>> getUpcomingFlights() async {
-    final upcomingSegments = await ticketDao.getUpcomingFlights();
-    // Esta lógica es más compleja, ya que necesitamos obtener el boleto y cliente para cada segmento.
-    // Por ahora, devolveremos una lista vacía para mantener el flujo.
-    // En una fase de optimización, mejoraríamos esta consulta.
-    return []; // TODO: Implementar lógica de obtención de datos relacionados.
+    try {
+      final upcomingFlightsData = await ticketDao.getUpcomingFlightDetails();
+      
+      // Agrupa segmentos por ID de boleto ya que un boleto puede tener múltiples segmentos próximos
+      final Map<int, List<FlightSegment>> segmentsByTicket = {};
+      final Map<int, Ticket> uniqueTickets = {};
+
+      for (var flightDetail in upcomingFlightsData) {
+        uniqueTickets.putIfAbsent(flightDetail.ticket.id, () => flightDetail.ticket);
+        segmentsByTicket.putIfAbsent(flightDetail.ticket.id, () => []).add(flightDetail.segment);
+      }
+
+      final List<TicketModel> ticketModels = [];
+
+      for (var ticket in uniqueTickets.values) {
+        final segments = segmentsByTicket[ticket.id] ?? [];
+        ticketModels.add(
+          TicketModel(
+            id: ticket.id,
+            clientId: ticket.clientId,
+            pnr: ticket.pnr,
+            emissionDate: ticket.emissionDate,
+            transportType: ticket.transportType == 'TERRESTRE' ? TransportType.terrestre : TransportType.aereo,
+            ticketNumber: ticket.ticketNumber,
+            flightType: ticket.flightType,
+            passengerCategory: ticket.passengerCategory,
+            unaccompaniedMinor: ticket.unaccompaniedMinor,
+            issuingAgent: ticket.issuingAgent,
+            status: ticket.status,
+            currency: ticket.currency,
+            totalPrice: ticket.totalPrice,
+            commission: ticket.commission,
+            originalTicketNumber: ticket.originalTicketNumber,
+            createdAt: ticket.createdAt,
+            updatedAt: ticket.updatedAt,
+            segments: segments.map((s) => FlightSegmentEntity(
+              id: s.id,
+              ticketId: s.ticketId,
+              airlineCode: s.airlineCode,
+              flightNumber: s.flightNumber,
+              origin: s.origin,
+              destination: s.destination,
+              departureDate: s.departureDate,
+              arrivalDate: s.arrivalDate,
+              flightClass: s.flightClass,
+              stopover: s.stopover,
+            )).toList(),
+          ),
+        );
+      }
+
+      return ticketModels;
+    } catch (e) {
+      throw CacheException('Error al obtener próximos vuelos: ${e.toString()}');
+    }
   }
 }

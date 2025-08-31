@@ -9,4 +9,5 @@ abstract class ITicketRepository {
   Future<Either<Failure, void>> updateTicket(TicketEntity ticket);
   Future<Either<Failure, void>> deleteTicket(int ticketId);
   Future<Either<Failure, List<TicketEntity>>> getUpcomingFlights();
+  
 }

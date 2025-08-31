@@ -83,6 +83,16 @@ class ClientDao extends DatabaseAccessor<AppDatabase> with _$ClientDaoMixin {
           ..limit(limit))
         .get();
   }
+
+  /// ---
+  /// Obtiene los clientes más recientes, ordenados por fecha de creación.
+  /// ---
+  Future<List<Client>> getRecentClients({int limit = 5}) {
+    return (select(clients)
+          ..orderBy([(c) => OrderingTerm(expression: c.createdAt, mode: OrderingMode.desc)])
+          ..limit(limit))
+        .get();
+  }
 }
 
 extension on DateTime {

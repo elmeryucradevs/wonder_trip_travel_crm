@@ -47,6 +47,16 @@ class ClientRepositoryImpl implements IClientRepository {
   }
 
   @override
+  Future<Either<Failure, List<ClientEntity>>> getRecentClients() async {
+    try {
+      final clients = await localDataSource.getRecentClients();
+      return Right(clients);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> saveClient(ClientEntity client) async {
     try {
       // Convertimos la entidad de dominio a un modelo de datos antes de pasarla

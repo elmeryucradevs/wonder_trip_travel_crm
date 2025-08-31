@@ -1,6 +1,7 @@
 // lib/features/ticket_management/domain/entities/ticket_entity.dart
 
 import 'package:equatable/equatable.dart';
+import '../../../client_management/domain/entities/client_entity.dart';
 import 'flight_segment_entity.dart'; 
 
 enum TransportType { aereo, terrestre }
@@ -28,6 +29,7 @@ class TicketEntity extends Equatable {
   final DateTime updatedAt;
 
   final List<FlightSegmentEntity> segments;
+  final ClientEntity? client;
 
   const TicketEntity({
     required this.id,
@@ -51,6 +53,9 @@ class TicketEntity extends Equatable {
     required this.updatedAt,
 
     this.segments = const [], 
+
+    this.client, 
+    
   });
 
   TicketEntity copyWith({
