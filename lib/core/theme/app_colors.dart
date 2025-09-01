@@ -18,11 +18,11 @@ class AppColors {
   static const Color fontSubtitleLight = Color(0xFF8A8A8A);
 
   // Paleta para el Modo Oscuro
-  static const Color primaryDark = Color(0xFF6C63FF); // Un violeta más brillante para contraste
-  static const Color accentDark = Color(0xFF50E3C2); // Un turquesa vibrante
+  static const Color primaryDark = Color(0xFF6C63FF);
+  static const Color accentDark = Color(0xFF50E3C2);
   static const Color backgroundDark = Color(0xFF121212);
   static const Color cardDark = Color(0xFF1E1E1E);
-  static const Color fontTitleDark = Color(0xFFFFFFFF);
+  static const Color fontTitleDark = Color(0xFFEAEAEA);
   static const Color fontBodyDark = Color(0xFFB0B0B0);
-  static const Color fontSubtitleDark = Color(0xFF7A7A7A);
+  static const Color fontSubtitleDark = Color(0xFF8A8A8A);
 }

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'core/config/app_router.dart';
+import 'core/config/core_injection.dart';
 import 'core/config/injection_container.dart' as di;
 import 'core/db/database.dart';
 import 'core/db/db_seeder.dart';
+import 'core/theme/bloc/theme_bloc.dart';
 import 'core/theme/theme.dart';
 
 /// ---
@@ -24,6 +26,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await di.init();
+  await initCore();
   // Obtenemos la instancia de la BD y ejecutamos el seeder.
   await DbSeeder(di.sl<AppDatabase>()).seedDatabase();
   runApp(const App());
@@ -46,13 +49,20 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Wonder Trip Travel CRM',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      routerConfig: AppRouter.router,
+    return BlocProvider(
+      create: (_) => sl<ThemeBloc>(),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            title: 'Wonder Trip Travel CRM',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: state.themeMode,
+            routerConfig: AppRouter.router,
+          );
+        },
+      ),
     );
   }
 }
@@ -70,9 +80,7 @@ class PlaceholderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('CRM - Wonder Trip Travel'),
-      ),
+      appBar: AppBar(title: const Text('CRM - Wonder Trip Travel')),
       body: Center(
         child: Text(
           'Bienvenido al CRM',

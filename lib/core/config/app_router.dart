@@ -5,6 +5,7 @@ import 'package:wonder_trip_travel_crm/features/client_management/presentation/p
 import 'package:wonder_trip_travel_crm/features/dashboard/presentation/pages/dashboard_page.dart';
 
 import '../../features/client_management/presentation/pages/client_creation_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
 
 class AppRouter {
   // --- CAMBIO AQUÍ: Usamos un ShellRoute ---
@@ -34,6 +35,11 @@ class AppRouter {
                 builder: (context, state) => const ClientCreationPage(),
               ),
             ],
+          ),
+          GoRoute(
+            path: '/settings',
+            name: 'settings',
+            builder: (context, state) => const SettingsPage(),
           ),
         ],
       ),

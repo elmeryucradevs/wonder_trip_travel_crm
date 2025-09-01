@@ -37,6 +37,14 @@ class NavDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.settings_outlined),
+            title: const Text('Configuración'),
+            onTap: () {
+              context.goNamed('settings');
+              Navigator.pop(context);
+            },
+          )
           // Aquí añadiremos enlaces a 'Boletos', 'Reportes', etc. en el futuro
         ],
       ),

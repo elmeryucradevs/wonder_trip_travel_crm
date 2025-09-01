@@ -83,5 +83,78 @@ class AppTheme {
   );
 
   // --- TEMA OSCURO --- (Añadiremos esto más adelante para enfocarnos primero en el claro)
-  static final ThemeData darkTheme = lightTheme; // Temporal
+  static final ThemeData darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    fontFamily: 'Poppins',
+    primaryColor: AppColors.primaryDark,
+    scaffoldBackgroundColor: AppColors.backgroundDark,
+    colorScheme: const ColorScheme.dark(
+      primary: AppColors.primaryDark,
+      secondary: AppColors.accentDark,
+      background: AppColors.backgroundDark,
+      surface: AppColors.cardDark,
+      onPrimary: Colors.white,
+      onSecondary: Colors.black,
+      onBackground: AppColors.fontBodyDark,
+      onSurface: AppColors.fontTitleDark,
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: AppColors.fontTitleDark),
+      titleTextStyle: TextStyle(
+        fontFamily: 'Poppins',
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: AppColors.fontTitleDark,
+      ),
+    ),
+    cardTheme: CardThemeData(
+      elevation: 0,
+      color: AppColors.cardDark,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: Colors.grey.shade800)
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primaryDark,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: const TextStyle(
+          fontFamily: 'Poppins',
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: AppColors.cardDark,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey.shade800),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: const BorderSide(color: AppColors.primaryDark, width: 2),
+      ),
+      labelStyle: const TextStyle(color: AppColors.fontSubtitleDark),
+    ),
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(fontWeight: FontWeight.bold, color: AppColors.fontTitleDark),
+      titleLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 22, color: AppColors.fontTitleDark),
+      bodyMedium: TextStyle(color: AppColors.fontBodyDark, height: 1.5),
+      labelSmall: TextStyle(color: AppColors.fontSubtitleDark),
+    ),
+  );
 }
