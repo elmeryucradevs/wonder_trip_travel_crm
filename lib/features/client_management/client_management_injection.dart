@@ -7,6 +7,7 @@ import 'data/repositories/client_repository_impl.dart';
 import 'domain/repositories/i_client_repository.dart';
 import 'domain/usecases/delete_client_usecase.dart';
 import 'domain/usecases/get_all_clients_usecase.dart';
+import 'domain/usecases/get_total_clients_usecase.dart';
 import 'presentation/bloc/client_detail/client_detail_bloc.dart';
 import 'presentation/bloc/client_list_bloc.dart';
 import 'domain/usecases/save_client_usecase.dart';
@@ -19,7 +20,7 @@ import 'presentation/bloc/client_creation/client_creation_bloc.dart';
 ///
 /// Sigue el patrón de la Arquitectura Limpia:
 /// 1. Registra el BLoC ([ClientListBloc]) como `factory` porque la UI puede
-///    necesitar crear múltiples instancias.
+///    necesitar crear múltiples instances.
 /// 2. Registra el Caso de Uso ([GetAllClientsUseCase]) como `lazy singleton`.
 /// 3. Registra el Repositorio ([ClientRepositoryImpl]) como `lazy singleton`,
 ///    mapeando la interfaz [IClientRepository] a su implementación.
@@ -35,6 +36,7 @@ Future<void> initClientManagementFeature() async {
   sl.registerLazySingleton(() => GetAllClientsUseCase(sl()));
   sl.registerLazySingleton(() => SaveClientUseCase(sl()));
   sl.registerLazySingleton(() => DeleteClientUseCase(sl()));
+  sl.registerLazySingleton(() => GetTotalClientsUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<IClientRepository>(

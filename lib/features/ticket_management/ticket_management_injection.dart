@@ -4,6 +4,7 @@ import 'data/repositories/ticket_repository_impl.dart';
 import 'domain/repositories/i_ticket_repository.dart';
 import 'domain/usecases/delete_ticket_usecase.dart';
 import 'domain/usecases/get_tickets_for_client_usecase.dart';
+import 'domain/usecases/get_total_tickets_usecase.dart';
 import 'domain/usecases/save_ticket_usecase.dart';
 import 'domain/usecases/update_ticket_usecase.dart';
 import 'presentation/bloc/ticket_detail_bloc.dart';
@@ -24,6 +25,7 @@ Future<void> initTicketManagementFeature() async {
   sl.registerLazySingleton(() => SaveTicketUseCase(sl()));
   sl.registerLazySingleton(() => UpdateTicketUseCase(sl())); 
   sl.registerLazySingleton(() => DeleteTicketUseCase(sl()));
+  sl.registerLazySingleton(() => GetTotalTicketsUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<ITicketRepository>(

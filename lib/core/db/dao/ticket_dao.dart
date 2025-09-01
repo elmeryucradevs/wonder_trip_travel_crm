@@ -78,4 +78,13 @@ class TicketDao extends DatabaseAccessor<AppDatabase> with _$TicketDaoMixin {
       );
     }).get();
   }
+
+  /// Cuenta el número total de boletos en la base de datos.
+  Expression<int> countTickets() => tickets.id.count();
+
+  Future<int> getTotalTickets() async {
+    final countExp = countTickets();
+    final query = selectOnly(tickets)..addColumns([countExp]);
+    return (await query.map((row) => row.read(countExp)).getSingle()) ?? 0;
+  }
 }

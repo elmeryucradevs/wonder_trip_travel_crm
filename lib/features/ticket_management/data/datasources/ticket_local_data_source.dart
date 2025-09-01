@@ -13,6 +13,7 @@ abstract class ITicketDataSource {
   Future<void> updateTicket(TicketModel ticket);
   Future<void> deleteTicket(int ticketId);
   Future<List<TicketModel>> getUpcomingFlights();
+  Future<int> getTotalTickets();
 }
 
 class TicketLocalDataSourceImpl implements ITicketDataSource {
@@ -193,6 +194,15 @@ class TicketLocalDataSourceImpl implements ITicketDataSource {
       return ticketModels;
     } catch (e) {
       throw CacheException('Error al obtener próximos vuelos: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<int> getTotalTickets() async {
+    try {
+      return await ticketDao.getTotalTickets();
+    } catch (e) {
+      throw CacheException('Error al obtener el número total de tickets: ${e.toString()}');
     }
   }
 }

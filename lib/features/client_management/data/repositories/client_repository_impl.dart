@@ -99,4 +99,14 @@ class ClientRepositoryImpl implements IClientRepository {
       return Left(CacheFailure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, int>> getTotalClients() async {
+    try {
+      final totalClients = await localDataSource.getTotalClients();
+      return Right(totalClients);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
+    }
+  }
 }

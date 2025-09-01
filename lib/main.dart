@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'core/config/app_router.dart';
 import 'core/config/injection_container.dart' as di;
 import 'core/db/database.dart';
 import 'core/db/db_seeder.dart';
 import 'core/theme/theme.dart';
-import 'features/dashboard/presentation/pages/dashboard_page.dart';
 
 /// ---
 /// [main] es el punto de entrada principal de la aplicación.
@@ -46,13 +46,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Wonder Trip Travel CRM',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const DashboardPage(),
+      routerConfig: AppRouter.router,
     );
   }
 }

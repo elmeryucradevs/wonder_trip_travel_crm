@@ -12,7 +12,10 @@ Future<void> initDashboardFeature() async {
     () => DashboardBloc(
       getClientsWithUpcomingBirthdaysUseCase: sl(), 
       getUpcomingFlightsUseCase: sl(),
-      getRecentClientsUseCase: sl(), ),
+      getRecentClientsUseCase: sl(), 
+      getTotalClientsUseCase: sl(),
+      getTotalTicketsUseCase: sl(),
+    ),
   );
 
   // Use cases

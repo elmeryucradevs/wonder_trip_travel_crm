@@ -16,6 +16,7 @@ abstract class IClientDataSource {
   Future<void> updateClient(ClientModel client);
   Future<void> deleteClient(int id);
   Future<List<ClientEntity>> getRecentClients();
+  Future<int> getTotalClients();
 }
 
 /// ---
@@ -184,4 +185,12 @@ class ClientLocalDataSourceImpl implements IClientDataSource {
     }
   }
 
+  @override
+  Future<int> getTotalClients() async {
+    try {
+      return await clientDao.getTotalClients();
+    } catch (e) {
+      throw CacheException('Error al obtener el número total de clientes: ${e.toString()}');
+    }
+  }
 }

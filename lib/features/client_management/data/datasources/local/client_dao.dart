@@ -93,6 +93,15 @@ class ClientDao extends DatabaseAccessor<AppDatabase> with _$ClientDaoMixin {
           ..limit(limit))
         .get();
   }
+
+  /// Cuenta el número total de clientes en la base de datos.
+  Expression<int> countClients() => clients.id.count();
+  
+  Future<int> getTotalClients() async {
+    final countExp = countClients();
+    final query = selectOnly(clients)..addColumns([countExp]);
+    return (await query.map((row) => row.read(countExp)).getSingle()) ?? 0;
+  }
 }
 
 extension on DateTime {

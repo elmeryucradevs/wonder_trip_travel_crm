@@ -12,6 +12,8 @@ class DashboardLoaded extends DashboardState {
   final List<ClientEntity> birthdayClients;
   final List<TicketEntity> upcomingFlights;
   final List<ClientEntity> recentClients;
+  final int totalClients;
+  final int totalTickets;
   
   // Aquí añadiremos las otras listas (vuelos, etc.) en el futuro
 
@@ -19,10 +21,12 @@ class DashboardLoaded extends DashboardState {
     required this.birthdayClients,
     required this.upcomingFlights,
     required this.recentClients,
+    required this.totalClients,
+    required this.totalTickets,
   });
 
   @override
-  List<Object> get props => [birthdayClients, upcomingFlights, recentClients];
+  List<Object> get props => [birthdayClients, upcomingFlights, recentClients, totalClients, totalTickets];
 }
 
 class DashboardFailure extends DashboardState {

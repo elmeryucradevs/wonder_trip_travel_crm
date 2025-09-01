@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/config/injection_container.dart';
 import '../bloc/client_list_bloc.dart';
 import '../widgets/client_list_item.dart';
@@ -22,24 +23,11 @@ class ClientListPage extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text('Clientes - Wonder Trip'),
-            ),
             body: const ClientListView(),
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) {
-                      // 'context.read<ClientListBloc>()' obtiene el BLoC de la Casa A.
-                      // 'BlocProvider.value' lo provee a su hijo, que es la Casa B.
-                      return BlocProvider.value(
-                        value: context.read<ClientListBloc>(),
-                        child: const ClientCreationPage(),
-                      );
-                    },
-                  ),
-                );
+                // Usamos go_router en lugar de Navigator.push ---
+                context.goNamed('newClient');
               },
               child: const Icon(Icons.add),
             ),

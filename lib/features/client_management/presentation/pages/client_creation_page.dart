@@ -21,34 +21,29 @@ class ClientCreationPage extends StatelessWidget {
     // Envolvemos la página con el BlocProvider para el nuevo BLoC.
     return BlocProvider(
       create: (_) => sl<ClientCreationBloc>(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Registrar Nuevo Cliente'),
-        ),
-        body: BlocListener<ClientCreationBloc, ClientCreationState>(
-          // BlocListener para efectos secundarios como navegación y SnackBars.
-          listener: (context, state) {
-            if (state is ClientCreationSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Cliente guardado con éxito'),
-                  backgroundColor: Colors.green,
-                ),
-              );
-              // Refresca la lista de clientes en la página anterior.
-              context.read<ClientListBloc>().add(FetchClientsEvent());
-              Navigator.of(context).pop();
-            } else if (state is ClientCreationFailure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Error: ${state.message}'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            }
-          },
-          child: const ClientCreationForm(),
-        ),
+      child: BlocListener<ClientCreationBloc, ClientCreationState>(
+        // BlocListener para efectos secundarios como navegación y SnackBars.
+        listener: (context, state) {
+          if (state is ClientCreationSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Cliente guardado con éxito'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            // Refresca la lista de clientes en la página anterior.
+            context.read<ClientListBloc>().add(FetchClientsEvent());
+            Navigator.of(context).pop();
+          } else if (state is ClientCreationFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error: ${state.message}'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
+        },
+        child: const ClientCreationForm(),
       ),
     );
   }

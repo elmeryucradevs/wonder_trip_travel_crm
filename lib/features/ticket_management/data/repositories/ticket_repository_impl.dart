@@ -103,4 +103,14 @@ class TicketRepositoryImpl implements ITicketRepository {
       return Left(CacheFailure(e.message));
     }
   }
+
+  @override
+  Future<Either<Failure, int>> getTotalTickets() async {
+    try {
+      final totalTickets = await localDataSource.getTotalTickets();
+      return Right(totalTickets);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(e.message));
+    }
+  }
 }

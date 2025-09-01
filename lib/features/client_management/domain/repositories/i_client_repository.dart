@@ -33,4 +33,6 @@ abstract class IClientRepository {
 
   Future<Either<Failure, List<ClientEntity>>> getRecentClients();
 
+  Future<Either<Failure, int>> getTotalClients();
+
 }
