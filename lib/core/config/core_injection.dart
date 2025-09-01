@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wonder_trip_travel_crm/core/theme/bloc/theme_bloc.dart';
 
+import '../../features/onboarding/data/repositories/onboarding_repository.dart';
+
 final sl = GetIt.instance;
 
 Future<void> initCore() async {
@@ -11,4 +13,7 @@ Future<void> initCore() async {
   // External
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);
+
+  // Repositorio de Onboarding
+  sl.registerLazySingleton(() => OnboardingRepository(sl()));
 }

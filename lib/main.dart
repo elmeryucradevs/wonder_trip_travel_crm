@@ -9,6 +9,7 @@ import 'core/db/database.dart';
 import 'core/db/db_seeder.dart';
 import 'core/theme/bloc/theme_bloc.dart';
 import 'core/theme/theme.dart';
+import 'features/onboarding/data/repositories/onboarding_repository.dart';
 
 /// ---
 /// [main] es el punto de entrada principal de la aplicación.
@@ -27,9 +28,15 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await di.init();
   await initCore();
+
+  // --- LÓGICA DE DECISIÓN DE RUTA INICIAL ---
+  final onboardingRepo = di.sl<OnboardingRepository>();
+  final hasSeenOnboarding = await onboardingRepo.hasSeenOnboarding();
+  final initialRoute = hasSeenOnboarding ? '/dashboard' : '/onboarding';
+
   // Obtenemos la instancia de la BD y ejecutamos el seeder.
   await DbSeeder(di.sl<AppDatabase>()).seedDatabase();
-  runApp(const App());
+  runApp(App(initialRoute: initialRoute));
 }
 
 /// ---
@@ -45,7 +52,8 @@ void main() async {
 ///   pantalla de inicio.
 /// ---
 class App extends StatelessWidget {
-  const App({super.key});
+  final String initialRoute;
+  const App({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +67,7 @@ class App extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
-            routerConfig: AppRouter.router,
+            routerConfig: AppRouter.getRouter(initialRoute),
           );
         },
       ),

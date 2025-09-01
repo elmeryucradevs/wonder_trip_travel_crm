@@ -91,11 +91,9 @@ class AppTheme {
     colorScheme: const ColorScheme.dark(
       primary: AppColors.primaryDark,
       secondary: AppColors.accentDark,
-      background: AppColors.backgroundDark,
       surface: AppColors.cardDark,
       onPrimary: Colors.white,
       onSecondary: Colors.black,
-      onBackground: AppColors.fontBodyDark,
       onSurface: AppColors.fontTitleDark,
     ),
     appBarTheme: const AppBarTheme(
