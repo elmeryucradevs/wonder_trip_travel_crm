@@ -22,11 +22,12 @@ class ClientListLoading extends ClientListState {}
 /// Estado que indica que la lista de clientes se cargó exitosamente. Contiene la lista de clientes.
 class ClientListLoaded extends ClientListState {
   final List<ClientEntity> clients;
+  final List<ClientEntity> filteredClients;
 
-  const ClientListLoaded(this.clients);
+  const ClientListLoaded(this.clients, this.filteredClients);
 
   @override
-  List<Object> get props => [clients];
+  List<Object> get props => [clients,filteredClients];
 }
 
 /// Estado que indica que ocurrió un error al cargar la lista. Contiene el mensaje de error.

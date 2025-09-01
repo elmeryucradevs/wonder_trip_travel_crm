@@ -50,39 +50,84 @@ class ClientListPage extends StatelessWidget {
 /// - [ClientListError]: Muestra un mensaje de error.
 /// - Otro estado (inicial): Muestra un contenedor vacío.
 /// ---
-class ClientListView extends StatelessWidget {
+class ClientListView extends StatefulWidget {
   const ClientListView({super.key});
 
   @override
+  State<ClientListView> createState() => _ClientListViewState();
+}
+
+class _ClientListViewState extends State<ClientListView> {
+
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    context.read<ClientListBloc>().add(SearchClient(_searchController.text));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ClientListBloc, ClientListState>(
-      builder: (context, state) {
-        if (state is ClientListLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state is ClientListLoaded) {
-          if (state.clients.isEmpty) {
-            return const Center(child: Text('No hay clientes registrados.'));
-          }
-          return ListView.builder(
-            itemCount: state.clients.length,
-            itemBuilder: (context, index) {
-              final client = state.clients[index];
-              return ClientListItem(client: client);
-            },
-          );
-        } else if (state is ClientListError) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                '${state.message}\n\nPor favor, intente de nuevo.',
-                textAlign: TextAlign.center,
-              ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextFormField(
+            controller: _searchController,
+            decoration: const InputDecoration(
+              labelText: 'Buscar por nombre, documento, etc.',
+              suffixIcon: Icon(Icons.search),
             ),
-          );
-        }
-        return const SizedBox.shrink(); // Estado inicial o no manejado
-      },
+          ),
+        ),
+        Expanded(
+          child: BlocBuilder<ClientListBloc, ClientListState>(
+            builder: (context, state) {
+              if (state is ClientListLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is ClientListLoaded) {
+                if (state.clients.isEmpty) {
+                  return const Center(child: Text('No hay clientes registrados.'));
+                }
+                if (state.filteredClients.isEmpty) {
+                  return const Center(
+                      child: Text('No se encontraron clientes.'));
+                }
+                return ListView.builder(
+                  itemCount: state.filteredClients.length,
+                  itemBuilder: (context, index) {
+                    final client = state.filteredClients[index];
+                    return ClientListItem(client: client);
+                  },
+                );
+              } else if (state is ClientListError) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      '${state.message}\n\nPor favor, intente de nuevo.',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox.shrink(); // Estado inicial o no manejado
+            },
+          ),
+        ),
+      ],
     );
   }
 }

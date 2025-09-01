@@ -23,3 +23,13 @@ abstract class ClientListEvent extends Equatable {
 /// (por ejemplo, al entrar en la página).
 /// ---
 class FetchClientsEvent extends ClientListEvent {}
+
+/// Evento que se dispara cuando el usuario escribe en el campo de búsqueda.
+class SearchClient extends ClientListEvent {
+  final String query;
+
+  const SearchClient(this.query);
+
+  @override
+  List<Object> get props => [query];
+}

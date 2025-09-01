@@ -25,6 +25,7 @@ class ClientListBloc extends Bloc<ClientListEvent, ClientListState> {
   /// Se registra un manejador de eventos para [FetchClientsEvent].
   ClientListBloc({required this.getAllClients}) : super(ClientListInitial()) {
     on<FetchClientsEvent>(_onFetchClients);
+    on<SearchClient>(_onSearchClient);
   }
 
   /// ---
@@ -50,8 +51,23 @@ class ClientListBloc extends Bloc<ClientListEvent, ClientListState> {
         emit(ClientListError('Error: ${failure.message}'));
       },
       (clients) {
-        emit(ClientListLoaded(clients));
+        emit(ClientListLoaded(clients, clients));
       },
     );
+  }
+
+  void _onSearchClient(SearchClient event, Emitter<ClientListState> emit) {
+    final currentState = state;
+    if (currentState is ClientListLoaded) {
+      final query = event.query.toLowerCase();
+      final filteredClients = currentState.clients.where((client) {
+        return client.fullName.toLowerCase().contains(query) ||
+            (client.documentNumber?.toLowerCase().contains(query) ?? false) ||
+            (client.travelerNumber?.toLowerCase().contains(query) ?? false) ||
+            (client.phone?.toLowerCase().contains(query) ?? false) ||
+            (client.billingDocument?.toLowerCase().contains(query) ?? false);
+      }).toList();
+      emit(ClientListLoaded(currentState.clients, filteredClients));
+    }
   }
 }
