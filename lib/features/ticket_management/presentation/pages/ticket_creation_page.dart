@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/config/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../client_management/domain/entities/client_entity.dart';
+import '../../../ticket_import/domain/entities/parsed_ticket_data.dart';
 import '../../domain/entities/flight_segment_entity.dart';
 import '../../domain/entities/ticket_entity.dart';
 import '../bloc/ticket_form_bloc.dart';
@@ -14,10 +15,13 @@ import '../bloc/ticket_list_bloc.dart';
 class TicketCreationPage extends StatelessWidget {
   final ClientEntity client;
   final String? originalTicketNumber;
+  final ParsedTicketData? parsedData;
+
   const TicketCreationPage({
-    super.key, 
+    super.key,
     required this.client,
     this.originalTicketNumber,
+    this.parsedData,
   });
 
   @override
@@ -35,8 +39,8 @@ class TicketCreationPage extends StatelessWidget {
             if (state is TicketCreationSuccess) {
               // Refresca la lista de boletos y vuelve
               context.read<TicketListBloc>().add(
-                FetchTicketsForClient(client.id),
-              );
+                    FetchTicketsForClient(client.id),
+                  );
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -56,6 +60,7 @@ class TicketCreationPage extends StatelessWidget {
           child: TicketCreationForm(
             client: client,
             originalTicketNumber: originalTicketNumber,
+            parsedData: parsedData,
           ),
         ),
       ),
@@ -65,8 +70,13 @@ class TicketCreationPage extends StatelessWidget {
 
 class TicketCreationForm extends StatefulWidget {
   final ClientEntity client;
-  final String? originalTicketNumber; 
-  const TicketCreationForm({super.key, required this.client, this.originalTicketNumber});
+  final String? originalTicketNumber;
+  final ParsedTicketData? parsedData;
+  const TicketCreationForm(
+      {super.key,
+      required this.client,
+      this.originalTicketNumber,
+      this.parsedData});
 
   @override
   State<TicketCreationForm> createState() => _TicketCreationFormState();
@@ -90,7 +100,6 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
   String _transportType = 'AEREO';
   String? _passengerCategory;
   bool _isUnaccompaniedMinor = false;
-
 
   bool _hasStopovers = false;
   final _stopoversController = TextEditingController();
@@ -122,7 +131,40 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
   final _returnArrivalDateController = TextEditingController();
   DateTime? _selectedReturnDepartureDate;
   DateTime? _selectedReturnArrivalDate;
-  
+
+  @override
+  void initState() {
+    super.initState();
+    // Pre-llenamos el formulario si hay datos parseados
+    if (widget.parsedData != null) {
+      _pnrController.text = widget.parsedData!.pnr ?? '';
+      _totalPriceController.text = widget.parsedData!.totalPrice ?? '';
+      _ticketNumberController.text = widget.parsedData!.ticketNumber ?? '';
+      _selectedCurrency = widget.parsedData!.currency ?? 'BOB';
+      _outboundOriginController.text = widget.parsedData!.origin ?? '';
+      _outboundDestinationController.text = widget.parsedData!.destination ?? '';
+      _outboundFlightNumController.text = widget.parsedData!.flightNumber ?? '';
+      _outboundAirlineController.text = widget.parsedData!.airline ?? '';
+      _agentController.text = widget.parsedData!.provider ?? '';
+
+      if (widget.parsedData!.departureDate != null &&
+          widget.parsedData!.departureTime != null) {
+        _outboundDepartureDateController.text =
+            '${widget.parsedData!.departureDate!} ${widget.parsedData!.departureTime!}';
+      }
+
+      if (widget.parsedData!.arrivalDate != null &&
+          widget.parsedData!.arrivalTime != null) {
+        _outboundArrivalDateController.text =
+            '${widget.parsedData!.arrivalDate!} ${widget.parsedData!.arrivalTime!}';
+      }
+
+       if (widget.parsedData!.emissionDate != null ) {
+        _issueDateController.text =
+            '${widget.parsedData!.emissionDate!}';
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -190,7 +232,6 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
     bool isAirTicket = _transportType == 'AEREO';
     bool isChild = _passengerCategory == 'CHD';
 
-
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -203,8 +244,14 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
             // --- NUEVO SELECTOR OW/RT ---
             SegmentedButton<String>(
               segments: const <ButtonSegment<String>>[
-                ButtonSegment<String>(value: 'OW', label: Text('Solo Ida'), icon: Icon(Icons.arrow_forward)),
-                ButtonSegment<String>(value: 'RT', label: Text('Ida y Vuelta'), icon: Icon(Icons.sync_alt)),
+                ButtonSegment<String>(
+                    value: 'OW',
+                    label: Text('Solo Ida'),
+                    icon: Icon(Icons.arrow_forward)),
+                ButtonSegment<String>(
+                    value: 'RT',
+                    label: Text('Ida y Vuelta'),
+                    icon: Icon(Icons.sync_alt)),
               ],
               selected: _tripTypeSelection,
               onSelectionChanged: (Set<String> newSelection) {
@@ -256,8 +303,14 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
             const SizedBox(height: 16),
             SegmentedButton<String>(
               segments: const <ButtonSegment<String>>[
-                ButtonSegment<String>(value: 'AEREO', label: Text('Aéreo'), icon: Icon(Icons.flight)),
-                ButtonSegment<String>(value: 'TERRESTRE', label: Text('Bus'), icon: Icon(Icons.directions_bus)),
+                ButtonSegment<String>(
+                    value: 'AEREO',
+                    label: Text('Aéreo'),
+                    icon: Icon(Icons.flight)),
+                ButtonSegment<String>(
+                    value: 'TERRESTRE',
+                    label: Text('Bus'),
+                    icon: Icon(Icons.directions_bus)),
               ],
               selected: {_transportType},
               onSelectionChanged: (Set<String> newSelection) {
@@ -311,8 +364,10 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
               destinationController: _outboundDestinationController,
               departureDateController: _outboundDepartureDateController,
               arrivalDateController: _outboundArrivalDateController,
-              onDepartureDateSelected: (date) => _selectedOutboundDepartureDate = date,
-              onArrivalDateSelected: (date) => _selectedOutboundArrivalDate = date,
+              onDepartureDateSelected: (date) =>
+                  _selectedOutboundDepartureDate = date,
+              onArrivalDateSelected: (date) =>
+                  _selectedOutboundArrivalDate = date,
               isAirTicket: isAirTicket,
             ),
             CheckboxListTile(
@@ -330,7 +385,8 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
               const SizedBox(height: 8),
               TextFormField(
                 controller: _stopoversController,
-                decoration: const InputDecoration(labelText: 'Detalles de las escalas (ej. LPB, MIA)'),
+                decoration: const InputDecoration(
+                    labelText: 'Detalles de las escalas (ej. LPB, MIA)'),
                 textCapitalization: TextCapitalization.characters,
               ),
             ],
@@ -354,7 +410,8 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                 const SizedBox(height: 8),
                 TextFormField(
                   controller: _returnStopoversController,
-                  decoration: const InputDecoration(labelText: 'Detalles de las escalas (ej. LPB, MIA)'),
+                  decoration: const InputDecoration(
+                      labelText: 'Detalles de las escalas (ej. LPB, MIA)'),
                   textCapitalization: TextCapitalization.characters,
                 ),
               ],
@@ -366,8 +423,10 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                 destinationController: _returnDestinationController,
                 departureDateController: _returnDepartureDateController,
                 arrivalDateController: _returnArrivalDateController,
-                onDepartureDateSelected: (date) => _selectedReturnDepartureDate = date,
-                onArrivalDateSelected: (date) => _selectedReturnArrivalDate = date,
+                onDepartureDateSelected: (date) =>
+                    _selectedReturnDepartureDate = date,
+                onArrivalDateSelected: (date) =>
+                    _selectedReturnArrivalDate = date,
                 isAirTicket: isAirTicket,
               ),
             ],
@@ -456,39 +515,46 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                           _selectedOutboundDepartureDate == null ||
                           _selectedOutboundArrivalDate == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Por favor, complete todas las fechas requeridas.')),
+                          const SnackBar(
+                              content: Text(
+                                  'Por favor, complete todas las fechas requeridas.')),
                         );
                         return;
                       }
-                      
+
                       // Si es ida y vuelta, validamos también las fechas de vuelta
                       if (_tripTypeSelection.first == 'RT' &&
                           (_selectedReturnDepartureDate == null ||
-                          _selectedReturnArrivalDate == null)) {
+                              _selectedReturnArrivalDate == null)) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Por favor, complete las fechas del segmento de vuelta.')),
+                          const SnackBar(
+                              content: Text(
+                                  'Por favor, complete las fechas del segmento de vuelta.')),
                         );
                         return;
                       }
 
                       // Creamos el segmento de ida
                       final outboundSegment = FlightSegmentEntity(
-                          id: 0, ticketId: 0,
-                          airlineCode: _outboundAirlineController.text,
-                          flightClass: _outboundClassController.text,
-                          flightNumber: _outboundFlightNumController.text,
-                          origin: _outboundOriginController.text,
-                          destination: _outboundDestinationController.text,
-                          departureDate: _selectedOutboundDepartureDate!,
-                          arrivalDate: _selectedOutboundArrivalDate!,
-                          stopover: _hasStopovers ? _stopoversController.text : null,
+                        id: 0,
+                        ticketId: 0,
+                        airlineCode: _outboundAirlineController.text,
+                        flightClass: _outboundClassController.text,
+                        flightNumber: _outboundFlightNumController.text,
+                        origin: _outboundOriginController.text,
+                        destination: _outboundDestinationController.text,
+                        departureDate: _selectedOutboundDepartureDate!,
+                        arrivalDate: _selectedOutboundArrivalDate!,
+                        stopover:
+                            _hasStopovers ? _stopoversController.text : null,
                       );
 
                       // Creamos el segmento de vuelta si es necesario
                       FlightSegmentEntity? returnSegment;
                       if (_tripTypeSelection.first == 'RT') {
                         returnSegment = FlightSegmentEntity(
-                          id: 0, ticketId: 0,
+                          id: 0,
+                          ticketId: 0,
                           airlineCode: _returnAirlineController.text,
                           flightNumber: _returnFlightNumController.text,
                           flightClass: _returnClassController.text,
@@ -496,38 +562,50 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
                           destination: _returnDestinationController.text,
                           departureDate: _selectedReturnDepartureDate!,
                           arrivalDate: _selectedReturnArrivalDate!,
-                          stopover: _hasReturnStopovers ? _returnStopoversController.text : null,
+                          stopover: _hasReturnStopovers
+                              ? _returnStopoversController.text
+                              : null,
                         );
                       }
 
                       // Despachamos el evento de CREACIÓN de boleto.
                       context.read<TicketFormBloc>().add(
-                        CreateTicketSubmitted(
-                          clientId: widget.client.id,
-                          pnr: _pnrController.text,
-                          ticketNumber: _ticketNumberController.text,
-                          emissionDate: _selectedIssueDate!,
-                          transportType: _transportType == 'AEREO' ? TransportType.aereo : TransportType.terrestre,
-                          flightType: _tripTypeSelection.first,
-                          status: _selectedStatus,
-                          currency: _selectedCurrency,
-                          totalPrice: double.tryParse(_totalPriceController.text) ?? 0.0,
-                          commission: double.tryParse(_commissionController.text),
-                          issuingAgent: _agentController.text,
-                          passengerCategory: _passengerCategory,
-                          unaccompaniedMinor: _isUnaccompaniedMinor,
-                          segmentAirline: _outboundAirlineController.text,
-                          segmentFlightNumber: _outboundFlightNumController.text,
-                          segmentOrigin: _outboundOriginController.text,
-                          segmentDestination: _outboundDestinationController.text,
-                          segmentDepartureTime: _selectedOutboundDepartureDate!,
-                          segmentArrivalTime: _selectedOutboundArrivalDate!,
-                          stopovers: _hasStopovers ? _stopoversController.text : null,
-                          returnSegment: returnSegment,
-                          originalTicketNumber: widget.originalTicketNumber,
-                          
-                        ),
-                      );
+                            CreateTicketSubmitted(
+                              clientId: widget.client.id,
+                              pnr: _pnrController.text,
+                              ticketNumber: _ticketNumberController.text,
+                              emissionDate: _selectedIssueDate!,
+                              transportType: _transportType == 'AEREO'
+                                  ? TransportType.aereo
+                                  : TransportType.terrestre,
+                              flightType: _tripTypeSelection.first,
+                              status: _selectedStatus,
+                              currency: _selectedCurrency,
+                              totalPrice:
+                                  double.tryParse(_totalPriceController.text) ??
+                                      0.0,
+                              commission:
+                                  double.tryParse(_commissionController.text),
+                              issuingAgent: _agentController.text,
+                              passengerCategory: _passengerCategory,
+                              unaccompaniedMinor: _isUnaccompaniedMinor,
+                              segmentAirline: _outboundAirlineController.text,
+                              segmentFlightNumber:
+                                  _outboundFlightNumController.text,
+                              segmentOrigin: _outboundOriginController.text,
+                              segmentDestination:
+                                  _outboundDestinationController.text,
+                              segmentDepartureTime:
+                                  _selectedOutboundDepartureDate!,
+                              segmentArrivalTime:
+                                  _selectedOutboundArrivalDate!,
+                              stopovers: _hasStopovers
+                                  ? _stopoversController.text
+                                  : null,
+                              returnSegment: returnSegment,
+                              originalTicketNumber: widget.originalTicketNumber,
+                            ),
+                          );
                     }
                   },
                   child: const Text('Guardar Boleto'),
@@ -544,9 +622,9 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-        color: AppColors.fontTitleLight,
-        fontWeight: FontWeight.w600,
-      ),
+            color: AppColors.fontTitleLight,
+            fontWeight: FontWeight.w600,
+          ),
     );
   }
 
@@ -568,20 +646,22 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
           children: [
             Expanded(
               child: TextFormField(
-                controller: airlineController,
-                textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(labelText: isAirTicket ? 'Aerolínea*' : 'Empresa de Bus*'),
-                validator: (v) => v!.isEmpty ? 'Requerido' : null
-              ),
+                  controller: airlineController,
+                  textCapitalization: TextCapitalization.characters,
+                  decoration: InputDecoration(
+                      labelText:
+                          isAirTicket ? 'Aerolínea*' : 'Empresa de Bus*'),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: TextFormField(
-                controller: flightNumController,
-                textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(labelText: isAirTicket ? 'Nº Vuelo*' : 'Nº Asiento/Coche*'),
-                validator: (v) => v!.isEmpty ? 'Requerido' : null
-              ),
+                  controller: flightNumController,
+                  textCapitalization: TextCapitalization.characters,
+                  decoration: InputDecoration(
+                      labelText:
+                          isAirTicket ? 'Nº Vuelo*' : 'Nº Asiento/Coche*'),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null),
             ),
           ],
         ),
@@ -597,20 +677,23 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
           children: [
             Expanded(
               child: TextFormField(
-                controller: originController,
-                textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(labelText: isAirTicket ? 'Origen* (ej. VVI)' : 'Terminal Origen*'),
-                validator: (v) => v!.isEmpty ? 'Requerido' : null
-              ),
+                  controller: originController,
+                  textCapitalization: TextCapitalization.characters,
+                  decoration: InputDecoration(
+                      labelText:
+                          isAirTicket ? 'Origen* (ej. VVI)' : 'Terminal Origen*'),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null),
             ),
             const SizedBox(width: 16),
             Expanded(
               child: TextFormField(
-                controller: destinationController,
-                textCapitalization: TextCapitalization.characters,
-                decoration: InputDecoration(labelText: isAirTicket ? 'Destino* (ej. CBB)' : 'Terminal Destino*'),
-                validator: (v) => v!.isEmpty ? 'Requerido' : null
-              ),
+                  controller: destinationController,
+                  textCapitalization: TextCapitalization.characters,
+                  decoration: InputDecoration(
+                      labelText: isAirTicket
+                          ? 'Destino* (ej. CBB)'
+                          : 'Terminal Destino*'),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null),
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import '../../features/client_management/client_management_injection.dart';
 import '../../features/dashboard/dashboard_injection.dart';
+import '../../features/ticket_import/ticket_import_injection.dart';
 import '../../features/ticket_management/ticket_management_injection.dart';
 
 /// ---
@@ -52,4 +53,5 @@ Future<void> init() async {
   await initClientManagementFeature();
   await initTicketManagementFeature();
   await initDashboardFeature();
+  await initTicketImportFeature();
 }

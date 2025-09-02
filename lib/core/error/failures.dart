@@ -44,3 +44,10 @@ class CacheFailure extends Failure {
 class NetworkFailure extends Failure {
   const NetworkFailure(super.message);
 }
+
+/// ---
+/// Representa un fallo durante el parseo de datos.
+/// ---
+class ParsingFailure extends Failure {
+  const ParsingFailure(super.message);
+}

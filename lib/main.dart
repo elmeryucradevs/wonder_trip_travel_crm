@@ -35,7 +35,7 @@ void main() async {
   final initialRoute = hasSeenOnboarding ? '/dashboard' : '/onboarding';
 
   // Obtenemos la instancia de la BD y ejecutamos el seeder.
-  await DbSeeder(di.sl<AppDatabase>()).seedDatabase();
+  await DbSeeder(di.sl<AppDatabase>()).seed();
   runApp(App(initialRoute: initialRoute));
 }
 

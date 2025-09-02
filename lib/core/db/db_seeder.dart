@@ -1,160 +1,90 @@
+import 'dart:async';
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:csv/csv.dart';
 import 'package:drift/drift.dart';
-import 'database.dart';
+import 'package:wonder_trip_travel_crm/core/db/database.dart';
+import 'package:wonder_trip_travel_crm/features/client_management/data/models/client_model.dart';
 
-/// ---
-/// [DbSeeder] es una clase de utilidad para poblar la base de datos con
-/// datos iniciales si está vacía.
-///
-/// Esto centraliza la lógica de "seeding" y evita dependencias cruzadas
-/// entre las diferentes fuentes de datos (DataSources).
-/// ---
 class DbSeeder {
-  final AppDatabase db;
+  final AppDatabase _db;
 
-  DbSeeder(this.db);
+  DbSeeder(this._db);
 
-  /// [seedDatabase] comprueba si existen clientes y, si no, inserta
-  /// un conjunto de datos de prueba para clientes y boletos.
-  Future<void> seedDatabase() async {
-    final clientCount =
-        await (db.select(db.clients)..limit(1)).getSingleOrNull();
+  Future<void> seed() async {
+    // Verificamos si la tabla ya tiene datos para no re-insertar todo.
+    final firstClient = await (_db.select(_db.clients)..limit(1)).getSingleOrNull();
+    if (firstClient != null) {
+      print("La base de datos ya ha sido poblada. No se requieren nuevas acciones.");
+      return;
+    }
 
-    // Solo si no hay ningún cliente, poblamos la base de datos.
-    if (clientCount == null) {
-      print('[DB Seeder] Base de datos vacía. Poblando con datos de prueba...');
+    await _seedClients();
+  }
 
-      // Insertar Clientes
-      final mockClientsToSeed = [
-        ClientsCompanion(
-            name: const Value('Ana'),
-            lastName: const Value('García'),
-            email: const Value('ana.garcia@email.com')),
-        ClientsCompanion(
-            name: const Value('Carlos'),
-            lastName: const Value('Rodriguez'),
-            email: const Value('carlos.r@email.com')),
-      ];
+  Future<void> _seedClients() async {
+    // 1. Carga el archivo como bytes
+    final byteData = await rootBundle.load('assets/DB_CLIENTES.csv');
+    // 2. Decodifica los bytes usando latin1 (ISO-8859-1)
+    final csvData = latin1.decode(byteData.buffer.asUint8List());
+    // 3. Convierte los datos CSV en una lista de listas
+    final List<List<dynamic>> csvTable = const CsvToListConverter().convert(csvData);
 
-      for (var client in mockClientsToSeed) {
-        await db.clientDao.insertClient(client);
+    final Set<String> processedDocumentNumbers = {};
+
+    // Skip header row
+    for (var i = 1; i < csvTable.length; i++) {
+      final row = csvTable[i];
+
+      final documentNumber = row[0].toString().trim();
+
+      // Si el número de documento está vacío o ya lo procesamos, lo saltamos.
+      if (documentNumber.isEmpty || processedDocumentNumbers.contains(documentNumber)) {
+        continue;
       }
 
-      // --- BOLETOS DE PRUEBA ---
+      final fullName = row[2].toString().split(' ');
+      final name = fullName.isNotEmpty ? fullName.first : '';
+      final lastName = fullName.length > 1 ? fullName.sublist(1).join(' ') : '';
 
-      // 1. Vuelo de IDA con ESCALA (para Ana García, ID 1)
-      var ticketId1 = await db.ticketDao.insertTicket(
-        TicketsCompanion(
-          clientId: const Value(1),
-          pnr: const Value('RDN4LF'),
-          totalPrice: const Value(345.50),
-          emissionDate: Value(DateTime(2025, 9, 20)),
-          flightType: const Value('OW'), // One-Way
-          issuingAgent: const Value('Amadeus'),
-          passengerCategory: const Value('ADT'),
-        ),
+      final client = ClientsCompanion(
+        documentNumber: Value(row[0].toString()),
+        documentType: Value(row[1].toString()),
+        name: Value(name),
+        lastName: Value(lastName),
+        phone: Value(row[3].toString()),
+        birthDate: Value(_parseDate(row[4].toString())),
+        email: Value(row[5].toString()),
+        billingName: Value(row[6].toString()),
+        billingDocument: Value(row[7].toString()),
+        billingAddress: Value(row[8].toString()),
       );
-      await db.ticketDao.insertFlightSegment(FlightSegmentsCompanion(
-        ticketId: Value(ticketId1),
-        airlineCode: const Value('AV'),
-        flightNumber: const Value('738'),
-        origin: const Value('VVI'),
-        destination: const Value('MIA'),
-        departureDate: Value(DateTime(2025, 10, 15, 07, 30)),
-        arrivalDate: Value(DateTime(2025, 10, 15, 17, 00)),
-        stopover: const Value('BOG'), // Con escala en Bogotá
-      ));
+      // Insertamos el cliente en la base de datos
+      await _db.into(_db.clients).insert(client);
+      // Añadimos el número de documento al set para no volver a procesarlo
+      processedDocumentNumbers.add(documentNumber);
+    }
+     print("¡Migración de clientes completada con éxito!");
+  }
 
-      // 2. Vuelo de IDA SIN ESCALA (para Ana García, ID 1)
-      var ticketId2 = await db.ticketDao.insertTicket(
-        TicketsCompanion(
-          clientId: const Value(1),
-          pnr: const Value('BKV89P'),
-          totalPrice: const Value(120.00),
-          emissionDate: Value(DateTime(2025, 10, 5)),
-          flightType: const Value('OW'),
-          issuingAgent: const Value('Kiwi'),
-          passengerCategory: const Value('ADT'),
-        ),
-      );
-      await db.ticketDao.insertFlightSegment(FlightSegmentsCompanion(
-        ticketId: Value(ticketId2),
-        airlineCode: const Value('OB'),
-        flightNumber: const Value('622'),
-        origin: const Value('VVI'),
-        destination: const Value('CBB'),
-        departureDate: Value(DateTime(2025, 11, 20, 10, 00)),
-        arrivalDate: Value(DateTime(2025, 11, 20, 10, 50)),
-        // Sin escala
-      ));
+  DateTime? _parseDate(String dateStr) {
+    if (dateStr.isEmpty) return null;
+    try {
+      final parts = dateStr.split('/');
+      if (parts.length != 3) return null;
+      final day = int.tryParse(parts[0]);
+      final month = int.tryParse(parts[1]);
+      final year = int.tryParse(parts[2]);
 
-      // 3. Vuelo IDA Y VUELTA SIN ESCALAS (para Carlos Rodriguez, ID 2)
-      var ticketId3 = await db.ticketDao.insertTicket(
-        TicketsCompanion(
-          clientId: const Value(2),
-          pnr: const Value('XYZ789'),
-          totalPrice: const Value(250.00),
-          emissionDate: Value(DateTime(2025, 11, 1)),
-          flightType: const Value('RT'), // Round-Trip
-           issuingAgent: const Value('Lufthansa'),
-          passengerCategory: const Value('CHD'),
-        ),
-      );
-      // Segmento de Ida
-      await db.ticketDao.insertFlightSegment(FlightSegmentsCompanion(
-        ticketId: Value(ticketId3),
-        airlineCode: const Value('Z8'),
-        flightNumber: const Value('410'),
-        origin: const Value('SRE'),
-        destination: const Value('VVI'),
-        departureDate: Value(DateTime(2025, 12, 1, 08, 00)),
-        arrivalDate: Value(DateTime(2025, 12, 1, 08, 45)),
-      ));
-      // Segmento de Vuelta
-      await db.ticketDao.insertFlightSegment(FlightSegmentsCompanion(
-        ticketId: Value(ticketId3),
-        airlineCode: const Value('Z8'),
-        flightNumber: const Value('411'),
-        origin: const Value('VVI'),
-        destination: const Value('SRE'),
-        departureDate: Value(DateTime(2025, 12, 10, 18, 30)),
-        arrivalDate: Value(DateTime(2025, 12, 10, 19, 15)),
-      ));
+      if (day == null || month == null || year == null) return null;
+      
+      // Validaciones básicas de fecha
+      if (month > 12 || day > 31 || year < 1900) return null;
 
-      // 4. Vuelo IDA Y VUELTA CON ESCALA EN LA IDA (para Carlos Rodriguez, ID 2)
-      var ticketId4 = await db.ticketDao.insertTicket(
-        TicketsCompanion(
-          clientId: const Value(2),
-          pnr: const Value('ABC123'),
-          totalPrice: const Value(980.70),
-          emissionDate: Value(DateTime(2025, 11, 5)),
-          flightType: const Value('RT'),
-          issuingAgent: const Value('Expedia'),
-          passengerCategory: const Value('ADT'),
-        ),
-      );
-      // Segmento de Ida (con escala)
-      await db.ticketDao.insertFlightSegment(FlightSegmentsCompanion(
-        ticketId: Value(ticketId4),
-        airlineCode: const Value('CM'),
-        flightNumber: const Value('150'),
-        origin: const Value('VVI'),
-        destination: const Value('MEX'),
-        departureDate: Value(DateTime(2026, 1, 10, 06, 00)),
-        arrivalDate: Value(DateTime(2026, 1, 10, 15, 00)),
-        stopover: const Value('PTY'),
-      ));
-      // Segmento de Vuelta (directo)
-      await db.ticketDao.insertFlightSegment(FlightSegmentsCompanion(
-        ticketId: Value(ticketId4),
-        airlineCode: const Value('CM'),
-        flightNumber: const Value('151'),
-        origin: const Value('MEX'),
-        destination: const Value('VVI'),
-        departureDate: Value(DateTime(2026, 1, 25, 18, 00)),
-        arrivalDate: Value(DateTime(2026, 1, 26, 03, 00)),
-      ));
-
-      print('[DB Seeder] Datos de prueba insertados.');
+      return DateTime(year, month, day);
+    } catch (e) {
+      print("Error parseando la fecha: '$dateStr'");
+      return null;
     }
   }
 }

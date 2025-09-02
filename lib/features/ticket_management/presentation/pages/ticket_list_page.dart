@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:wonder_trip_travel_crm/features/ticket_management/presentation/pages/ticket_creation_page.dart';
 import '../../../../core/config/injection_container.dart';
 import '../../../client_management/domain/entities/client_entity.dart';
+import '../../../ticket_import/presentation/bloc/ticket_import_bloc.dart';
+import '../bloc/ticket_form_bloc.dart';
 import '../bloc/ticket_list_bloc.dart';
 import '../widgets/ticket_list_item.dart';
 
@@ -23,34 +25,79 @@ class TicketListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<TicketListBloc>()..add(FetchTicketsForClient(clientId)),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Boletos de $clientName'),
-        ),
-        body: TicketListView(client: client), // Pasamos el cliente al ListView
-        floatingActionButton: Builder(
-          builder: (context) {
-            return FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) {
-                      return BlocProvider.value(
-                        value: context.read<TicketListBloc>(),
-                        child: TicketCreationPage(client: client),
-                      );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) =>
+                sl<TicketListBloc>()..add(FetchTicketsForClient(client.id)),
+          ),
+          BlocProvider(
+            create: (_) => sl<TicketImportBloc>(),
+          ),
+        ],
+        child: BlocListener<TicketImportBloc, TicketImportState>(
+          listener: (context, state) {
+            if (state is TicketImportSuccess) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(value: context.read<TicketListBloc>()),
+                      BlocProvider(create: (_) => sl<TicketFormBloc>()),
+                    ],
+                    child: TicketCreationPage(
+                      client: client,
+                      parsedData: state.parsedData,
+                    ),
+                  ),
+                ),
+              );
+            } else if (state is TicketImportFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text('Error: ${state.message}'),
+                    backgroundColor: Colors.red),
+              );
+            }
+          },
+          child: Builder(builder: (context) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Boletos de $clientName'),
+                actions: [
+                  // --- AÑADIMOS EL BOTÓN DE IMPORTAR ---
+                  IconButton(
+                    icon: const Icon(Icons.upload_file),
+                    tooltip: 'Importar desde PDF',
+                    onPressed: () {
+                      context
+                          .read<TicketImportBloc>()
+                          .add(PdfImportButtonPressed());
                     },
                   ),
+                ],
+              ),
+              body: TicketListView(client: client), // Pasamos el cliente al ListView
+              floatingActionButton: Builder(builder: (context) {
+                return FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) {
+                          return BlocProvider.value(
+                            value: context.read<TicketListBloc>(),
+                            child: TicketCreationPage(client: client),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: const Icon(Icons.add),
                 );
-              },
-              child: const Icon(Icons.add),
+              }),
             );
-          }
-        ),
-      ),
-    );
+          }),
+        ));
   }
 }
 
@@ -87,15 +134,15 @@ class _TicketListViewState extends State<TicketListView> {
 
   void _applyFilters() {
     context.read<TicketListBloc>().add(
-      ApplyFiltersAndSearch(
-        searchQuery: _searchController.text,
-        status: _selectedStatus,
-        type: _selectedType,
-        dateRange: _selectedDateRange,
-      ),
-    );
+          ApplyFiltersAndSearch(
+            searchQuery: _searchController.text,
+            status: _selectedStatus,
+            type: _selectedType,
+            dateRange: _selectedDateRange,
+          ),
+        );
   }
-  
+
   void _clearFilters() {
     setState(() {
       _searchController.clear();
@@ -105,7 +152,6 @@ class _TicketListViewState extends State<TicketListView> {
     });
     _applyFilters();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -119,25 +165,27 @@ class _TicketListViewState extends State<TicketListView> {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is TicketListLoaded) {
                 if (state.tickets.isEmpty) {
-                   return const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(24.0),
-                        child: Text(
-                          'Este cliente no tiene boletos registrados.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 16),
-                        ),
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(24.0),
+                      child: Text(
+                        'Este cliente no tiene boletos registrados.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16),
                       ),
-                    );
+                    ),
+                  );
                 }
                 if (state.filteredTickets.isEmpty) {
-                   return Center(
+                  return Center(
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('No se encontraron boletos con los filtros aplicados.', textAlign: TextAlign.center),
+                          const Text(
+                              'No se encontraron boletos con los filtros aplicados.',
+                              textAlign: TextAlign.center),
                           const SizedBox(height: 16),
                           ElevatedButton(
                             onPressed: _clearFilters,
@@ -159,7 +207,8 @@ class _TicketListViewState extends State<TicketListView> {
                   },
                 );
               } else if (state is TicketListFailure) {
-                return Center(child: Text('Error al cargar boletos: ${state.message}'));
+                return Center(
+                    child: Text('Error al cargar boletos: ${state.message}'));
               }
               return const SizedBox.shrink();
             },
@@ -197,20 +246,20 @@ class _TicketListViewState extends State<TicketListView> {
                 },
               ),
               const SizedBox(height: 16),
-               _buildFilterChips<String>(
+              _buildFilterChips<String>(
                 label: 'Tipo:',
                 options: ['Todos', 'Original', 'Canje'],
                 selectedValue: _selectedType,
                 onSelected: (value) {
                   setState(() => _selectedType = value);
-                   _applyFilters();
+                  _applyFilters();
                 },
               ),
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   Text(
+                  Text(
                     _selectedDateRange == null
                         ? 'Filtrar por fecha...'
                         : 'Fecha: ${DateFormat('dd/MM/yy').format(_selectedDateRange!.start)} - ${DateFormat('dd/MM/yy').format(_selectedDateRange!.end)}',
@@ -225,7 +274,7 @@ class _TicketListViewState extends State<TicketListView> {
                       );
                       if (picked != null) {
                         setState(() => _selectedDateRange = picked);
-                         _applyFilters();
+                        _applyFilters();
                       }
                     },
                     child: const Text('Seleccionar'),
