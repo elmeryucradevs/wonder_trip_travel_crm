@@ -51,6 +51,17 @@ class FlightSegmentEntity extends Equatable {
       stopover: stopover ?? this.stopover,
   );}
 
+  factory FlightSegmentEntity.empty() {
+    return FlightSegmentEntity(
+      id: 0,
+      ticketId: 0,
+      origin: '',
+      destination: '',
+      departureDate: DateTime.now(),
+      arrivalDate: DateTime.now(),
+    );
+  }
+
 
   @override
   List<Object?> get props => [id, ticketId, origin, destination, departureDate, 

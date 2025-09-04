@@ -8,6 +8,7 @@ import 'domain/repositories/i_client_repository.dart';
 import 'domain/usecases/delete_client_usecase.dart';
 import 'domain/usecases/get_all_clients_usecase.dart';
 import 'domain/usecases/get_total_clients_usecase.dart';
+import 'domain/usecases/open_whatsapp_chat_usecase.dart';
 import 'presentation/bloc/client_detail/client_detail_bloc.dart';
 import 'presentation/bloc/client_list_bloc.dart';
 import 'domain/usecases/save_client_usecase.dart';
@@ -30,13 +31,14 @@ Future<void> initClientManagementFeature() async {
   // BLoC
   sl.registerFactory(() => ClientListBloc(getAllClients: sl()));
   sl.registerFactory(() => ClientCreationBloc(saveClientUseCase: sl()));
-  sl.registerFactory(() => ClientDetailBloc(deleteClientUseCase: sl()));
+  sl.registerFactory(() => ClientDetailBloc(deleteClientUseCase: sl(), openWhatsAppChatUseCase: sl(),));
 
   // Use cases
   sl.registerLazySingleton(() => GetAllClientsUseCase(sl()));
   sl.registerLazySingleton(() => SaveClientUseCase(sl()));
   sl.registerLazySingleton(() => DeleteClientUseCase(sl()));
   sl.registerLazySingleton(() => GetTotalClientsUseCase(sl()));
+  sl.registerLazySingleton(() => OpenWhatsAppChatUseCase()); 
 
   // Repository
   sl.registerLazySingleton<IClientRepository>(

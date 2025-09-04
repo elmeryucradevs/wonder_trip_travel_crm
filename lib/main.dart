@@ -10,6 +10,8 @@ import 'core/db/db_seeder.dart';
 import 'core/theme/bloc/theme_bloc.dart';
 import 'core/theme/theme.dart';
 import 'features/onboarding/data/repositories/onboarding_repository.dart';
+import 'package:intl/date_symbol_data_local.dart'; 
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 /// ---
 /// [main] es el punto de entrada principal de la aplicación.
@@ -25,6 +27,8 @@ import 'features/onboarding/data/repositories/onboarding_repository.dart';
 /// ---
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeDateFormatting('es');
   await dotenv.load(fileName: ".env");
   await di.init();
   await initCore();
@@ -68,6 +72,15 @@ class App extends StatelessWidget {
             darkTheme: AppTheme.darkTheme,
             themeMode: state.themeMode,
             routerConfig: AppRouter.getRouter(initialRoute),
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en', ''), // English
+              Locale('es', ''), // Spanish
+            ],
           );
         },
       ),

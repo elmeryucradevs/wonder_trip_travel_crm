@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:wonder_trip_travel_crm/core/theme/app_colors.dart';
 import 'package:wonder_trip_travel_crm/features/client_management/domain/entities/client_entity.dart';
+import 'package:wonder_trip_travel_crm/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 
 class BirthdayCard extends StatelessWidget {
   final List<ClientEntity> clients;
@@ -32,26 +35,32 @@ class BirthdayCard extends StatelessWidget {
             if (clients.isEmpty)
               const Text('No hay cumpleaños registrados próximamente.')
             else
-              ...clients.map((client) => _buildBirthdayRow(client)),
+              ...clients.map((client) => _buildBirthdayRow(client, context)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildBirthdayRow(ClientEntity client) {
+  Widget _buildBirthdayRow(ClientEntity client, BuildContext context) {
     final birthday = client.birthDate;
     if (birthday == null) return const SizedBox.shrink();
 
     final formattedDate = DateFormat('dd \'de\' MMMM').format(birthday);
-    final isToday = birthday.day == DateTime.now().day && birthday.month == DateTime.now().month;
+    final isToday =
+        birthday.day == DateTime.now().day && birthday.month == DateTime.now().month;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Expanded(child: Text(client.fullName, overflow: TextOverflow.ellipsis)),
-          Text(formattedDate, style: const TextStyle(color: AppColors.fontSubtitleLight)),
+          Expanded(
+            child: Text(client.fullName, overflow: TextOverflow.ellipsis),
+          ),
+          Text(
+            formattedDate,
+            style: const TextStyle(color: AppColors.fontSubtitleLight),
+          ),
           if (isToday)
             Padding(
               padding: const EdgeInsets.only(left: 8.0),
@@ -60,6 +69,14 @@ class BirthdayCard extends StatelessWidget {
                 backgroundColor: AppColors.accentLight.withOpacity(0.2),
                 padding: EdgeInsets.zero,
               ),
+            ),
+          if (client.phone != null && client.phone!.isNotEmpty)
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.whatsapp, color: Colors.green),
+              onPressed: () {
+                context.read<DashboardBloc>().add(SendBirthdayGreeting(client));
+              },
+              tooltip: 'Felicitar por WhatsApp',
             ),
         ],
       ),

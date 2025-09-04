@@ -34,6 +34,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
 
+  flutter_localizations: 
+    sdk: flutter
   # Gestor de Estado y Comparación de Objetos
   cupertino_icons: ^1.0.8
   flutter_bloc: ^9.1.1
@@ -68,6 +70,9 @@ dependencies:
   syncfusion_flutter_pdf: ^30.2.7
   csv: ^6.0.0
   sembast: ^3.8.5+1
+  url_launcher: ^6.3.2
+  flash: ^3.1.1
+  font_awesome_flutter: ^10.9.1
   
 
 dev_dependencies:

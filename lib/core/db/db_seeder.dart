@@ -4,7 +4,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:csv/csv.dart';
 import 'package:drift/drift.dart';
 import 'package:wonder_trip_travel_crm/core/db/database.dart';
-import 'package:wonder_trip_travel_crm/features/client_management/data/models/client_model.dart';
 
 class DbSeeder {
   final AppDatabase _db;
