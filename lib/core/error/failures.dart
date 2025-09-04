@@ -51,3 +51,14 @@ class NetworkFailure extends Failure {
 class ParsingFailure extends Failure {
   const ParsingFailure(super.message);
 }
+
+/// ---
+/// Represents a failure when interacting with an external application (e.g., WhatsApp).
+/// ---
+class ExternalAppFailure extends Failure {
+  final String code;
+  const ExternalAppFailure({required String message, required this.code}) : super(message);
+
+  @override
+  List<Object> get props => [message, code];
+}

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:wonder_trip_travel_crm/core/config/injection_container.dart';
 import 'package:wonder_trip_travel_crm/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:wonder_trip_travel_crm/features/dashboard/presentation/widgets/birthday_card.dart';
+import 'package:wonder_trip_travel_crm/features/dashboard/presentation/widgets/create_quote_card.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../widgets/recent_activity_card.dart';
@@ -57,6 +58,8 @@ class DashboardPage extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 16),
+                    const CreateQuoteCard(),
                     const SizedBox(height: 16),
                     StatsCard(
                       clientCount: state.totalClients,

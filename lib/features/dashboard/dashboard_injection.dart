@@ -15,6 +15,7 @@ Future<void> initDashboardFeature() async {
       getRecentClientsUseCase: sl(), 
       getTotalClientsUseCase: sl(),
       getTotalTicketsUseCase: sl(),
+      openWhatsAppChatUseCase: sl(),
     ),
   );
 

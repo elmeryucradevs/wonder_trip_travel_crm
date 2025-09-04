@@ -161,7 +161,7 @@ class _TicketCreationFormState extends State<TicketCreationForm> {
 
        if (widget.parsedData!.emissionDate != null ) {
         _issueDateController.text =
-            '${widget.parsedData!.emissionDate!}';
+            widget.parsedData!.emissionDate!;
       }
     }
   }

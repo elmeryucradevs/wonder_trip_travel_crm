@@ -6,6 +6,7 @@ import 'package:wonder_trip_travel_crm/features/dashboard/presentation/pages/das
 
 import '../../features/client_management/presentation/pages/client_creation_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../features/quotes/presentation/pages/quote_creation_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 
 class AppRouter {
@@ -47,6 +48,11 @@ class AppRouter {
               path: '/onboarding',
               name: 'onboarding',
               builder: (context, state) => const OnboardingPage(),
+            ),
+            GoRoute(
+              path: '/quotes/new',
+              name: 'newQuote',
+              builder: (context, state) => const QuoteCreationPage(),
             ),
           ],
         ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:wonder_trip_travel_crm/core/theme/app_colors.dart';
+import 'package:wonder_trip_travel_crm/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:wonder_trip_travel_crm/features/ticket_management/domain/entities/ticket_entity.dart';
 
 class UpcomingFlightsCard extends StatelessWidget {
@@ -32,18 +35,19 @@ class UpcomingFlightsCard extends StatelessWidget {
             if (tickets.isEmpty)
               const Text('No hay vuelos programados próximamente.')
             else
-              ...tickets.expand((ticket) => ticket.segments.map((segment) =>
-                _buildFlightRow(ticket, segment)
-              )),
+              ...tickets.map((ticket) =>
+                _buildFlightRow(context, ticket)
+              ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFlightRow(TicketEntity ticket, dynamic segment) {
+  Widget _buildFlightRow(BuildContext context, TicketEntity ticket) {
+    // Tomamos el primer segmento para mostrar la información principal
+    final segment = ticket.segments.first;
     final formattedDate = DateFormat('dd MMM, HH:mm').format(segment.departureDate);
-    // TODO: Necesitamos el nombre del cliente aquí. Esto requerirá un refactor del modelo.
     
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -51,6 +55,14 @@ class UpcomingFlightsCard extends StatelessWidget {
         children: [
           Expanded(child: Text('${segment.origin} → ${segment.destination}', style: const TextStyle(fontWeight: FontWeight.bold))),
           Text(formattedDate, style: const TextStyle(color: AppColors.fontSubtitleLight)),
+          if (ticket.client?.phone != null && ticket.client!.phone!.isNotEmpty)
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.whatsapp, color: Colors.green),
+              onPressed: () {
+                context.read<DashboardBloc>().add(SendFlightReminder(ticket));
+              },
+              tooltip: 'Enviar recordatorio de vuelo',
+            ),
         ],
       ),
     );
